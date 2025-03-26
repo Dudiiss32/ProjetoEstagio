@@ -19,9 +19,8 @@ public function create(){
 }
 
 // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
-public function store(){
-    // CARREGAR A VIEW
-    return view('funcionario.store');
+public function store(Request $request){
+    
 }
 
 // CADASTRAR NO BANCO DE DADOS NOVA CONTA

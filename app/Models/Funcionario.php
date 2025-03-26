@@ -9,5 +9,8 @@ class Funcionario extends Model
 {
     use HasFactory;
 
-    
+    //Indicar o nome da tabela
+    // protected $table = 'funcionario';
+
+    protected $fillable = ['nome', 'metaTele', 'metaMatricula', 'comissao', 'valorComissao'];
 }

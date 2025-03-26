@@ -24,6 +24,7 @@
 
             <label for="">Login:</label>
             <input type="text" name="name" placeholder="Digite seu nome">
+            <br>
             <label for="">Senha:</label>
             <input type="password" placeholder="Digite sua senha">
             <br>
