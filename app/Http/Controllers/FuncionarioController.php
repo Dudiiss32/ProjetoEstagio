@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcionario;
 use Illuminate\Http\Request;
 
 class FuncionarioController extends Controller
@@ -20,7 +21,10 @@ public function create(){
 
 // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
 public function store(Request $request){
-    
+
+    $funcionarios = Funcionario::create($request->all());
+    return redirect()->route('funcionarios.store')->with('success', 'Funcionário cadastrado com sucesso!');
+
 }
 
 // CADASTRAR NO BANCO DE DADOS NOVA CONTA

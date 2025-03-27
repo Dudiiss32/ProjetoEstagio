@@ -7,7 +7,7 @@
     <title>Funcionários</title>
 </head>
 <body>
-    <a href="{{route('funcionario.store')}}">Cadastrar um funcionário</a>
+    <a href="{{route('funcionario.create')}}">Cadastrar um funcionário</a>
     <h1>Lista de funcionários</h1>
 </body>
 </html>
