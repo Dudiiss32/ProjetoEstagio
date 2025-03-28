@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('telemarketing', function (Blueprint $table) {
             $table->id();
             $table->string('funcionario');
+            $table->string('mes');
+            $table->timestamp('data');
             $table->string('cliente');
             $table->string('telefone');
             $table->string('curso');
             $table->date('agendamento');
-            $table->date('visita');
+            $table->time('hora');
             $table->integer('teles');
             $table->timestamps();
         });

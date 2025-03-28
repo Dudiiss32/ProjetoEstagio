@@ -12,5 +12,6 @@
     <a href="">Lista de Atendimentos</a>
     <a href="">Lista de Telemarketing</a>
     <a href="">Lista de Cursos</a>
+    <a href="{{route('user.create')}}">Gerenciar usuários</a>
 </body>
 </html>

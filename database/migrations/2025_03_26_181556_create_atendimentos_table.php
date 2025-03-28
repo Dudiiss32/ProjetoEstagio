@@ -18,11 +18,11 @@ return new class extends Migration
             $table->date('data');
             $table->string('funcionario');
             $table->string('midia');
-            $table->string('nome');
+            $table->string('cliente');
             $table->string('telefone');
             $table->string('curso');
             $table->boolean('matricula');
-            $table->string('objecao');
+            $table->string('observacao');
             $table->float('valor');
             $table->timestamps();
         });

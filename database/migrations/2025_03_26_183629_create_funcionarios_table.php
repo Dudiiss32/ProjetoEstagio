@@ -17,9 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->integer('metaTele');
-            $table->integer('metaMatricula');
+            $table->float('metaMatricula');
             $table->float('comissao');
-            $table->float('valorComissao');
             $table->timestamps();
         });
     }

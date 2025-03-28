@@ -31,7 +31,7 @@ Route::get('/home', function () {
 // Usuário
 
 Route::get('/index-user', [UserController::class, 'index'])->name('user.index');
-Route::get('/create-user', [UserController::class, 'create'])->name('user.create');
+Route::get('/create-user', [UserController::class, 'create'])->name('user.create')->middleware('admin');
 Route::post('/store-user', [UserController::class, 'store'])->name('user.store');
 Route::get('/show-user', [UserController::class, 'show'])->name('user.show');
 Route::get('/edit-user', [UserController::class, 'edit'])->name('user.edit');
