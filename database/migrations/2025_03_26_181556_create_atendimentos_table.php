@@ -16,14 +16,21 @@ return new class extends Migration
         Schema::create('atendimentos', function (Blueprint $table) {
             $table->id();
             $table->date('data');
-            $table->string('funcionario');
+            $table->unsignedBigInteger('id_funcionario');
             $table->string('midia');
             $table->string('cliente');
             $table->string('telefone');
             $table->string('curso');
-            $table->boolean('matricula');
-            $table->string('observacao');
-            $table->float('valor');
+            $table->boolean('matricula')->nullable();
+            $table->string('observacao')->nullable();
+
+            $table->unsignedBigInteger('id_midia');
+            $table->foreign('id_midia')->references('id')->on('midias')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('id_curso');
+            $table->foreign('id_curso')->references('id')->on('cursos')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('id_funcionario')->references('id')->on('funcionarios')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

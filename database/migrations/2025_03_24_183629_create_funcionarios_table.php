@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->unsignedBigInteger('id_user');
             $table->integer('metaTele');
             $table->float('metaMatricula');
             $table->float('comissao');
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
