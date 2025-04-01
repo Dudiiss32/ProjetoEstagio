@@ -7,8 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Gerenciar funcionário</h1>
-    <form action="{{route('funcionario.store')}}" method="POST">
+    <h1>Gerenciar atendimentos</h1>
+    <form action="{{route('atendimento.store')}}" method="POST">
         @csrf
 
         <label for="">Nome:</label>

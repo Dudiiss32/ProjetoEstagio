@@ -7,9 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="">
+    <form action="{{route('user.store')}}" method="POST">
         @csrf
-        <h1>chegou aqui</h1>
+        <label for="">Nome: </label>
+        <input type="text" name="name">
+        <label for="">Senha: </label>
+        <input type="password" name="password">
+        <button type="submit">Cadastrar usuário</button>
     </form>
 </body>
 </html>

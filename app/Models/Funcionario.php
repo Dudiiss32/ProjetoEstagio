@@ -12,5 +12,10 @@ class Funcionario extends Model
     //Indicar o nome da tabela
     // protected $table = 'funcionario';
 
-    protected $fillable = ['nome', 'metaTele', 'metaMatricula', 'comissao', 'valorComissao'];
+    protected $fillable = ['id_user', 'metaTele', 'metaMatricula', 'comissao'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

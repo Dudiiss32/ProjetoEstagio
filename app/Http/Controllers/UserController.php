@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -9,7 +10,8 @@ class UserController extends Controller
     // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        return view('user.index');
+        $users = User::all();
+        return view('user.index', compact('users'));
     }
 
     // DETALHES
@@ -19,9 +21,14 @@ class UserController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
-    public function store(){
+    public function store(Request $request){
         // CARREGAR A VIEW
-        return view('user.store');
+        User::create([
+            'name' => $request->name,
+            'password' => bcrypt($request->password),
+            'isAdmin' => false
+        ]);
+        return redirect()->route('user.index')->with('success', 'Funcionário cadastrado com sucesso!');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA

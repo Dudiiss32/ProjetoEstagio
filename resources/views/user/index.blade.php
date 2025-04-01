@@ -7,6 +7,23 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Página do usuário</h2>
+    <a href="{{route('user.create')}}">Cadastrar novo usuário</a>
+    <h2>Lista de usuários</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Administrador</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
+                <tr>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->isAdmin ? 'Sim' : 'Não'}}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </body>
 </html>

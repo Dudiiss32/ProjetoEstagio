@@ -7,8 +7,8 @@
     <title>Funcionários</title>
 </head>
 <body>
-    <a href="{{route('funcionario.create')}}">Cadastrar um funcionário</a>
-    <h1>Lista de funcionários</h1>
+    <a href="{{route('funcionario.create')}}">Cadastrar um novo atendimento</a>
+    <h1>Lista de atendimentos</h1>
     
     <table border="1">
         <thead>

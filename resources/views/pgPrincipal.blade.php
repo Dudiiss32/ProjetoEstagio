@@ -17,7 +17,6 @@
     <body class="antialiased">
     
         <h1>Funcionando :)</h1>
-        <a href="{{ route('user.index') }}">Listar usuários</a>
 
         <form action="/enviarForm" method="POST">
             @csrf
