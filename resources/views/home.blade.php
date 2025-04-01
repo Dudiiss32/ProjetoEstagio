@@ -9,9 +9,10 @@
 <body>
     <h1>Funcionando</h1>
     <a href="{{route('funcionario.index')}}">Lista de funcionários</a>
-    <a href="">Lista de Atendimentos</a>
-    <a href="">Lista de Telemarketing</a>
-    <a href="">Lista de Cursos</a>
-    <a href="{{route('user.index')}}">Gerenciar usuários</a>
+    <a href="{{route('atendimento.index')}}">Lista de Atendimentos</a>
+    <a href="{{route('telemarketing.index')}}">Lista de Telemarketing</a>
+    <a href="{{route('curso.index')}}">Lista de Cursos</a>
+    <a href="{{route('user.index')}}">Gerenciar Usuários</a>
+    <a href="{{route('midia.index')}}">Gerenciar Mídias</a>
 </body>
 </html>

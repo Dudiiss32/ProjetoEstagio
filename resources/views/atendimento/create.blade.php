@@ -12,23 +12,42 @@
         @csrf
 
         <label for="">Nome:</label>
-        <select name="id_user" id="">
-            @foreach ($users as $user)
-                <option value="{{$user->id}}">{{$user->name}}</option>
+        <select name="id_funcionario" id="">
+            @foreach ($funcionarios as $funcionario)
+                <option value="{{$funcionario->id}}">{{$funcionario->name}}</option>
             @endforeach
-            
         </select>
         <br>
-        <label for="">Meta de Telemarketing:</label>
-        <input type="text" name="metaTele">
+        <label for="">Cliente:</label>
+        <input type="text" name="cliente">
         <br>
-        <label for="">Meta de matrícula:</label>
-        <input type="text" name="metaMatricula">
+        <label for="">Telefone:</label>
+        <input type="text" name="telefone">
         <br>
-        <label for="">Comissão (%):</label>
-        <input type="number" name="comissao" placeholder="Digite o valor da porcentagem. Ex: 50">
+        <label for="">Matrícula:</label>
+        <select name="matricula" id="">
+            <option value="1">Sim</option>
+            <option value="0">Não</option>
+        </select>
         <br>
-        <input type="submit" value="Cadastrar">
+        <label for="">Observação:</label>
+        <input type="text" name="observacao">
+        <br>
+        <label for="">Mídia:</label>
+        <select name="id_midia" id="">
+            @foreach ($midias as $midia)
+                <option value="{{$midia->id}}">{{$midia->nome}}</option>
+            @endforeach
+        </select>
+        <br>
+        <label for="">Curso:</label>
+        <select name="id_curso" id="">
+            @foreach ($cursos as $curso)
+                <option value="{{$curso->id}}">{{$curso->nome}}</option>
+            @endforeach
+        </select>
+        <br>
+        <input type="submit" value="Salvar">
         <br>
     </form>
 </body>

@@ -15,12 +15,10 @@ return new class extends Migration
     {
         Schema::create('atendimentos', function (Blueprint $table) {
             $table->id();
-            $table->date('data');
+            $table->timestamp('data');
             $table->unsignedBigInteger('id_funcionario');
-            $table->string('midia');
             $table->string('cliente');
             $table->string('telefone');
-            $table->string('curso');
             $table->boolean('matricula')->nullable();
             $table->string('observacao')->nullable();
 

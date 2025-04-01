@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Midia;
+use App\Models\Indicacoes;
 use Illuminate\Http\Request;
 
-class MidiaController extends Controller
+class IndicacoesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,7 @@ class MidiaController extends Controller
      */
     public function index()
     {
-        $midias = Midia::all();
-        return view('midia.index', compact('midias'));
+        //
     }
 
     /**
@@ -25,7 +24,7 @@ class MidiaController extends Controller
      */
     public function create()
     {
-        return view('midia.create');
+        //
     }
 
     /**
@@ -36,24 +35,16 @@ class MidiaController extends Controller
      */
     public function store(Request $request)
     {
-        $existe = Midia::where('nome', $request->nome)->exists();
-
-        if($existe){
-            return redirect()->route('midia.index')->with('error', 'Essa mídia já foi adicionada');
-        }
-        Midia::create([
-            'nome' => $request->nome,
-        ]);
-        return redirect()->route('midia.index')->with('success', 'Mídia adicionada com sucesso');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Midia  $midia
+     * @param  \App\Models\Indicacoes  $indicacoes
      * @return \Illuminate\Http\Response
      */
-    public function show(Midia $midia)
+    public function show(Indicacoes $indicacoes)
     {
         //
     }
@@ -61,10 +52,10 @@ class MidiaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Midia  $midia
+     * @param  \App\Models\Indicacoes  $indicacoes
      * @return \Illuminate\Http\Response
      */
-    public function edit(Midia $midia)
+    public function edit(Indicacoes $indicacoes)
     {
         //
     }
@@ -73,10 +64,10 @@ class MidiaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Midia  $midia
+     * @param  \App\Models\Indicacoes  $indicacoes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Midia $midia)
+    public function update(Request $request, Indicacoes $indicacoes)
     {
         //
     }
@@ -84,10 +75,10 @@ class MidiaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Midia  $midia
+     * @param  \App\Models\Indicacoes  $indicacoes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Midia $midia)
+    public function destroy(Indicacoes $indicacoes)
     {
         //
     }

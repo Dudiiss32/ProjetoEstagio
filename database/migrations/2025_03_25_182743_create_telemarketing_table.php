@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('telemarketing', function (Blueprint $table) {
             $table->id();
-            $table->string('mes');
             $table->timestamp('data');
             $table->string('cliente');
             $table->string('telefone');

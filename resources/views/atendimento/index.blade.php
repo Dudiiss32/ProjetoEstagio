@@ -7,25 +7,32 @@
     <title>Funcionários</title>
 </head>
 <body>
-    <a href="{{route('funcionario.create')}}">Cadastrar um novo atendimento</a>
+    <a href="{{route('atendimento.create')}}">Cadastrar um novo atendimento</a>
     <h1>Lista de atendimentos</h1>
     
     <table border="1">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Meta de telemarketing</th>
-                <th>Meta de matrícula</th>
-                <th>Comissão</th>
+                <th>Data</th>
+                <th>Funcionário</th>
+                <th>Mídia</th>
+                <th>Cliente</th>
+                <th>Telefone</th>
+                <th>Curso</th>
+                <th>Matrícula</th>
+                <th>Observação</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($funcionarios as $funcionario)
+            @foreach ($atendimentos as $atendimento)
                 <tr>
-                    <td>{{$funcionario->user->name ?? 'Usuário não encontrado'}}</td>
-                    <td>{{$funcionario->metaTele}}</td>
-                    <td>{{$funcionario->metaMatricula}}</td>
-                    <td>{{$funcionario->comissao}}%</td>
+                    <td>{{$atendimento->funcionario->user->name ?? 'Usuário não encontrado'}}</td>
+                    <td>{{$atendimento->midia->nome}}</td>
+                    <td>{{$atendimento->cliente}}</td>
+                    <td>{{$atendimento->telefone}}</td>
+                    <td>{{$atendimento->curso->nome}}</td>
+                    <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>
+                    <td>{{$atendimento->observacao}}</td>
                 </tr>    
             @endforeach
             
