@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <a href="{{route('user.create')}}">Cadastrar novo usuário</a>
+@extends('layouts.app')
+
+@section('title', 'Lista de usuários')
+
+@section('dynamic_link_route', route('user.create'))
+@section('dynamic_link_name', 'Cadastrar novo usuário')
+
+@section('content')
     <h2>Lista de usuários</h2>
-    <table border="1">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -25,5 +23,6 @@
             @endforeach
         </tbody>
     </table>
-</body>
-</html>
+@endsection
+
+

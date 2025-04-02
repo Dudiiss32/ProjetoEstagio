@@ -13,7 +13,7 @@ class Atendimento extends Model
 
     public function funcionario()
     {
-        return $this->belongsTo(Funcionario::class, 'id_funcionario');
+        return $this->belongsTo(User::class, 'id_funcionario');
     }
     public function midia()
     {

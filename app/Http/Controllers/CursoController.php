@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Curso;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
 {
     // LISTAR
     public function index(){
-        // CARREGAR A VIEW
-        return view('curso.index');
+        $cursos = Curso::all();
+        return view('curso.index', compact('cursos'));
     }
 
     // DETALHES
@@ -19,9 +20,14 @@ class CursoController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
-    public function store(){
+    public function store(Request $request){
         // CARREGAR A VIEW
-        return view('curso.store');
+        Curso::create([
+            'nome' => $request->nome,
+            'horas' => $request->horas,
+            'valor' => $request->valor,
+        ]);
+        return redirect()->route('curso.index');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA

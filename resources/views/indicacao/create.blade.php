@@ -7,18 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Gerenciar curso</h1>
-    <form action="{{route('curso.store')}}" method="POST">
+    <h1>Gerenciar Indicações</h1>
+    <form action="{{route('indicacao.store')}}" method="POST">
         @csrf
 
         <label for="">Nome:</label>
         <input type="text" name="nome">
         <br>
-        <label for="">Horas:</label>
-        <input type="number" name="horas">
-        <br>
-        <label for="">Valor:</label>
-        <input type="text" name="valor">
+        <label for="">Telefone:</label>
+        <input type="text" name="telefone">
         <br>
         <input type="submit" value="Cadastrar">
         <br>

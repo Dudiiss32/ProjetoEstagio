@@ -1,35 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Funcionários</title>
-</head>
-<body>
-    <a href="{{route('funcionario.create')}}">Cadastrar um funcionário</a>
-    <h1>Lista de funcionários</h1>
+@extends('layouts.app')
+
+@section('title', 'Lista de usuários')
+
+@section('dynamic_link_route', route('curso.create'))
+@section('dynamic_link_name', 'Cadastrar um novo curso')
+
+@section('content')
+    <h1>Lista de cursos</h1>
     
-    <table border="1">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Meta de telemarketing</th>
-                <th>Meta de matrícula</th>
-                <th>Comissão</th>
+                <th>Horas</th>
+                <th>Valor</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($funcionarios as $funcionario)
+            @foreach ($cursos as $curso)
                 <tr>
-                    <td>{{$funcionario->user->name ?? 'Usuário não encontrado'}}</td>
-                    <td>{{$funcionario->metaTele}}</td>
-                    <td>{{$funcionario->metaMatricula}}</td>
-                    <td>{{$funcionario->comissao}}%</td>
+                    <td>{{$curso->nome}}</td>
+                    <td>{{$curso->horas}}</td>
+                    <td>{{$curso->valor}}</td>
                 </tr>    
             @endforeach
             
         </tbody>
     </table>
-</body>
-</html>
+@endsection
+    

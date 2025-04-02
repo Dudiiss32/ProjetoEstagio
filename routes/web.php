@@ -3,6 +3,7 @@
 use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\MidiaController;
 use App\Http\Controllers\TelemarketingController;
 use App\Http\Controllers\UserController;
@@ -42,4 +43,7 @@ Route::resource('curso', CursoController::class);
 
 //Midia
 Route::resource('midia', MidiaController::class);
+
+//Indicação
+Route::resource('indicacao', IndicacaoController::class);
 

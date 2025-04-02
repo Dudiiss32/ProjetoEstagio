@@ -13,8 +13,8 @@
 
         <label for="">Nome:</label>
         <select name="id_funcionario" id="">
-            @foreach ($funcionarios as $funcionario)
-                <option value="{{$funcionario->id}}">{{$funcionario->name}}</option>
+            @foreach ($users as $user)
+                <option value="{{$user->id}}">{{$user->name}}</option>
             @endforeach
         </select>
         <br>

@@ -1,35 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Funcionários</title>
-</head>
-<body>
-    <a href="{{route('funcionario.create')}}">Cadastrar um funcionário</a>
-    <h1>Lista de funcionários</h1>
+@extends('layouts.app')
+
+@section('title', 'Lista de usuários')
+
+@section('dynamic_link_route', route('telemarketing.create'))
+@section('dynamic_link_name', 'Cadastrar novo')
+
+@section('content')
+    <h1>Lista de Teles</h1>
     
-    <table border="1">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Meta de telemarketing</th>
-                <th>Meta de matrícula</th>
-                <th>Comissão</th>
+                <th>Data</th>
+                <th>Funcionário</th>
+                <th>Cliente</th>
+                <th>Telefone</th>
+                <th>Agendamento</th>
+                <th>Hora</th>
+                <th>Teles</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($funcionarios as $funcionario)
+            @foreach ($telemarketings as $tele)
                 <tr>
-                    <td>{{$funcionario->user->name ?? 'Usuário não encontrado'}}</td>
-                    <td>{{$funcionario->metaTele}}</td>
-                    <td>{{$funcionario->metaMatricula}}</td>
-                    <td>{{$funcionario->comissao}}%</td>
+                    <td>{{$tele->data}}</td>
+                    <td>{{$tele->user->name ?? 'Usuário não encontrado'}}</td>
+                    <td>{{$tele->cliente}}</td>
+                    <td>{{$tele->telefone}}</td>
+                    <td>{{$tele->agendamento}}</td>
+                    <td>{{$tele->hora}}</td>
+                    <td>{{$tele->teles}}</td>
                 </tr>    
             @endforeach
-            
         </tbody>
     </table>
-</body>
-</html>
+@endsection

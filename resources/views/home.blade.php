@@ -14,5 +14,6 @@
     <a href="{{route('curso.index')}}">Lista de Cursos</a>
     <a href="{{route('user.index')}}">Gerenciar Usuários</a>
     <a href="{{route('midia.index')}}">Gerenciar Mídias</a>
+    <a href="{{route('indicacao.index')}}">Gerenciar Indicações</a>
 </body>
 </html>

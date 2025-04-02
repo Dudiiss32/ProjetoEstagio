@@ -7,8 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Gerenciar funcionário</h1>
-    <form action="{{route('funcionario.store')}}" method="POST">
+    <h1>Gerenciar teles</h1>
+    <form action="{{route('telemarketing.store')}}" method="POST">
         @csrf
 
         <label for="">Nome:</label>
@@ -16,19 +16,27 @@
             @foreach ($users as $user)
                 <option value="{{$user->id}}">{{$user->name}}</option>
             @endforeach
-            
         </select>
         <br>
-        <label for="">Meta de Telemarketing:</label>
-        <input type="text" name="metaTele">
+        <label for="">Cliente:</label>
+        <input type="text" name="cliente">
         <br>
-        <label for="">Meta de matrícula:</label>
-        <input type="text" name="metaMatricula">
+        <label for="">Telefone:</label>
+        <input type="text" name="telefone">
         <br>
-        <label for="">Comissão (%):</label>
-        <input type="number" name="comissao" placeholder="Digite o valor da porcentagem. Ex: 50">
+        <label for="">Agendamento:</label>
+        <input type="date" name="agendamento">
         <br>
-        <input type="submit" value="Cadastrar">
+        <label for="">Observação:</label>
+        <input type="text" name="observacao">
+        <br>
+        <label for="">Hora:</label>
+        <input type="time" name="hora">
+        <br>
+        <label for="">Teles:</label>
+        <input type="number" name="teles">
+        <br>
+        <input type="submit" value="Salvar">
         <br>
     </form>
 </body>
