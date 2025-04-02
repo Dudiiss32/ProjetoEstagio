@@ -46,7 +46,8 @@ class UserController extends Controller
         return view('user.update');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy(){
-        dd('Apagar');
+    public function destroy(Request $request){
+        \User::remove($request->id);
+        return redirect()->route('user.index')->with('success', 'Funcionário cadastrado com sucesso!');
     }
 }

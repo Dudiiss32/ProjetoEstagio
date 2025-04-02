@@ -20,6 +20,7 @@
                 <th>Valor do curso</th>
                 <th>Matrícula</th>
                 <th>Observação</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,10 @@
                     <td>{{$atendimento->curso->valor}}</td>
                     <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>
                     <td>{{$atendimento->observacao}}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 </tr>    
             @endforeach
             

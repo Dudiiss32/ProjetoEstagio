@@ -30,12 +30,7 @@
         </nav>
     </header>
 
-    {{-- Conteúdo dinâmico da página --}}
-    <div class="container mb-5">
-        
-        @yield('content')
-        <a class="btn btn-outline-primary mb-3" href="@yield('dynamic_link_route', '#')">@yield('dynamic_link_name', 'Link Padrão')</a>
-    </div>
+    @yield('content')
 
     {{-- Rodapé comum para todas as páginas --}}
     <footer class="bg-dark text-white text-center p-3 fixed-bottom">

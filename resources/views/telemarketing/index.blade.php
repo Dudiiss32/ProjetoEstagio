@@ -18,6 +18,7 @@
                 <th>Agendamento</th>
                 <th>Hora</th>
                 <th>Teles</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,10 @@
                     <td>{{$tele->agendamento}}</td>
                     <td>{{$tele->hora}}</td>
                     <td>{{$tele->teles}}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 </tr>    
             @endforeach
         </tbody>

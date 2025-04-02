@@ -13,6 +13,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Telefone</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,10 @@
                 <tr>
                     <td>{{$indicacao->nome}}</td>
                     <td>{{$indicacao->telefone}}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 </tr>    
             @endforeach
             

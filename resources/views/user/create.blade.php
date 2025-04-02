@@ -6,12 +6,24 @@
 @section('dynamic_link_name', 'Cadastrar um novo atendimento')
 
 @section('content')
-    <form action="{{route('user.store')}}" method="POST" class="form-floating">
-        @csrf
-        <label for="">Nome: </label>
-        <input type="text"  name="name">
-        <label for="">Senha: </label>
-        <input type="password"  name="password">
-        <button type="submit">Cadastrar usuário</button>
-    </form>
+    <div class="container mt-5">
+        <h1>Cadastro de Usuários</h1>
+        <form action="{{route('user.store')}}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
+            @csrf
+
+            <div class="col-md-6">
+                <label for="name" class="form-label">Nome:</label>
+                <input type="text" name="name" class="form-control" id="name" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="password" class="form-label">Senha:</label>
+                <input type="password" name="password" class="form-control" id="password" required>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary mt-3">Cadastrar usuário</button>
+            </div>
+        </form>
+    </div>
 @endsection

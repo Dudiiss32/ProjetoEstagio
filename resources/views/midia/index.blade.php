@@ -23,12 +23,17 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($midias as $midia)
                 <tr>
                     <td>{{$midia->nome}}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 </tr>    
             @endforeach
             

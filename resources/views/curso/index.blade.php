@@ -14,6 +14,7 @@
                 <th>Nome</th>
                 <th>Horas</th>
                 <th>Valor</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,10 @@
                     <td>{{$curso->nome}}</td>
                     <td>{{$curso->horas}}</td>
                     <td>{{$curso->valor}}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 </tr>    
             @endforeach
             

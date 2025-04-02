@@ -1,27 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Gerenciar curso</h1>
-    <form action="{{route('curso.store')}}" method="POST">
-        @csrf
+@extends('layouts.app')
 
-        <label for="">Nome:</label>
-        <input type="text" name="nome">
-        <br>
-        <label for="">Horas:</label>
-        <input type="number" name="horas">
-        <br>
-        <label for="">Valor:</label>
-        <input type="text" name="valor">
-        <br>
-        <input type="submit" value="Cadastrar">
-        <br>
-    </form>
-</body>
-</html>
+@section('title', 'Gerenciar Curso')
+
+@section('dynamic_link_route', route('curso.index'))
+@section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
+
+@section('content')
+    <div class="container mt-5">
+        <h1 class="card-title mb-4">Gerenciar Curso</h1>
+
+        {{-- Formulário --}}
+        <form action="{{ route('curso.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
+            @csrf
+
+            <div class="col-md-6">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" name="nome" class="form-control" id="nome" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="horas" class="form-label">Horas:</label>
+                <input type="number" name="horas" class="form-control" id="horas" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="valor" class="form-label">Valor:</label>
+                <input type="text" name="valor" class="form-control" id="valor" required>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+@endsection
