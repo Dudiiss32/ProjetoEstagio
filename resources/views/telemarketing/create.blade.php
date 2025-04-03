@@ -9,46 +9,44 @@
 
     <div class="container mt-5">
         <h1>Gerenciar Teles</h1>
-        <form action="{{ route('telemarketing.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
+        <form action="{{ isset($telemarketing) ? route('telemarketing.update', $telemarketing->id) : route('telemarketing.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
             @csrf
+            @if (isset($telemarketing))
+                @method('PUT')
+            @endif
 
             <div class="col-md-6">
                 <label for="id_user" class="form-label">Nome:</label>
-                <select name="id_user" id="id_user" class="form-select" required>
+                <select name="id_user" id="id_user" class="form-select" required >
                     @foreach ($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" {{isset($telemarketing) ? 'selected' : ''}}>{{ $user->name }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="col-md-6">
                 <label for="cliente" class="form-label">Cliente:</label>
-                <input type="text" name="cliente" id="cliente" class="form-control" required>
+                <input type="text" name="cliente" id="cliente" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->cliente : ''}}">
             </div>
 
             <div class="col-md-6">
                 <label for="telefone" class="form-label">Telefone:</label>
-                <input type="text" name="telefone" id="telefone" class="form-control" required>
+                <input type="text" name="telefone" id="telefone" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->telefone : ''}}">
             </div>
 
             <div class="col-md-6">
                 <label for="agendamento" class="form-label">Agendamento:</label>
-                <input type="date" name="agendamento" id="agendamento" class="form-control" required>
-            </div>
-
-            <div class="col-md-6">
-                <label for="observacao" class="form-label">Observação:</label>
-                <input type="text" name="observacao" id="observacao" class="form-control">
+                <input type="date" name="agendamento" id="agendamento" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->agendamento : ''}}"> 
             </div>
 
             <div class="col-md-6">
                 <label for="hora" class="form-label">Hora:</label>
-                <input type="time" name="hora" id="hora" class="form-control" required>
+                <input type="time" name="hora" id="hora" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->hora : ''}}">
             </div>
 
             <div class="col-md-6">
                 <label for="teles" class="form-label">Teles:</label>
-                <input type="number" name="teles" id="teles" class="form-control" required>
+                <input type="number" name="teles" id="teles" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->teles : ''}}">
             </div>
 
             <div class="col-12">

@@ -43,13 +43,34 @@ class TelemarketingController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO EDITAR CONTA
-    public function edit(){
-        dd('Editar');
+    public function edit($id){
+        $telemarketing = Telemarketing::find($id);
+        $users = User::all();
+
+        if(!$telemarketing){
+            return redirect('telemarketing.index')->with('error', 'Cadastro não encontrado');
+        }
+        return view('telemarketing.create', compact(['telemarketing', 'users']));
     }
     // EDITAR NO BANCO DE DADOS A CONTA
-    public function update(){
+    public function update(Request $request, $id){
         // CARREGAR A VIEW
-        return view('telemarketing.update');
+        $telemarketing = Telemarketing::find($id);
+        if(!$telemarketing){
+            return redirect('telemarketing.index')->with('error', 'Cadastro não encontrado');
+        }
+        
+        $telemarketing->id_user = $request->id_user;
+        $telemarketing->cliente = $request->cliente;
+        $telemarketing->telefone = $request->telefone;
+        $telemarketing->agendamento = $request->agendamento;
+        $telemarketing->observacao = $request->observacao;
+        $telemarketing->hora = $request->hora;
+        $telemarketing->teles = $request->teles;
+
+        $telemarketing->save();
+
+        return redirect()->route('telemarketing.index');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function destroy(){

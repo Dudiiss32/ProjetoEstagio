@@ -32,12 +32,12 @@
                     <td>{{$tele->hora}}</td>
                     <td>{{$tele->teles}}</td>
                     <td>
-                        <form action="{{route('telemarketing.destroy', $user->id)}}" method="POST" style="display: inline">
+                        <form action="{{route('telemarketing.destroy', $tele->id)}}" method="POST" style="display: inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
                         </form>
-                        <a href="{{ route('telemarketing.edit', $user->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                        <a href="{{ route('telemarketing.edit', $tele->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>    
             @endforeach
