@@ -32,8 +32,12 @@
                     <td>{{$tele->hora}}</td>
                     <td>{{$tele->teles}}</td>
                     <td>
-                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        <form action="{{route('telemarketing.destroy', $user->id)}}" method="POST" style="display: inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
+                        </form>
+                        <a href="{{ route('telemarketing.edit', $user->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>    
             @endforeach

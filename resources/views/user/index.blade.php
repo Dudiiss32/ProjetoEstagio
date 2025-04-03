@@ -21,13 +21,12 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->isAdmin ? 'Sim' : 'Não'}}</td>
                     <td>
-                        <form action="{{route('user.destroy')}}" method="post">
+                        <form action="{{route('user.destroy', $user->id)}}" method="POST" style="display: inline">
                             @csrf
-                            <input type="hidden" name="id" value="{{$user->id}}">
-                            <button type="submit" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
                         </form>
-                        
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>
             @endforeach
