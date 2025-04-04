@@ -64,7 +64,6 @@ class TelemarketingController extends Controller
         $telemarketing->cliente = $request->cliente;
         $telemarketing->telefone = $request->telefone;
         $telemarketing->agendamento = $request->agendamento;
-        $telemarketing->observacao = $request->observacao;
         $telemarketing->hora = $request->hora;
         $telemarketing->teles = $request->teles;
 
@@ -73,7 +72,13 @@ class TelemarketingController extends Controller
         return redirect()->route('telemarketing.index');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy(){
-        dd('Apagar');
+    public function delete($id){
+        $telemarketing = Telemarketing::find($id);
+        if($telemarketing){
+            $telemarketing->delete();
+            return redirect()->route('telemarketing.index')->with('success', 'Funcionário deletado com sucesso!');
+        }
+
+        return redirect()->route('telemarketing.index')->with('error', 'Funcionário não encontrado!');
     }
 }

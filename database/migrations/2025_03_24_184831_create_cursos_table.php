@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('horas');
             $table->float('valor');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

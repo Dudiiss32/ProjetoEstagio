@@ -37,16 +37,35 @@ class IndicacaoController extends Controller
      }
      
      // CARREGAR O FORMULÁRIO EDITAR CONTA
-     public function edit(){
-         dd('Editar');
+     public function edit($id){
+        $indicacao = Indicacao::find($id);
+
+        if(!$indicacao){
+            return redirect('indicacao.index')->with('error', 'Indicação não encontrada');
+        }
+        return view('indicacao.create', compact('indicacao'));
      }
      // EDITAR NO BANCO DE DADOS A CONTA
-     public function update(){
-         // CARREGAR A VIEW
-         return view('indicacao.update');
+     public function update(Request $request, $id){
+        $indicacao = Indicacao::find($id);
+        if(!$indicacao){
+            return redirect('indicacao.index')->with('error', 'Mídia não encontrada');
+        }   
+
+        $indicacao->nome = $request->nome;
+        $indicacao->telefone = $request->telefone;
+        $indicacao->save();
+
+        return redirect()->route('indicacao.index');
      }
      // EXCLUIR DO BANCO DE DADOS A CONTA
-     public function destroy(){
-         dd('Apagar');
+     public function delete($id){
+        $indicacao = Indicacao::find($id);
+        if($indicacao){
+            $indicacao->delete();
+            return redirect()->route('indicacao.index')->with('success', 'Funcionário deletado com sucesso!');
+        }
+
+        return redirect()->route('indicacao.index')->with('error', 'Funcionário não encontrado!');
      }
 }

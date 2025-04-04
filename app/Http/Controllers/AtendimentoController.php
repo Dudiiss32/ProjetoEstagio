@@ -56,7 +56,13 @@ class AtendimentoController extends Controller
         return view('atendimento.update');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy(){
-        dd('Apagar');
+    public function destroy($id){
+        $atendimento = Atendimento::find($id);
+        if($atendimento){
+            $atendimento->delete();
+            return redirect()->route('atendimento.index')->with('success', 'Funcionário deletado com sucesso!');
+        }
+
+        return redirect()->route('atendimento.index')->with('error', 'Funcionário não encontrado!');
     }
 }

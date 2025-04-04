@@ -7,33 +7,19 @@ use Illuminate\Http\Request;
 
 class MidiaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $midias = Midia::all();
         return view('midia.index', compact('midias'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
         return view('midia.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $existe = Midia::where('nome', $request->nome)->exists();
@@ -47,48 +33,42 @@ class MidiaController extends Controller
         return redirect()->route('midia.index')->with('success', 'Mídia adicionada com sucesso');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Midia  $midia
-     * @return \Illuminate\Http\Response
-     */
     public function show(Midia $midia)
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Midia  $midia
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Midia $midia)
+    public function edit($id)
     {
-        //
+        $midia = Midia::find($id);
+
+        if(!$midia){
+            return redirect('midia.index')->with('error', 'Usuário não encontrado');
+        }
+        return view('midia.create', compact('midia'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Midia  $midia
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Midia $midia)
+    public function update(Request $request, $id)
     {
-        //
+        $midia = Midia::find($id);
+        if(!$midia){
+            return redirect('midia.index')->with('error', 'Mídia não encontrada');
+        }   
+
+        $midia->nome = $request->nome;
+        $midia->save();
+
+        return redirect()->route('midia.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Midia  $midia
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Midia $midia)
+    
+    public function delete($id)
     {
-        //
+        $midia = Midia::find($id);
+        if($midia){
+            $midia->delete();
+            return redirect()->route('midia.index')->with('success', 'Mídia deletada com sucesso!');
+        }
+
+        return redirect()->route('midia.index')->with('error', 'Mídia não encontrada!');
     }
 }

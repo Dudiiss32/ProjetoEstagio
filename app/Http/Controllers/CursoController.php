@@ -36,16 +36,37 @@ class CursoController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO EDITAR CONTA
-    public function edit(){
-        dd('Editar');
+    public function edit($id){
+        $curso = Curso::find($id);
+
+            if(!$curso){
+                return redirect('curso.index')->with('error', 'Curso não encontrado');
+            }
+            return view('curso.create', compact('curso'));
     }
     // EDITAR NO BANCO DE DADOS A CONTA
-    public function update(){
-        // CARREGAR A VIEW
-        return view('curso.update');
+    public function update(Request $request, $id){
+        $curso = Curso::find($id);
+            if(!$curso){
+                return redirect('curso.index')->with('error', 'Curso não encontrado');
+            }   
+
+            $curso->nome = $request->nome;
+            $curso->horas = $request->horas;
+            $curso->valor = $request->valor;
+
+            $curso->save();
+
+            return redirect()->route('curso.index');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy(){
-        dd('Apagar');
+    public function delete($id){
+        $curso = Curso::find($id);
+        if($curso){
+            $curso->delete();
+            return redirect()->route('curso.index')->with('success', 'Curso deletado com sucesso!');
+        }
+
+        return redirect()->route('curso.index')->with('error', 'Curso não encontrado!');
     }
 }

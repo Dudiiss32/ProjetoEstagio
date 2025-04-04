@@ -37,8 +37,9 @@ class UserController extends Controller
 
         User::create([
             'name' => $request->name,
+            'email' => $request->email,
             'password' => bcrypt($request->password),
-            'isAdmin' => false
+            'isAdmin' => $request->isAdmin
         ]);
         return redirect()->route('user.index')->with('success', 'Funcionário cadastrado com sucesso!');
     }
@@ -77,6 +78,8 @@ class UserController extends Controller
         }
 
         $user->name = $request->name;
+        $user->email = $request->email;
+        $user->isAdmin = $request->isAdmin;
         
         if($request->filled('password')){
             $user->password = Hash::make($request->password);
@@ -86,7 +89,7 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy($id){
+    public function delete($id){
         $user = User::find($id);
         if($user){
             $user->delete();

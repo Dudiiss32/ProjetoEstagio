@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('metaMatricula');
             $table->float('comissao');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 

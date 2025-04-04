@@ -43,6 +43,18 @@
                 <input type="password" name="password_confirmation" class="form-control" {{ isset($user) ? '' : 'required' }}>
             </div>
             
+            <div class="col-md-6">
+                <label for="name" class="form-label">Email:</label>
+                <input type="text" name="email" value="{{isset($user) ? $user->email : '' }}" class="form-control" id="email" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="isAdmin" class="form-label">Administrador:</label>
+                <select name="isAdmin" id="isAdmin" class="form-select" required >
+                        <option value="1" {{isset($user) && $user->isAdmin == 1 ? 'selected' : ''}}>Sim</option>
+                        <option value="0" {{isset($user) && $user->isAdmin == 0 ? 'selected' : ''}}>Não</option>
+                </select>
+            </div>
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary mt-3">{{isset($user) ? 'Atualizar' : 'Cadastrar'}}</button>

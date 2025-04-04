@@ -22,8 +22,12 @@
                     <td>{{$indicacao->nome}}</td>
                     <td>{{$indicacao->telefone}}</td>
                     <td>
-                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        <form action="{{route('indicacao.delete', $indicacao->id)}}" method="POST" style="display: inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
+                        </form>
+                        <a href="{{ route('indicacao.edit', $indicacao->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>    
             @endforeach

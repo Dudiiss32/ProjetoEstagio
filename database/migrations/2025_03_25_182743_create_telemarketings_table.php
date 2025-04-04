@@ -22,6 +22,7 @@ return new class extends Migration
             $table->time('hora');
             $table->integer('teles');
             $table->unsignedBigInteger('id_user');
+            $table->softDeletes();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('telefone');
             $table->boolean('matricula')->nullable();
             $table->string('observacao')->nullable();
+            $table->softDeletes();
 
             $table->unsignedBigInteger('id_midia');
             $table->foreign('id_midia')->references('id')->on('midias')->onDelete('cascade')->onUpdate('cascade');

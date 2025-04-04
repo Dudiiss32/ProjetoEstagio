@@ -26,9 +26,12 @@
                     <td>{{$funcionario->metaMatricula}}</td>
                     <td>{{$funcionario->comissao}}%</td>
                     <td>
-                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
-                    </td>
+                        <form action="{{route('funcionario.delete', $funcionario->id)}}" method="POST" style="display: inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
+                        </form>
+                        <a href="{{ route('funcionario.edit', $funcionario->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                 </tr>    
             @endforeach
             

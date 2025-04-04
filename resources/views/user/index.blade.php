@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Email</th>
                 <th>Administrador</th>
                 <th>Ações</th>
             </tr>
@@ -19,9 +20,10 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
                     <td>{{$user->isAdmin ? 'Sim' : 'Não'}}</td>
                     <td>
-                        <form action="{{route('user.destroy', $user->id)}}" method="POST" style="display: inline">
+                        <form action="{{route('user.delete', $user->id)}}" method="POST" style="display: inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 

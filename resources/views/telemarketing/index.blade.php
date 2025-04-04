@@ -32,7 +32,7 @@
                     <td>{{$tele->hora}}</td>
                     <td>{{$tele->teles}}</td>
                     <td>
-                        <form action="{{route('telemarketing.destroy', $tele->id)}}" method="POST" style="display: inline">
+                        <form action="{{route('telemarketing.delete', $tele->id)}}" method="POST" style="display: inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
