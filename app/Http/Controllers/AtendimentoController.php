@@ -47,16 +47,39 @@ class AtendimentoController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO EDITAR CONTA
-    public function edit(){
-        dd('Editar');
+    public function edit($id){
+        $atendimento = Atendimento::find($id);
+        $users = User::all();
+        $midias = Midia::all();
+        $cursos = Curso::all();
+
+            if(!$atendimento){
+                return redirect('atendimento.index')->with('error', 'Funcionário não encontrado');
+            }
+            return view('atendimento.create', compact(['atendimento', 'users', 'midias', 'cursos']));;
     }
     // EDITAR NO BANCO DE DADOS A CONTA
-    public function update(){
-        // CARREGAR A VIEW
-        return view('atendimento.update');
+    public function update(Request $request, $id){
+        $atendimento = Atendimento::find($id);
+            if(!$atendimento){
+                return redirect('atendimento.index')->with('error', 'Mídia não encontrada');
+            }   
+
+            $atendimento->id_funcionario = $request->id_funcionario;
+            $atendimento->cliente = $request->cliente;
+            $atendimento->telefone = $request->telefone;
+            $atendimento->matricula = $request->matricula;
+            $atendimento->observacao = $request->observacao;
+            $atendimento->id_midia = $request->id_midia;
+            $atendimento->id_curso = $request->id_curso;
+
+
+            $atendimento->save();
+
+            return redirect()->route('atendimento.index');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function destroy($id){
+    public function delete($id){
         $atendimento = Atendimento::find($id);
         if($atendimento){
             $atendimento->delete();

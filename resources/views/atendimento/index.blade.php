@@ -36,8 +36,12 @@
                     <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>
                     <td>{{$atendimento->observacao}}</td>
                     <td>
-                        <button type="button" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></button> 
-                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                        <form action="{{route('atendimento.delete', $atendimento->id)}}" method="POST" style="display: inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
+                        </form>
+                        <a href="{{ route('atendimento.edit', $atendimento->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>    
             @endforeach
