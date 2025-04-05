@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'Gerenciar Teles')
-
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+@endsection
 @section('content')
-<a href="{{ url()->previous() }}" class="btn btn-secondary mb-3">
-    ← Voltar
-</a>
 
     <div class="container mt-5">
         <h1>Gerenciar Teles</h1>

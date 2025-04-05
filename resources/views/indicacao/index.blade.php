@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de usuários')
+@section('title', 'Lista de indicações')
 
-@section('dynamic_link_route', route('indicacao.create'))
-@section('dynamic_link_name', 'Cadastrar uma nova indicação')
+
 
 @section('content')
     <h1>Lista de indicações</h1>
-    
+    <a href="{{route('indicacao.create')}}">Cadastrar uma nova indicação</a>
     <table class="table table-striped">
         <thead>
             <tr>

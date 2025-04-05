@@ -4,7 +4,11 @@
 
 @section('dynamic_link_route', route('midia.index'))
 @section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
-
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+@endsection
 @section('content')
     <div class="container mt-5">
         <h1 class="card-title mb-4">Gerenciar Mídias</h1>

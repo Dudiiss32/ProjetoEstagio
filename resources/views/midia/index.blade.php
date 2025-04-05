@@ -2,9 +2,6 @@
 
 @section('title', 'Lista de usuários')
 
-@section('dynamic_link_route', route('midia.create'))
-@section('dynamic_link_name', 'Cadastrar uma nova mídia')
-
 @section('content')
     @if(session('error'))
         <div class="alert alert-danger">
@@ -18,7 +15,7 @@
         </div>
     @endif
     <h1>Lista de Mídias</h1>
-    
+    <a href="{{route('midia.create')}}">Cadastrar uma nova mídia</a>
     <table class="table table-striped">
         <thead>
             <tr>

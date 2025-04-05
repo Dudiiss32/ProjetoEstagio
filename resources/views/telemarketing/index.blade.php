@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de usuários')
+@section('title', 'Lista de telemarketings')
 
-@section('dynamic_link_route', route('telemarketing.create'))
-@section('dynamic_link_name', 'Cadastrar novo')
 
 @section('content')
     <h1>Lista de Teles</h1>
-    
+    <a href="{{route('telemarketing.create')}}">Novo telemarketing</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -24,11 +22,11 @@
         <tbody>
             @foreach ($telemarketings as $tele)
                 <tr>
-                    <td>{{$tele->data}}</td>
+                    <td>{{$tele->data->format('d/m/Y')}}</td>
                     <td>{{$tele->user->name ?? 'Usuário não encontrado'}}</td>
                     <td>{{$tele->cliente}}</td>
                     <td>{{$tele->telefone}}</td>
-                    <td>{{$tele->agendamento}}</td>
+                    <td>{{$tele->agendamento->format('d/m/Y')}}</td>
                     <td>{{$tele->hora}}</td>
                     <td>{{$tele->teles}}</td>
                     <td>

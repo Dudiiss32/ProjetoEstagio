@@ -2,11 +2,11 @@
 
 @section('title', 'Lista de usuários')
 
-@section('dynamic_link_route', route('user.create'))
-@section('dynamic_link_name', 'Cadastrar novo usuário')
+
 
 @section('content')
     <h2>Lista de usuários</h2>
+    <a href="{{route('user.create')}}">Cadastrar um novo usuário</a>
     <table class="table table-striped">
         <thead>
             <tr>

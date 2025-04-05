@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('atendimentos', function (Blueprint $table) {
             $table->id();
             $table->timestamp('data');
-            $table->unsignedBigInteger('id_funcionario');
+            $table->unsignedBigInteger('id_user');
             $table->string('cliente');
             $table->string('telefone');
             $table->boolean('matricula')->nullable();
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_curso');
             $table->foreign('id_curso')->references('id')->on('cursos')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreign('id_funcionario')->references('id')->on('funcionarios')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

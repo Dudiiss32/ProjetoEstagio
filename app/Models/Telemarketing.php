@@ -10,7 +10,7 @@ class Telemarketing extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['data', 'cliente', 'telefone', 'agendamento', 'hora', 'teles', 'id_user'];
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'data', 'agendamento'];
 
     public function user()
     {

@@ -7,7 +7,6 @@ use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\MidiaController;
 use App\Http\Controllers\TelemarketingController;
 use App\Http\Controllers\UserController;
-use App\Models\Telemarketing;
 use Illuminate\Support\Facades\Route;
 
 

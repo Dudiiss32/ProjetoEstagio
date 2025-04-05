@@ -4,7 +4,11 @@
 
 @section('dynamic_link_route', route('funcionario.index'))
 @section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
-
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+@endsection
 @section('content')
     <div class="container mt-5">
         <h1 class="card-title mb-4">Gerenciar Funcionário</h1>
@@ -27,12 +31,12 @@
 
             <div class="col-md-6">
                 <label for="metaTele" class="form-label">Meta de Telemarketing:</label>
-                <input type="text" name="metaTele" class="form-control" value="{{isset($funcionario) ? $funcionario->metaTele : ''}}" id="metaTele" required>
+                <input type="number" name="metaTele" class="form-control" value="{{isset($funcionario) ? $funcionario->metaTele : ''}}" id="metaTele" required>
             </div>
 
             <div class="col-md-6">
                 <label for="metaMatricula" class="form-label">Meta de Matrícula:</label>
-                <input type="text" name="metaMatricula" class="form-control" value="{{isset($funcionario) ? $funcionario->metaMatricula : ''}}" id="metaMatricula" required>
+                <input type="number" name="metaMatricula" class="form-control" value="{{isset($funcionario) ? $funcionario->metaMatricula : ''}}" id="metaMatricula" required>
             </div>
 
             <div class="col-md-6">

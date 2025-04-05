@@ -4,7 +4,11 @@
 
 @section('dynamic_link_route', route('atendimento.index'))
 @section('dynamic_link_name', 'Voltar')
-
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+@endsection
 @section('content')
     <div class="container mt-5">
         <h1 class="card-title mb-4">Gerenciar Atendimentos</h1>
@@ -15,8 +19,8 @@
                 @method('PUT')
             @endif
             <div class="col-md-6">
-                <label for="id_funcionario" class="form-label">Nome:</label>
-                <select name="id_funcionario" class="form-select" id="id_funcionario" required>
+                <label for="id_user" class="form-label">Nome:</label>
+                <select name="id_user" class="form-select" id="id_user" required>
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}" {{isset($atendimento) ? 'selected' : ''}}>{{ $user->name }}</option>
                     @endforeach

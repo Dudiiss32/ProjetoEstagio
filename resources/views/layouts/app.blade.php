@@ -26,15 +26,15 @@
                     <li class="nav-item"><a class="nav-link" href="{{route('midia.index')}}">Gerenciar Mídias</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('indicacao.index')}}">Gerenciar Indicações</a></li>
                 </ul>
-            </div>
+            </div>        
+            @yield('show-back-button')
         </nav>
     </header>
 
     {{-- Conteúdo dinâmico da página --}}
-    <div class="container mb-5">
-        
+    <div class="container mb-5 mainDiv">
         @yield('content')
-        <a class="btn btn-outline-primary mb-3" href="@yield('dynamic_link_route', '#')">@yield('dynamic_link_name', 'Link Padrão')</a>
+        
     </div>
 
     {{-- Rodapé comum para todas as páginas --}}
@@ -43,5 +43,8 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
+
 </body>
 </html>

@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de usuários')
+@section('title', 'Lista de atendimentos')
 
-@section('dynamic_link_route', route('atendimento.create'))
-@section('dynamic_link_name', 'Cadastrar um novo atendimento')
 
 @section('content')
     <h1>Lista de atendimentos</h1>
-    
+    <a href="{{route('atendimento.create')}}">Adicionar um novo atendimento</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -26,11 +24,22 @@
         <tbody>
             @foreach ($atendimentos as $atendimento)
                 <tr>
-                    <td>{{$atendimento->data}}</td>
-                    <td>{{$atendimento->funcionario->name ?? 'Usuário não encontrado'}}</td>
+                    <td>{{$atendimento->data->format('d/m/Y')}}</td>
+                    <td>{{$atendimento->user->name ?? 'Usuário não encontrado'}}</td>
                     <td>{{$atendimento->midia->nome}}</td>
                     <td>{{$atendimento->cliente}}</td>
-                    <td>{{$atendimento->telefone}}</td>
+                    @php
+                        $telefone = preg_replace('/\D/', '', $atendimento->telefone);
+
+                        if (strlen($telefone) === 11) {
+                            // (51) 91234-5678
+                            $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 5).'-'.substr($telefone, 7);
+                        } elseif (strlen($telefone) === 10) {
+                            // (51) 1234-5678
+                            $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 4).'-'.substr($telefone, 6);
+                        }
+                    @endphp
+                    <td>{{$telefone}}</td>
                     <td>{{$atendimento->curso->nome}}</td>
                     <td>{{$atendimento->curso->valor}}</td>
                     <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>

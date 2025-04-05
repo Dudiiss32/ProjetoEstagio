@@ -1,3 +1,6 @@
 body{
     min-height: 100vh;
 }
+.mainDiv{
+    padding-bottom: 50px;
+}

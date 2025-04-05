@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de usuários')
+@section('title', 'Lista de funcionários')
 
-@section('dynamic_link_route', route('funcionario.create'))
-@section('dynamic_link_name', 'Cadastrar um novo funcionário')
+
 
 @section('content')
     <h1>Lista de funcionários</h1>
-    
+    <a href="{{route('funcionario.create')}}">Adicionar um funcionário</a>
     <table class="table table-striped">
         <thead>
             <tr>

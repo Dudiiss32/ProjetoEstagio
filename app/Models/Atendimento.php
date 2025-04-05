@@ -10,12 +10,12 @@ class Atendimento extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['data','id_funcionario', 'cliente', 'telefone', 'matricula', 'observacao', 'id_midia', 'id_curso'];
-    protected $dates = ['deleted_at'];
+    protected $fillable = ['data','id_user', 'cliente', 'telefone', 'matricula', 'observacao', 'id_midia', 'id_curso'];
+    protected $dates = ['deleted_at', 'data'];
 
-    public function funcionario()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id_funcionario');
+        return $this->belongsTo(User::class, 'id_user');
     }
     public function midia()
     {

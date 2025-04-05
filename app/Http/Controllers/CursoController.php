@@ -22,10 +22,13 @@ class CursoController extends Controller
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request){
         // CARREGAR A VIEW
+        $valorFormatado = $request->input('valor'); // ex: "R$ 1.234,56"
+        $valor = floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valorFormatado));
+
         Curso::create([
             'nome' => $request->nome,
             'horas' => $request->horas,
-            'valor' => $request->valor,
+            'valor' => $valor,
         ]);
         return redirect()->route('curso.index');
     }

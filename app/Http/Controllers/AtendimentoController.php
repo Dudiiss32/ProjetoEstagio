@@ -13,7 +13,7 @@ class AtendimentoController extends Controller
     // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        $atendimentos = Atendimento::with(['funcionario', 'midia', 'curso'])->get();
+        $atendimentos = Atendimento::with(['user', 'midia', 'curso'])->get();
         return view('atendimento.index', compact('atendimentos'));
     }
 
@@ -29,10 +29,12 @@ class AtendimentoController extends Controller
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request){
         // CARREGAR A VIEW
+        $telefone = preg_replace('/\D/', '', $request->input('telefone'));
+
         Atendimento::create([
-            'id_funcionario' => $request->id_funcionario,
+            'id_user' => $request->id_user,
             'cliente' => $request->cliente,
-            'telefone' => $request->telefone,
+            'telefone' => $telefone,
             'matricula' => $request->matricula,
             'observacao' => $request->observacao,
             'id_midia' => $request->id_midia,
@@ -65,7 +67,7 @@ class AtendimentoController extends Controller
                 return redirect('atendimento.index')->with('error', 'Mídia não encontrada');
             }   
 
-            $atendimento->id_funcionario = $request->id_funcionario;
+            $atendimento->id_user = $request->id_user;
             $atendimento->cliente = $request->cliente;
             $atendimento->telefone = $request->telefone;
             $atendimento->matricula = $request->matricula;
