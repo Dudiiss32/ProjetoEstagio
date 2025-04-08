@@ -4,6 +4,7 @@ use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\IndicacaoController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MidiaController;
 use App\Http\Controllers\TelemarketingController;
 use App\Http\Controllers\UserController;
@@ -52,4 +53,8 @@ Route::delete('/delete-midia/{id}', [MidiaController::class, 'delete'])->name('m
 //Indicação
 Route::resource('indicacao', IndicacaoController::class);
 Route::delete('/delete-indicacao/{id}', [IndicacaoController::class, 'delete'])->name('indicacao.delete');
+
+// Login
+Route::view('/login', 'login.form')->name('login.form');
+Route::post('/auth', [LoginController::class, 'auth'])->name('login.auth');
 
