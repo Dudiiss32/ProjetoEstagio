@@ -37,6 +37,7 @@ class UserController extends Controller
 
         User::create([
             'name' => $request->name,
+            'user' => $request->user,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'isAdmin' => $request->isAdmin
@@ -78,6 +79,7 @@ class UserController extends Controller
         }
 
         $user->name = $request->name;
+        $user->user = $request->user;
         $user->email = $request->email;
         $user->isAdmin = $request->isAdmin;
         

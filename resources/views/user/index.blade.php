@@ -3,14 +3,16 @@
 @section('title', 'Lista de usuários')
 
 
-
+@section('link-cadastro')
+    <a href="{{route('user.create')}}" class="cadastro">Novo usuário</a>
+@endsection
 @section('content')
     <h2>Lista de usuários</h2>
-    <a href="{{route('user.create')}}">Cadastrar um novo usuário</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Usuário</th>
                 <th>Email</th>
                 <th>Administrador</th>
                 <th>Ações</th>
@@ -20,6 +22,7 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{$user->name}}</td>
+                    <td>{{$user->user}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->isAdmin ? 'Sim' : 'Não'}}</td>
                     <td>

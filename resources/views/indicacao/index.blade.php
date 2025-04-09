@@ -3,10 +3,11 @@
 @section('title', 'Lista de indicações')
 
 
-
+@section('link-cadastro')
+    <a href="{{route('indicacao.create')}}" class="cadastro">Nova indicação</a>
+@endsection
 @section('content')
     <h1>Lista de indicações</h1>
-    <a href="{{route('indicacao.create')}}">Cadastrar uma nova indicação</a>
     <table class="table table-striped">
         <thead>
             <tr>

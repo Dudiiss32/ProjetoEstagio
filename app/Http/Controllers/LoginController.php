@@ -9,15 +9,18 @@ class LoginController extends Controller
 {
     public function auth(Request $request){
         $credenciais = $request->validate([
-            'name' => ['required'],
+            'user' => ['required'],
             'password' => ['required'],
+        ],[
+            'user.required' => 'O campo usuário é obrigatório!',
+            'password.required' => 'O campo senha é obrigatório!',
         ]);
         if(Auth::attempt($credenciais)){
             $request->session()->regenerate();
             return redirect()->intended('home');
         }
         else{
-            return redirect()->back()->with('erro', 'Usuário ou senha inválida');
+            return redirect()->back()->with('error', 'Usuário ou senha inválida');
         }
     }
     

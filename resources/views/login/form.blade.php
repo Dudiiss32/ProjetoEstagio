@@ -7,22 +7,27 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <title>Laravel</title>
     </head>
-
-    @if($mensagem = Session::get('erro'))
-    {{$mensagem}}
-    @endif
-    <body>
+    
+    <body class="antialiased d-flex align-items-center justify-content-center">
         <div class="container mt-5 d-flex justify-content-center ">
             <div class="card p-4 shadow" style="width: 400px;">
                 <h1 class="card-title mb-4 text-center">Login</h1>
-    
-                {{-- Formulário --}}
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @if ($errors->any())
+                    @foreach ($errors->all() as $erro)
+                        {{$erro}}
+                    @endforeach
+                @endif
                 <form action="{{route('login.auth')}}" method="POST" class="row g-3">
                     @csrf
     
                     <div class="col-12">
-                        <label for="name" class="form-label">Login:</label>
-                        <input type="text" name="name" class="form-control" placeholder="Digite seu nome" required>
+                        <label for="user" class="form-label">Login:</label>
+                        <input type="text" name="user" class="form-control" placeholder="Digite seu nome de usuário" required>
                     </div>
     
                     <div class="col-12">

@@ -25,3 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+document.getElementById('menu').addEventListener('click', function () {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('hidden');
+    document.body.classList.toggle('sidebar-hidden');
+});

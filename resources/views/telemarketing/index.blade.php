@@ -2,10 +2,11 @@
 
 @section('title', 'Lista de telemarketings')
 
-
+@section('link-cadastro')
+    <a href="{{route('telemarketing.create')}}" class="cadastro">Novo telemarketing</a>
+@endsection
 @section('content')
     <h1>Lista de Teles</h1>
-    <a href="{{route('telemarketing.create')}}">Novo telemarketing</a>
     <table class="table table-striped">
         <thead>
             <tr>

@@ -3,10 +3,12 @@
 @section('title', 'Lista de funcionários')
 
 
-
+@section('link-cadastro')
+    <a href="{{route('funcionario.create')}}" class="cadastro">Novo funcionário</a>
+@endsection
 @section('content')
     <h1>Lista de funcionários</h1>
-    <a href="{{route('funcionario.create')}}">Adicionar um funcionário</a>
+    
     <table class="table table-striped">
         <thead>
             <tr>

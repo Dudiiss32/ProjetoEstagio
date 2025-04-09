@@ -36,7 +36,10 @@
                 <label for="name" class="form-label">Nome:</label>
                 <input type="text" name="name" value="{{isset($user) ? $user->name : '' }}" class="form-control" id="name" required>
             </div>
-
+            <div class="col-md-6">
+                <label for="user" class="form-label">Usuário:</label>
+                <input type="text" name="user" value="{{isset($user) ? $user->user : '' }}" class="form-control" id="user" required>
+            </div>
             <div class="col-md-6">
                 <label for="password" class="form-label">Senha:</label>
                 <input type="password" name="password" class="form-control" id="password" {{isset($user) ? '' : 'required'}} >
@@ -52,7 +55,7 @@
             
             <div class="col-md-6">
                 <label for="name" class="form-label">Email:</label>
-                <input type="text" name="email" value="{{isset($user) ? $user->email : '' }}" class="form-control" id="email" required>
+                <input type="email" name="email" value="{{isset($user) ? $user->email : '' }}" class="form-control" id="email" required>
             </div>
 
             <div class="col-md-6">

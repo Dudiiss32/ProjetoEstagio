@@ -2,10 +2,11 @@
 
 @section('title', 'Lista de atendimentos')
 
-
+@section('link-cadastro')
+    <a href="{{route('atendimento.create')}}" class="cadastro">Novo atendimento</a>
+@endsection
 @section('content')
     <h1>Lista de atendimentos</h1>
-    <a href="{{route('atendimento.create')}}">Adicionar um novo atendimento</a>
     <table class="table table-striped">
         <thead>
             <tr>

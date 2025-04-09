@@ -3,10 +3,11 @@
 @section('title', 'Lista de cursos')
 
 
-
+@section('link-cadastro')
+    <a href="{{route('curso.create')}}" class="cadastro">Novo curso</a>
+@endsection
 @section('content')
     <h1>Lista de cursos</h1>
-    <a href="{{route('curso.create')}}">Cadastrar um novo curso</a>
     <table class="table table-striped">
         <thead>
             <tr>
