@@ -31,7 +31,7 @@ class AtendimentoController extends Controller
         // CARREGAR A VIEW
         $telefone = preg_replace('/\D/', '', $request->input('telefone'));
 
-        Atendimento::create([
+        $atendimento = Atendimento::create([
             'id_user' => $request->id_user,
             'cliente' => $request->cliente,
             'telefone' => $telefone,
@@ -40,6 +40,17 @@ class AtendimentoController extends Controller
             'id_midia' => $request->id_midia,
             'id_curso' => $request->id_curso,
         ]);
+
+        $indicacoes = $request->input('indicacoes', []);
+        foreach ($indicacoes as $indicacao) {
+            if (!empty($indicacao['nome'])) {
+                $atendimento->indicacoes()->create([
+                    'nome' => $indicacao['nome'],
+                    'telefone' => $indicacao['telefone'],
+                ]);
+            }
+        }
+
         return redirect()->route('atendimento.index');
     }
 
@@ -74,6 +85,8 @@ class AtendimentoController extends Controller
             $atendimento->observacao = $request->observacao;
             $atendimento->id_midia = $request->id_midia;
             $atendimento->id_curso = $request->id_curso;
+            $atendimento->indicacao_nome = $request->indicacao_nome;
+            $atendimento->indicacao_telefone = $request->indicacao_telefone;
 
 
             $atendimento->save();
@@ -85,9 +98,9 @@ class AtendimentoController extends Controller
         $atendimento = Atendimento::find($id);
         if($atendimento){
             $atendimento->delete();
-            return redirect()->route('atendimento.index')->with('success', 'Funcionário deletado com sucesso!');
+            return redirect()->route('atendimento.index')->with('success', 'Atendimento deletado com sucesso!');
         }
 
-        return redirect()->route('atendimento.index')->with('error', 'Funcionário não encontrado!');
+        return redirect()->route('atendimento.index')->with('error', 'Atendimento não encontrado!');
     }
 }

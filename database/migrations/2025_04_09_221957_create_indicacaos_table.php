@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('indicacaos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->string('telefone');
+            $table->unsignedBigInteger('atendimento_id');
+            $table->string('nome')->nullable();
+            $table->string('telefone')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            
+            $table->foreign('atendimento_id')->references('id')->on('atendimentos')->onDelete('cascade');
         });
+        
     }
 
     /**
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('indicacoes');
+        Schema::dropIfExists('indicacaos');
     }
 };

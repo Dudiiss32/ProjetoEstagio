@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('telefone');
             $table->boolean('matricula')->nullable();
             $table->string('observacao')->nullable();
+            $table->string('indicacao_nome')->nullable();
+            $table->string('indicacao_telefone')->nullable();
             $table->softDeletes();
 
             $table->unsignedBigInteger('id_midia');

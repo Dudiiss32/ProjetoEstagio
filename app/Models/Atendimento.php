@@ -10,7 +10,7 @@ class Atendimento extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['data','id_user', 'cliente', 'telefone', 'matricula', 'observacao', 'id_midia', 'id_curso'];
+    protected $fillable = ['data','id_user', 'cliente', 'telefone', 'matricula', 'observacao', 'indicacao_nome', 'indicacao_telefone', 'id_midia', 'id_curso'];
     protected $dates = ['deleted_at', 'data'];
 
     public function user()
@@ -24,5 +24,9 @@ class Atendimento extends Model
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'id_curso');
+    }
+    public function indicacoes()
+    {
+        return $this->hasMany(Indicacao::class);
     }
 }

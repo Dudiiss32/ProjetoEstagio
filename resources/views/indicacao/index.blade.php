@@ -13,22 +13,13 @@
             <tr>
                 <th>Nome</th>
                 <th>Telefone</th>
-                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($indicacoes as $indicacao)
                 <tr>
-                    <td>{{$indicacao->nome}}</td>
-                    <td>{{$indicacao->telefone}}</td>
-                    <td>
-                        <form action="{{route('indicacao.delete', $indicacao->id)}}" method="POST" style="display: inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
-                        </form>
-                        <a href="{{ route('indicacao.edit', $indicacao->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
-                    </td>
+                    <td>{{$indicacao->indicacao_nome}}</td>
+                    <td>{{$indicacao->indicacao_telefone}}</td>
                 </tr>    
             @endforeach
             

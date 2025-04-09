@@ -22,7 +22,7 @@
                 <label for="id_user" class="form-label">Nome:</label>
                 <select name="id_user" class="form-select" id="id_user" required>
                     @foreach ($users as $user)
-                        <option value="{{ $user->id }}" {{isset($atendimento) ? 'selected' : ''}}>{{ $user->name }}</option>
+                        <option value="{{ $user->id }}" {{isset($atendimento) && $user->id == $atendimento->id_user ? 'selected' : ''}}>{{ $user->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -47,14 +47,14 @@
 
             <div class="col-md-6">
                 <label for="observacao" class="form-label">Observação:</label>
-                <input type="text" name="observacao" class="form-control" value="{{isset($atendimento) ? $atendimento->cliente : ''}}" id="observacao">
+                <input type="text" name="observacao" class="form-control" value="{{isset($atendimento) ? $atendimento->observacao : ''}}" id="observacao">
             </div>
 
             <div class="col-md-6">
                 <label for="id_midia" class="form-label">Mídia:</label>
                 <select name="id_midia" class="form-select" id="id_midia" required>
                     @foreach ($midias as $midia)
-                        <option value="{{ $midia->id }}" {{isset($atendimento) ? 'selected' : ''}}>{{ $midia->nome }}</option>
+                        <option value="{{ $midia->id }}" {{isset($atendimento)  && $midia->id == $atendimento->id_midia ? 'selected' : ''}}>{{ $midia->nome }}</option>
                     @endforeach
                 </select>
             </div>
@@ -63,9 +63,31 @@
                 <label for="id_curso" class="form-label">Curso:</label>
                 <select name="id_curso" class="form-select" id="id_curso" required>
                     @foreach ($cursos as $curso)
-                        <option value="{{ $curso->id }}" {{isset($atendimento) ? 'selected' : ''}}>{{ $curso->nome }}</option>
+                        <option value="{{ $curso->id }}" {{isset($atendimento) && $curso->id == $atendimento->id_curso ? 'selected' : ''}}>{{ $curso->nome }}</option>
                     @endforeach
                 </select>
+            </div>
+
+
+            <div class="mb-4 border-bottom pb-2">
+                <h5 class="text-secondary">Indicações</h5>
+            </div>
+            
+            <div id="indicacoes-wrapper" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nome da indicação:</label>
+                    <input type="text" name="indicacoes[0][nome]" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Telefone da indicação:</label>
+                    <input type="text" name="indicacoes[0][telefone]" class="form-control" id="indicacao_telefone">
+                </div>
+            </div>
+            
+            <div class="col-12 mt-2">
+                <button type="button" class="btn btn-outline-secondary" id="add-indicacao">
+                    <i class="fa fa-plus"></i> Adicionar Indicação
+                </button>
             </div>
 
             <div class="col-12">

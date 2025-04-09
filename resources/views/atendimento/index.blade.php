@@ -19,6 +19,8 @@
                 <th>Valor do curso</th>
                 <th>Matrícula</th>
                 <th>Observação</th>
+                <th>Nome da indicação</th>
+                <th>Telefone da indicação</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -45,6 +47,8 @@
                     <td>{{$atendimento->curso->valor}}</td>
                     <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>
                     <td>{{$atendimento->observacao}}</td>
+                    <td>{{$atendimento->indicacao_nome}}</td>
+                    <td>{{$atendimento->indicacao_telefone}}</td>
                     <td>
                         <form action="{{route('atendimento.delete', $atendimento->id)}}" method="POST" style="display: inline">
                             @csrf
