@@ -20,6 +20,7 @@
             <li class="nav-item"><a class="nav-link" href="{{route('user.index')}}">Lista Usuários</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('midia.index')}}">Lista Mídias</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('indicacao.index')}}">Lista Indicações</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('analise.index')}}">Análise</a></li>
         </ul>
     </div>
 

@@ -74,24 +74,40 @@
             </div>
             
             <div id="indicacoes-wrapper" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Nome da indicação:</label>
-                    <input type="text" name="indicacoes[0][nome]" class="form-control">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Telefone da indicação:</label>
-                    <input type="text" name="indicacoes[0][telefone]" class="form-control" id="indicacao_telefone">
-                </div>
+                @php $count = 0; @endphp
+                @if (isset($atendimento) && $atendimento->indicacoes->count())
+                @foreach ($atendimento->indicacoes as $indicacao)
+                    <input type="hidden" name="indicacoes[{{ $count }}][id]" value="{{ $indicacao->id }}">
+                    <div class="col-md-6">
+                        <label class="form-label">Nome da indicação:</label>
+                        <input type="text" name="indicacoes[{{ $count }}][nome]" class="form-control" value="{{ $indicacao->nome }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Telefone da indicação:</label>
+                        <input type="text" name="indicacoes[{{ $count }}][telefone]" class="form-control" value="{{ $indicacao->telefone }}">
+                    </div>
+                @php $count++; @endphp
+            @endforeach
+                @else
+                    <div class="col-md-6">
+                        <label class="form-label">Nome da indicação:</label>
+                        <input type="text" name="indicacoes[0][nome]" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Telefone da indicação:</label>
+                        <input type="text" name="indicacoes[0][telefone]" class="form-control">
+                    </div>
+                    
+                    @php $count = 1; @endphp
+                @endif
             </div>
-            
             <div class="col-12 mt-2">
                 <button type="button" class="btn btn-outline-secondary" id="add-indicacao">
                     <i class="fa fa-plus"></i> Adicionar Indicação
                 </button>
             </div>
-
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">{{isset($atendimento) ? 'Alterar' : 'Cadastrar'}}</button>
+                <button type="submit" class="btn btn-primary">{{isset($atendimento) ? 'Atualizar' : 'Cadastrar'}}</button>
             </div>
         </form>
     </div>

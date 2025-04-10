@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnaliseController;
 use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\FuncionarioController;
@@ -57,3 +58,5 @@ Route::delete('/delete-indicacao/{id}', [IndicacaoController::class, 'delete'])-
 Route::view('/login', 'login.form')->name('login.form');
 Route::post('/auth', [LoginController::class, 'auth'])->name('login.auth');
 
+// Análise
+Route::resource('analise', AnaliseController::class);

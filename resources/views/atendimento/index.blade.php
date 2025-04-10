@@ -47,7 +47,28 @@
                     <td>{{$atendimento->curso->valor}}</td>
                     <td>{{$atendimento->matricula ? 'Sim' : 'Não'}}</td>
                     <td>{{$atendimento->observacao}}</td>
-                    <td>{{$atendimento->indicacao_nome}}</td>
+                    <td>
+                        @if ($atendimento->indicacoes->count())
+                        <ul>
+                            @foreach ($atendimento->indicacoes as $indicacao)
+                                <li>{{$indicacao->nome}}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                        <p>Não há indicações</p>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($atendimento->indicacoes->count())
+                        <ul>
+                            @foreach ($atendimento->indicacoes as $indicacao)
+                                <li>{{$indicacao->telefone}}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                        <p>Não há indicações</p>
+                        @endif
+                    </td>
                     <td>{{$atendimento->indicacao_telefone}}</td>
                     <td>
                         <form action="{{route('atendimento.delete', $atendimento->id)}}" method="POST" style="display: inline">

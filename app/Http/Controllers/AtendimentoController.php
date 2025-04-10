@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Atendimento;
 use App\Models\Curso;
+use App\Models\Indicacao;
 use App\Models\Midia;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class AtendimentoController extends Controller
     // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        $atendimentos = Atendimento::with(['user', 'midia', 'curso'])->get();
+        $atendimentos = Atendimento::with(['user', 'midia', 'curso', 'indicacoes'])->get();
         return view('atendimento.index', compact('atendimentos'));
     }
 
@@ -65,34 +66,49 @@ class AtendimentoController extends Controller
         $users = User::all();
         $midias = Midia::all();
         $cursos = Curso::all();
+        $indicacoes = Indicacao::all();
 
             if(!$atendimento){
                 return redirect('atendimento.index')->with('error', 'Funcionário não encontrado');
             }
-            return view('atendimento.create', compact(['atendimento', 'users', 'midias', 'cursos']));;
+            return view('atendimento.create', compact(['atendimento', 'users', 'midias', 'cursos', 'indicacoes']));;
     }
     // EDITAR NO BANCO DE DADOS A CONTA
     public function update(Request $request, $id){
-        $atendimento = Atendimento::find($id);
-            if(!$atendimento){
-                return redirect('atendimento.index')->with('error', 'Mídia não encontrada');
-            }   
+        $atendimento = Atendimento::findOrFail($id);
 
-            $atendimento->id_user = $request->id_user;
-            $atendimento->cliente = $request->cliente;
-            $atendimento->telefone = $request->telefone;
-            $atendimento->matricula = $request->matricula;
-            $atendimento->observacao = $request->observacao;
-            $atendimento->id_midia = $request->id_midia;
-            $atendimento->id_curso = $request->id_curso;
-            $atendimento->indicacao_nome = $request->indicacao_nome;
-            $atendimento->indicacao_telefone = $request->indicacao_telefone;
+        $atendimento->update([
+            'id_user' => $request->id_user,
+            'cliente' => $request->cliente,
+            'telefone' => $request->telefone,
+            'matricula' => $request->matricula,
+            'observacao' => $request->observacao,
+            'id_midia' => $request->id_midia,
+            'id_curso' => $request->id_curso,
+        ]);
 
+        if ($request->has('indicacoes')) {
+            foreach ($request->indicacoes as $indicacao) {
+                // Se tem ID, atualiza
+                if (!empty($indicacao['id'])) {
+                    \App\Models\Indicacao::where('id', $indicacao['id'])->update([
+                        'nome' => $indicacao['nome'],
+                        'telefone' => $indicacao['telefone'],
+                    ]);
+                } 
+                // Se não tem ID, cria nova
+                else if (!empty($indicacao['nome']) || !empty($indicacao['telefone'])) {
+                    $atendimento->indicacoes()->create([
+                        'nome' => $indicacao['nome'],
+                        'telefone' => $indicacao['telefone'],
+                    ]);
+                }
+            }
+        }
 
-            $atendimento->save();
-
-            return redirect()->route('atendimento.index');
+        return redirect()->route('atendimento.index')->with('success', 'Atendimento atualizado com sucesso!');
     }
+
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){
         $atendimento = Atendimento::find($id);
