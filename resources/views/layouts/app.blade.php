@@ -29,8 +29,18 @@
         <i class="fa-solid fa-bars menu" id="menu"></i>
         <div class="container-fluid div-menu">
             <h1 class="h4 m-0">Painel Administrativo</h1>
-            @yield('show-back-button')
-            @yield('link-cadastro')
+            <div class="d-flex justify-content-between gap-4 align-items-center">
+                <div class="dropdown">
+                    <button class="dropdown-toggle border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: inherit; background-color: transparent; box-shadow: none;">
+                        <span>conectado como <b>{{auth()->user()->name}}</b></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{route('login.logout')}}">Logout</a></li>
+                    </ul>
+                </div>
+                @yield('show-back-button')
+                @yield('link-cadastro')
+            </div>
         </div>
     </header>
 

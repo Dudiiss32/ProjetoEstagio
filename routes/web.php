@@ -57,6 +57,7 @@ Route::delete('/delete-indicacao/{id}', [IndicacaoController::class, 'delete'])-
 // Login
 Route::view('/login', 'login.form')->name('login.form');
 Route::post('/auth', [LoginController::class, 'auth'])->name('login.auth');
+Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
 // Análise
 Route::resource('analise', AnaliseController::class);
