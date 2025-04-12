@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('indicacaos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('atendimento_id');
+            $table->unsignedBigInteger('lead_id');
             $table->string('nome')->nullable();
             $table->string('telefone')->nullable();
             $table->timestamps();
             
-            $table->foreign('atendimento_id')->references('id')->on('atendimentos')->onDelete('cascade');
+            $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
         });
         
     }
