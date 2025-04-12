@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     // LISTAR
     public function index(){
         // CARREGAR A VIEW

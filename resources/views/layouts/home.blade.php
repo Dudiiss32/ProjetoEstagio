@@ -14,7 +14,7 @@
         <h4 class="text-center text-white mb-4">Meu Projeto</h4>
         <ul class="nav nav-pills flex-column">
             <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}">Lista de Funcionários</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{route('atendimento.index')}}">Lista de Atendimentos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('lead.index')}}">Lista de Leads</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('telemarketing.index')}}">Lista de Telemarketing</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('curso.index')}}">Lista de Cursos</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('user.index')}}">Lista de Usuários</a></li>
@@ -34,7 +34,14 @@
 
     {{-- Conteúdo principal --}}
     <main class="content">
-        @yield('content')
+        @auth
+            @yield('content')
+        @else
+            <div class="container mt-5">
+                <p>Você precisa estar logado para acessar esta página.</p>
+                <a href="{{ route('login.form') }}" class="btn btn-primary">Fazer login</a>
+            </div>
+        @endauth
     </main>
 
     {{-- Rodapé --}}

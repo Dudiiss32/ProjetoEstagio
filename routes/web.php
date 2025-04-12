@@ -5,6 +5,7 @@ use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\IndicacaoController;
+use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MidiaController;
 use App\Http\Controllers\TelemarketingController;
@@ -18,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     return view('home');
-});
+})->middleware('auth');
 
 // Usuário
 
@@ -31,28 +32,32 @@ Route::put('/update-user/{id}', [UserController::class, 'update'])->name('user.u
 Route::delete('/delete-user/{id}', [UserController::class, 'delete'])->name('user.delete');
 
 // Funcionários
-Route::resource('funcionario', FuncionarioController::class);
-Route::delete('/delete-funcionario/{id}', [FuncionarioController::class, 'delete'])->name('funcionario.delete');
+Route::resource('funcionario', FuncionarioController::class)->middleware('auth');
+Route::delete('/delete-funcionario/{id}', [FuncionarioController::class, 'delete'])->name('funcionario.delete')->middleware('auth');
 
 // Atendimentos
-Route::resource('atendimento', AtendimentoController::class);
-Route::delete('/delete-atendimento/{id}', [AtendimentoController::class, 'delete'])->name('atendimento.delete');
+Route::resource('atendimento', AtendimentoController::class)->middleware('auth');
+Route::delete('/delete-atendimento/{id}', [AtendimentoController::class, 'delete'])->name('atendimento.delete')->middleware('auth');
+
+// Leads
+Route::resource('lead', LeadController::class)->middleware('auth');
+Route::delete('/delete-lead/{id}', [leadController::class, 'delete'])->name('lead.delete')->middleware('auth');
 
 // Telemarketing
-Route::resource('telemarketing', TelemarketingController::class);
-Route::delete('/delete-telemarketing/{id}', [TelemarketingController::class, 'delete'])->name('telemarketing.delete');
+Route::resource('telemarketing', TelemarketingController::class)->middleware('auth');
+Route::delete('/delete-telemarketing/{id}', [TelemarketingController::class, 'delete'])->name('telemarketing.delete')->middleware('auth');
 
 // Cursos
-Route::resource('curso', CursoController::class);
-Route::delete('/delete-curso/{id}', [CursoController::class, 'delete'])->name('curso.delete');
+Route::resource('curso', CursoController::class)->middleware('auth');
+Route::delete('/delete-curso/{id}', [CursoController::class, 'delete'])->name('curso.delete')->middleware('auth');
 
 //Midia
-Route::resource('midia', MidiaController::class);
-Route::delete('/delete-midia/{id}', [MidiaController::class, 'delete'])->name('midia.delete');
+Route::resource('midia', MidiaController::class)->middleware('auth');
+Route::delete('/delete-midia/{id}', [MidiaController::class, 'delete'])->name('midia.delete')->middleware('auth');
 
 //Indicação
-Route::resource('indicacao', IndicacaoController::class);
-Route::delete('/delete-indicacao/{id}', [IndicacaoController::class, 'delete'])->name('indicacao.delete');
+Route::resource('indicacao', IndicacaoController::class)->middleware('auth');
+Route::delete('/delete-indicacao/{id}', [IndicacaoController::class, 'delete'])->name('indicacao.delete')->middleware('auth');
 
 // Login
 Route::view('/login', 'login.form')->name('login.form');
@@ -60,4 +65,4 @@ Route::post('/auth', [LoginController::class, 'auth'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
 // Análise
-Route::resource('analise', AnaliseController::class);
+Route::resource('analise', AnaliseController::class)->middleware('auth');
