@@ -8,14 +8,15 @@ use App\Models\Lead;
 use App\Models\Midia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {
      // LISTAR
-     public function index(){
+    public function index(){
         // CARREGAR A VIEW
         $leads = Lead::with(['user', 'midia', 'curso', 'indicacoes'])->get();
-        return view('lead.index', compact('leads'));
+        return view('lead.index', compact(['leads']));
     }
 
     // DETALHES

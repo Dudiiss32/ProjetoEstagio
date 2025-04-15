@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Gerenciar Teles')
-@section('show-back-button')
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-        <i class="fa-solid fa-arrow-left"></i> Voltar
-    </a>
+@section('link-cadastro')
+    <a href="{{route('telemarketing.index')}}" class="cadastro">Visualizar Teles</a>
 @endsection
 @section('content')
 
@@ -43,11 +41,6 @@
             <div class="col-md-6">
                 <label for="hora" class="form-label">Hora:</label>
                 <input type="time" name="hora" id="hora" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->hora : ''}}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="teles" class="form-label">Teles:</label>
-                <input type="number" name="teles" id="teles" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->teles : ''}}">
             </div>
 
             <div class="col-12">

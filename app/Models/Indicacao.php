@@ -12,11 +12,11 @@ class Indicacao extends Model
     protected $fillable = [
         'nome',
         'telefone',
-        'atendimento_id', // opcional, mas bom incluir se for setado manualmente
+        'lead_id', 
     ];
 
-    public function atendimento()
+    public function lead()
     {
-        return $this->belongsTo(Atendimento::class);
+        return $this->belongsTo(Lead::class);
     }
 }

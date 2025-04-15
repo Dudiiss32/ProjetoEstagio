@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Atendimento;
 use App\Models\Indicacao;
 use Illuminate\Http\Request;
 
@@ -11,7 +10,7 @@ class IndicacaoController extends Controller
         // LISTAR
         public function index(){
          // CARREGAR A VIEW
-         $indicacoes = Atendimento::all(); //carrega a relação com o user "JOIN"
+         $indicacoes = Indicacao::all(); //carrega a relação com o user "JOIN"
          return view('indicacao.index', compact('indicacoes'));
      }
      
@@ -32,12 +31,36 @@ class IndicacaoController extends Controller
      }
      
      // CARREGAR O FORMULÁRIO EDITAR CONTA
-     public function edit(){
+     public function edit($id){
+        $indicacao = Indicacao::find($id);
+
+        if(!$indicacao){
+            return redirect('indicacao.index')->with('error', 'indicacao não encontrada');
+        }
+        return view('indicacao.create', compact('indicacao'));
      }
      // EDITAR NO BANCO DE DADOS A CONTA
-     public function update(){
+     public function update(Request $request,$id){
+        $indicacao = Indicacao::find($id);
+            if(!$indicacao){
+                return redirect('indicacao.index')->with('error', 'indicacao não encontrada');
+            }   
+
+            $indicacao->nome = $request->nome;
+            $indicacao->telefone = $request->telefone;
+
+            $indicacao->save();
+
+            return redirect()->route('indicacao.index');
      }
      // EXCLUIR DO BANCO DE DADOS A CONTA
-     public function delete(){
+     public function delete($id){
+        $indicacao = Indicacao::find($id);
+        if($indicacao){
+            $indicacao->delete();
+            return redirect()->route('indicacao.index')->with('success', 'indicacao deletada com sucesso!');
+        }
+
+        return redirect()->route('indicacao.index')->with('error', 'indicacao não encontrada!');
      }
 }

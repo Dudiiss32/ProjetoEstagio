@@ -15,7 +15,6 @@
                 <th>Nome</th>
                 <th>Meta de telemarketing</th>
                 <th>Meta de matrícula</th>
-                <th>Comissão</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -25,7 +24,6 @@
                     <td>{{$funcionario->user->name ?? 'Usuário não encontrado'}}</td>
                     <td>{{$funcionario->metaTele}}</td>
                     <td>{{$funcionario->metaMatricula}}</td>
-                    <td>{{$funcionario->comissao}}%</td>
                     <td>
                         <form action="{{route('funcionario.delete', $funcionario->id)}}" method="POST" style="display: inline">
                             @csrf

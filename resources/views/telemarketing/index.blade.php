@@ -2,8 +2,12 @@
 
 @section('title', 'Lista de telemarketings')
 
-@section('link-cadastro')
-    <a href="{{route('telemarketing.create')}}" class="cadastro">Novo telemarketing</a>
+@section('dynamic_link_route', route('telemarketing.create'))
+@section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
 @endsection
 @section('content')
     <h1>Lista de Teles</h1>
@@ -16,7 +20,6 @@
                 <th>Telefone</th>
                 <th>Agendamento</th>
                 <th>Hora</th>
-                <th>Teles</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -29,7 +32,6 @@
                     <td>{{$tele->telefone}}</td>
                     <td>{{$tele->agendamento->format('d/m/Y')}}</td>
                     <td>{{$tele->hora}}</td>
-                    <td>{{$tele->teles}}</td>
                     <td>
                         <form action="{{route('telemarketing.delete', $tele->id)}}" method="POST" style="display: inline">
                             @csrf

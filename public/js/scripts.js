@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const inputValor = document.getElementById('valor');
     const inputTelefone = document.getElementById('telefone');
+    const inputsTelefone =  document.getElementsByClassName('telefone');
+
     const inputIndicacaoTelefone = document.getElementById('indicacao_telefone');
 
     if (inputValor) {
@@ -17,7 +19,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
+    if (inputsTelefone.length > 0) {
+        // Converter a coleção HTMLCollection para um array
+        Array.from(inputsTelefone).forEach(input => {
+            IMask(input, {
+                mask: [
+                    { mask: '(00) 0000-0000' },
+                    { mask: '(00) 00000-0000' }
+                ]
+            });
+        });
+    }
+    
     if (inputTelefone) {
         IMask(inputTelefone, {
             mask: [
@@ -62,14 +75,14 @@ document.addEventListener('DOMContentLoaded', function () {
             divNome.classList = 'col-md-6';
             divNome.innerHTML = `
                 <label class="form-label">Nome da indicação:</label>
-                <input type="text" name="indicacoes${count}[nome]" class="form-control">
+                <input type="text" name="indicacoes[${count}][nome]" class="form-control">
             `;
 
             let divTelefone = document.createElement('div');
             divTelefone.classList = 'col-md-6';
             divTelefone.innerHTML = `
                 <label class="form-label">Telefone da indicação:</label>
-                <input type="text" name="indicacoes${count}[telefone]" class="form-control" id="indicacao_telefone${count}">
+                <input type="text" name="indicacoes[${count}][telefone]" class="form-control" id="indicacao_telefone${count}">
             `;
 
             wrapper.appendChild(divNome);

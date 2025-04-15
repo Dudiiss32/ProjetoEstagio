@@ -16,28 +16,95 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($leads as $lead)
-            @foreach ($matriculas as $matricula)
+        @foreach ($dados as $item)
             <tr>
-                <td>
-                    {{ \Carbon\Carbon::parse($lead->data)->translatedFormat('F') }}
-                </td>
-                <td>{{$lead->user->name ?? 'Não informado'}}</td>
-                <td>{{$lead->total_leads}}</td>
-                <td>{{$matricula->total_matriculas}}</td>
-                <td>{{$eficiencia}}%</td>
+                <td>{{ \Carbon\Carbon::parse($item['mes'])->translatedFormat('F') }}</td>
+                <td>{{$item['nome']}}</td>
+                <td>{{$item['total_leads']}}</td>
+                <td>{{$item['total_matriculas']}}</td>
+                <td>{{$item['eficiencia']}}%</td>
             </tr>
-            @endforeach
         @endforeach
     </tbody>
 </table>
 <hr>
 <table class="table table-striped">
     <thead>
-
+        <tr>
+            <th>Telemarketing</th>
+            <th>Matrículas</th>
+            <th>Visitas</th>
+            <th>Agendados</th>
+            <th>Eficiência de matrículas</th>
+            <th>Eficiência de visitas</th>
+            <th>Eficiência de agendados</th>
+        </tr>
     </thead>
     <tbody>
-        
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Meta/Tele</th>
+            <th>N° Atingido</th>
+            <th>Falta</th>
+            <th>Sobra</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tempo/Tele</th>
+            <th>Tempo/Lead</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Meta de Indicações</th>
+            <th>N° de Indicação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
 @endsection

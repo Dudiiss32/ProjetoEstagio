@@ -1,37 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Gerenciar Indicações')
+@section('title', 'Editar Indicação')
 
-@section('dynamic_link_route', route('indicacao.index'))
-@section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
-@section('show-back-button')
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-        <i class="fa-solid fa-arrow-left"></i> Voltar
-    </a>
-@endsection
 @section('content')
-    <div class="container mt-5">
-        <h1 class="card-title mb-4">Gerenciar Indicações</h1>
+    <h1>Editar Indicação</h1>
 
-        {{-- Formulário --}}
-        <form action="{{ isset($indicacao) ? route('indicacao.update', $indicacao->id) : route('indicacao.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
-            @csrf
-            @if (isset($indicacao))
-              @method('PUT')
-            @endif
-            <div class="col-md-6">
-                <label for="nome" class="form-label">Nome:</label>
-                <input type="text" name="nome" class="form-control" value="{{isset($indicacao) ? $indicacao->nome : ''}}" id="nome" required>
-            </div>
+    <form action="{{ route('indicacao.update', $indicacao->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-            <div class="col-md-6">
-                <label for="telefone" class="form-label">Telefone:</label>
-                <input type="text" name="telefone" class="form-control" value="{{isset($indicacao) ? $indicacao->telefone : ''}}" id="telefone" required>
-            </div>
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" class="form-control" value="{{ $indicacao->nome }}" required>
+        </div>
 
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">{{isset($indicacao) ? 'Atualizar' : 'Cadastrar'}}</button>
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="telefone" class="form-control" value="{{ $indicacao->telefone }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+        <a href="{{ route('indicacao.index') }}" class="btn btn-secondary mt-2">Cancelar</a>
+    </form>
 @endsection

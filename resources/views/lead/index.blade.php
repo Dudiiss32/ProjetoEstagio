@@ -2,9 +2,14 @@
 
 @section('title', 'Lista de leads')
 
-@section('link-cadastro')
-    <a href="{{route('lead.create')}}" class="cadastro">Novo lead</a>
+@section('dynamic_link_route', route('lead.create'))
+@section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
+@section('show-back-button')
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
 @endsection
+
 @section('content')
     <h1>Lista de leads</h1>
     <table class="table table-striped">
@@ -16,11 +21,9 @@
                 <th>Cliente</th>
                 <th>Telefone</th>
                 <th>Curso</th>
-                <th>Valor do curso</th>
                 <th>Matrícula</th>
                 <th>Observação</th>
-                <th>Nome da indicação</th>
-                <th>Telefone da indicação</th>
+                <th>N° de Indicações</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -44,32 +47,9 @@
                     @endphp
                     <td>{{$telefone}}</td>
                     <td>{{$lead->curso->nome}}</td>
-                    <td>{{$lead->curso->valor}}</td>
                     <td>{{$lead->matricula ? 'Sim' : 'Não'}}</td>
                     <td>{{$lead->observacao}}</td>
-                    <td>
-                        @if ($lead->indicacoes->count())
-                        <ul>
-                            @foreach ($lead->indicacoes as $indicacao)
-                                <li>{{$indicacao->nome}}</li>
-                            @endforeach
-                        </ul>
-                        @else
-                        <p>Não há indicações</p>
-                        @endif
-                    </td>
-                    <td>
-                        @if ($lead->indicacoes->count())
-                        <ul>
-                            @foreach ($lead->indicacoes as $indicacao)
-                                <li>{{$indicacao->telefone}}</li>
-                            @endforeach
-                        </ul>
-                        @else
-                        <p>Não há indicações</p>
-                        @endif
-                    </td>
-                    <td>{{$lead->indicacao_telefone}}</td>
+                    <td>{{$lead->indicacoes->count()}}</td>
                     <td>
                         <form action="{{route('lead.delete', $lead->id)}}" method="POST" style="display: inline">
                             @csrf

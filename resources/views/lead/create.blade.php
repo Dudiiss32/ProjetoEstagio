@@ -2,12 +2,8 @@
 
 @section('title', 'Gerenciar Leads')
 
-@section('dynamic_link_route', route('lead.index'))
-@section('dynamic_link_name', 'Voltar')
-@section('show-back-button')
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-        <i class="fa-solid fa-arrow-left"></i> Voltar
-    </a>
+@section('link-cadastro')
+    <a href="{{route('lead.index')}}" class="cadastro">Visualizar leads</a>
 @endsection
 @section('content')
     <div class="container mt-5">
@@ -34,7 +30,7 @@
 
             <div class="col-md-6">
                 <label for="telefone" class="form-label">Telefone:</label>
-                <input type="text" name="telefone" class="form-control" value="{{isset($lead) ? $lead->telefone : ''}}" id="telefone" required>
+                <input type="text" name="telefone" class="form-control telefone" value="{{isset($lead) ? $lead->telefone : ''}}" id="telefone" required>
             </div>
 
             <div class="col-md-6">
@@ -74,32 +70,16 @@
             </div>
             
             <div id="indicacoes-wrapper" class="row g-3">
-                @php $count = 0; @endphp
-                @if (isset($lead) && $lead->indicacoes->count())
-                @foreach ($lead->indicacoes as $indicacao)
-                    <input type="hidden" name="indicacoes[{{ $count }}][id]" value="{{ $indicacao->id }}">
-                    <div class="col-md-6">
-                        <label class="form-label">Nome da indicação:</label>
-                        <input type="text" name="indicacoes[{{ $count }}][nome]" class="form-control" value="{{ $indicacao->nome }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Telefone da indicação:</label>
-                        <input type="text" name="indicacoes[{{ $count }}][telefone]" class="form-control" value="{{ $indicacao->telefone }}">
-                    </div>
-                @php $count++; @endphp
-            @endforeach
-                @else
-                    <div class="col-md-6">
-                        <label class="form-label">Nome da indicação:</label>
-                        <input type="text" name="indicacoes[0][nome]" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Telefone da indicação:</label>
-                        <input type="text" name="indicacoes[0][telefone]" class="form-control">
-                    </div>
-                    
-                    @php $count = 1; @endphp
-                @endif
+                <div class="col-md-6">
+                    <label class="form-label">Nome da indicação:</label>
+                    <input type="text" name="indicacoes[0][nome]" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Telefone da indicação:</label>
+                    <input type="text" name="indicacoes[0][telefone]" class="form-control telefone">
+                </div>
+                
+                @php $count = 1; @endphp
             </div>
             <div class="col-12 mt-2">
                 <button type="button" class="btn btn-outline-secondary" id="add-indicacao">
