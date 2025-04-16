@@ -7,6 +7,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>Funcionário</th>
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Ações</th>
@@ -15,6 +16,7 @@
         <tbody>
             @foreach ($indicacoes as $indicacao)
                 <tr>
+                    <td></td>
                     <td>{{$indicacao->nome}}</td>
                     <td>{{$indicacao->telefone}}</td>
                     <td>
