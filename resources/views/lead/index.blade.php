@@ -73,12 +73,12 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <form action="{{route('lead.delete', $lead->id)}}" method="POST" style="display: inline">
+                        <form action="{{route('lead.delete', $tele->id)}}" method="POST" style="display: inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
                         </form>
-                        <a href="{{ route('lead.edit', $lead->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                        <a href="{{ route('lead.edit', $tele->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
                     </td>
                 </tr>
             @endforeach

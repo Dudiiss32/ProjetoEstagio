@@ -16,8 +16,27 @@ class LeadController extends Controller
      // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        $telemarketings = Telemarketing::with(['user'])->get();
-        $leads = Lead::with(['user', 'midia', 'curso', 'indicacoes'])->get();
+        $telemarketings = Lead::whereHas('midia', function($query) {
+            $query->where('nome', 'Telemarketing');
+        })
+        ->where(function($query) {
+            $query->whereNull('id_curso')
+                ->orWhere('observacao', '')
+                ->orWhere('matricula', false);
+        })
+        ->with(['user', 'midia', 'curso', 'indicacoes'])
+        ->get();
+
+
+        $leads = Lead::whereDoesntHave('midia', function($query) {
+            $query->where('nome', 'Telemarketing'); // Ignora Telemarketing
+        })
+        ->whereNotNull('id_curso') // Tem curso
+        ->where('observacao', '!=', '') // Tem observação
+        ->where('matricula', true) // Tem matrícula
+        ->with(['user', 'midia', 'curso', 'indicacoes'])
+        ->get();
+        
         return view('lead.index', compact(['leads', 'telemarketings']));
     }
 
