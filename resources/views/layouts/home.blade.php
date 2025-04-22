@@ -13,7 +13,7 @@
     <div class="sidebar d-flex flex-column p-3 text-white" id="sidebar">
         <h4 class="text-center text-white mb-4">Meu Projeto</h4>
         <ul class="nav nav-pills flex-column">
-            <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}">Funcionários</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}">Metas</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('lead.create')}}">Leads</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('telemarketing.create')}}">Telemarketing</a></li>
             <li class="nav-item"><a class="nav-link" href="{{route('curso.index')}}">Cursos</a></li>

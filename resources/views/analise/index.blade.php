@@ -11,7 +11,7 @@
         <select name="funcionario" id="funcionario" class="form-control" onchange="this.form.submit()">
             <option value="-1" {{ request('funcionario') == '-1' ? 'selected' : '' }}>Todos</option>
             @foreach ($users as $user)
-                <option value="{{ $user->name }}" {{ request('funcionario') == $user->name ? 'selected' : '' }}>
+                <option value="{{ $user->id }}" {{ request('funcionario') == $user->id ? 'selected' : '' }}>
                     {{ $user->name }}
                 </option>
             @endforeach
@@ -19,8 +19,6 @@
 
         <label for="mes" class="form-label">Mês:</label>
         <select name="mesSelecionado" id="mes" class="form-select" onchange="this.form.submit()">
-            <option value="">-- Todos --</option>
-
             @foreach ($mesesDisponiveis as $numero => $nome)
                 <option value="{{ $numero }}" {{ request('mesSelecionado') == $numero ? 'selected' : '' }}>
                     {{ $nome }}
@@ -45,7 +43,7 @@
         <tbody>
             @foreach ($dados as $item)
                 <tr>
-                    <td>{{ \Carbon\Carbon::parse($item['mes'])->translatedFormat('F') }}</td>
+                    <td>{{$mesesDisponiveis[str_pad($item['mes'], 2, '0', STR_PAD_LEFT)] }}</td>
                     <td>{{$item['nome']}}</td>
                     <td>{{$item['total_leads']}}</td>
                     <td>{{$item['total_matriculas']}}</td>

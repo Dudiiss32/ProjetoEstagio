@@ -50,13 +50,9 @@ class AnaliseController extends Controller
 
         // Filtro por funcionário
         if ($funcionario && $funcionario != '-1') {
-            $user = User::where('name', $funcionario)->first();
-
-            if ($user) {
-                $leadsQ->where('id_user', $user->id);
-                $matriculasQ->where('id_user', $user->id);
-                $telemarketingsQ->where('id_user', $user->id);
-            }
+            $leadsQ->where('id_user', $funcionario);
+            $matriculasQ->where('id_user', $funcionario);
+            $telemarketingsQ->where('id_user', $funcionario);
         }
 
         // Filtro por mês

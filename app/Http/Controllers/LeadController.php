@@ -6,6 +6,7 @@ use App\Models\Curso;
 use App\Models\Indicacao;
 use App\Models\Lead;
 use App\Models\Midia;
+use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,9 @@ class LeadController extends Controller
      // LISTAR
     public function index(){
         // CARREGAR A VIEW
+        $telemarketings = Telemarketing::with(['user'])->get();
         $leads = Lead::with(['user', 'midia', 'curso', 'indicacoes'])->get();
-        return view('lead.index', compact(['leads']));
+        return view('lead.index', compact(['leads', 'telemarketings']));
     }
 
     // DETALHES
@@ -63,16 +65,18 @@ class LeadController extends Controller
 
     // CARREGAR O FORMULÁRIO EDITAR CONTA
     public function edit($id){
-        $lead = Lead::find($id);
+        $lead = Lead::findOrFail($id);
+
+        if(!$lead){
+            return redirect('lead.index')->with('error', 'Lead não encontrado');
+        }
         $users = User::all();
         $midias = Midia::all();
         $cursos = Curso::all();
-        $indicacoes = Indicacao::all();
+        $indicacoes = $lead->indicacoes;
 
-            if(!$lead){
-                return redirect('lead.index')->with('error', 'Funcionário não encontrado');
-            }
-            return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes']));;
+            
+        return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes']));;
     }
     // EDITAR NO BANCO DE DADOS A CONTA
     public function update(Request $request, $id){

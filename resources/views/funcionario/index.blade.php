@@ -7,7 +7,7 @@
     <a href="{{route('funcionario.create')}}" class="cadastro">Novo funcionário</a>
 @endsection
 @section('content')
-    <h1>Lista de funcionários</h1>
+    <h1>Metas</h1>
     
     <table class="table table-striped">
         <thead>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lead;
+use App\Models\Midia;
 use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,13 +28,25 @@ class TelemarketingController extends Controller
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request){
         // CARREGAR A VIEW
+        $midiaTele = Midia::where('nome', 'Telemarketing')->first();
+        if(!$midiaTele){
+            return back()->withErrors(['id_midia' => "A mídia telemarketing não foi encontrada"]);
+        }
         Telemarketing::create([
             'cliente' => $request->cliente,
             'telefone' => $request->telefone,
             'agendamento' => $request->agendamento,
             'hora' => $request->hora,
-            'teles' => $request->teles,
             'id_user' => $request->id_user
+        ]);
+        Lead::create([
+            'cliente' => $request->cliente,
+            'telefone' => $request->telefone,
+            'id_user' => $request->id_user,
+            'matricula' => $request->matricula ?? false,
+            'observacao' => $request->observacao ?? '',
+            'id_curso' => $request->id_curso ?? null,
+            'id_midia' => $request->id_midia ?? $midiaTele->id,
         ]);
         return redirect()->route('telemarketing.index');
     }
@@ -65,7 +79,6 @@ class TelemarketingController extends Controller
         $telemarketing->telefone = $request->telefone;
         $telemarketing->agendamento = $request->agendamento;
         $telemarketing->hora = $request->hora;
-        $telemarketing->teles = $request->teles;
 
         $telemarketing->save();
 

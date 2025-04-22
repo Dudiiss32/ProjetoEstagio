@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Telemarketing extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['data', 'cliente', 'telefone', 'agendamento', 'hora', 'teles', 'id_user'];
+    protected $fillable = ['data', 'cliente', 'telefone', 'agendamento', 'hora', 'id_user'];
     protected $dates = ['deleted_at', 'data', 'agendamento'];
 
     public function user()

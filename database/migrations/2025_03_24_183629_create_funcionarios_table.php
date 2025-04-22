@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->integer('metaTele');
             $table->float('metaMatricula');
-            $table->float('comissao');
             $table->timestamps();
             $table->softDeletes();
 

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('telefone');
             $table->date('agendamento');
             $table->time('hora');
-            $table->integer('teles');
             $table->unsignedBigInteger('id_user');
             $table->softDeletes();
 

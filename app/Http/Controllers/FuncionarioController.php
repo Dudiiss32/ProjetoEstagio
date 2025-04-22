@@ -30,13 +30,11 @@ class FuncionarioController extends Controller
             'id_user' => 'required|exists:users,id', // Garante que o usuário exista
             'metaTele' => 'required|string',
             'metaMatricula' => 'required|string',
-            'comissao' => 'required|numeric',
         ]);
         Funcionario::create([
             'id_user' => $request->id_user,
             'metaTele' => $request->metaTele,
             'metaMatricula' => $request->metaMatricula,
-            'comissao' => $request->comissao,
         ]);
         return redirect()->route('funcionario.index')->with('success', 'Funcionário cadastrado com sucesso!');
 
@@ -67,7 +65,6 @@ class FuncionarioController extends Controller
             $funcionario->id_user = $request->id_user;
             $funcionario->metaTele = $request->metaTele;
             $funcionario->metaMatricula = $request->metaMatricula;
-            $funcionario->comissao = $request->comissao;
 
 
             $funcionario->save();
