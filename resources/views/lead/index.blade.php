@@ -28,6 +28,7 @@
             </tr>
         </thead>
         <tbody>
+        
             @foreach ($leads as $lead)
                 <tr>
                     <td>{{$lead->data->format('d/m/Y')}}</td>

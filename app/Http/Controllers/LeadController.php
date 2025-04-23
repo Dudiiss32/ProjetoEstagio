@@ -18,14 +18,13 @@ class LeadController extends Controller
         // CARREGAR A VIEW
         $telemarketings = Lead::whereHas('midia', function($query) {
             $query->where('nome', 'Telemarketing');
-        })
-        ->where(function($query) {
-            $query->whereNull('id_curso')
-                ->orWhere('observacao', '')
-                ->orWhere('matricula', false);
-        })
-        ->with(['user', 'midia', 'curso', 'indicacoes'])
-        ->get();
+        })->with(['user', 'midia', 'curso', 'indicacoes'])->get();
+        // ->where(function($query) {
+        //     $query->whereNull('id_curso')
+        //         ->orWhere('observacao', '')
+        //         ->orWhere('matricula', false);
+        // })
+        
 
 
         $leads = Lead::whereDoesntHave('midia', function($query) {
@@ -100,6 +99,12 @@ class LeadController extends Controller
     // EDITAR NO BANCO DE DADOS A CONTA
     public function update(Request $request, $id){
         $lead = Lead::findOrFail($id);
+        $tele = Lead::whereHas('midia', function($query) {
+            $query->where('nome', 'Telemarketing');
+        })->findOrFail($id);
+        if ($tele) {
+            return redirect()->route('telemarketing.edit', ['telemarketing' => $tele->id])->with('id', $tele->id);
+        }
 
         $lead->update([
             'id_user' => $request->id_user,
@@ -110,6 +115,7 @@ class LeadController extends Controller
             'id_midia' => $request->id_midia,
             'id_curso' => $request->id_curso,
         ]);
+        
 
         if ($request->has('indicacoes')) {
             foreach ($request->indicacoes as $indicacao) {
@@ -136,8 +142,13 @@ class LeadController extends Controller
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){
         $lead = Lead::find($id);
+        $tele = Telemarketing::find($id);
         if($lead){
             $lead->delete();
+            return redirect()->route('lead.index')->with('success', 'Lead deletado com sucesso!');
+        }
+        if($tele){
+            $tele->delete();
             return redirect()->route('lead.index')->with('success', 'Lead deletado com sucesso!');
         }
 
