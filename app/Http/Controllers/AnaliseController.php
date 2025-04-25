@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Lead;
 use App\Models\Telemarketing;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AnaliseController extends Controller
@@ -48,23 +47,31 @@ class AnaliseController extends Controller
             ->groupByRaw('MONTH(data), id_user')
             ->with('user');
 
-        // Filtro por funcionário
+        $matriculasTeleQ = Lead::selectRaw('MONTH(leads.data) as mes, leads.id_user, COUNT(*) as total_matriculasTele')
+            ->where('leads.matricula', true)
+            ->join('telemarketings', 'leads.id', '=', 'telemarketings.id_lead')
+            ->groupByRaw('MONTH(leads.data), leads.id_user');
+
+        // Filtros
         if ($funcionario && $funcionario != '-1') {
             $leadsQ->where('id_user', $funcionario);
             $matriculasQ->where('id_user', $funcionario);
             $telemarketingsQ->where('id_user', $funcionario);
+            $matriculasTeleQ->where('leads.id_user', $funcionario);
         }
 
-        // Filtro por mês
         if ($mesSelecionado && isset($mesesDisponiveis[$mesSelecionado])) {
             $leadsQ->whereMonth('data', $mesSelecionado);
             $matriculasQ->whereMonth('data', $mesSelecionado);
             $telemarketingsQ->whereMonth('data', $mesSelecionado);
+            $matriculasTeleQ->whereMonth('leads.data', $mesSelecionado);
         }
 
+        // Execução
         $leads = $leadsQ->get();
         $matriculas = $matriculasQ->get();
         $telemarketings = $telemarketingsQ->get();
+        $matTele = $matriculasTeleQ->get();
 
         // Leads
         foreach ($leads as $lead) {
@@ -99,7 +106,7 @@ class AnaliseController extends Controller
             $dados[$chave]['total_telemarketings'] = $tele->total_telemarketings;
         }
 
-        // Matrículas + eficiência
+        // Matrículas gerais
         foreach ($matriculas as $matricula) {
             $chave = $matricula->id_user . '-' . $matricula->mes;
 
@@ -125,11 +132,32 @@ class AnaliseController extends Controller
             }
         }
 
+        // Matrículas originadas do telemarketing
+        foreach ($matTele as $mat) {
+            $chave = $mat->id_user . '-' . $mat->mes;
+
+            if (!isset($dados[$chave])) {
+                $dados[$chave] = [
+                    'id_user' => $mat->id_user,
+                    'mes' => $mat->mes,
+                    'nome' => 'Não informado',
+                    'total_leads' => 0,
+                    'total_matriculas' => 0,
+                    'total_telemarketings' => 0,
+                    'eficiencia' => 0
+                ];
+            }
+
+            // Aqui, se quiser armazenar separado:
+            $dados[$chave]['total_matriculas_tele'] = $mat->total_matriculasTele;
+        }
+
         return view('analise.index', [
             'dados' => $dados,
             'users' => $users,
             'nomesFuncionarios' => $nomesFuncionarios,
             'mesesDisponiveis' => $mesesDisponiveis,
+            'matriculasTele' => $matTele, // Para uso direto na view se precisar
         ]);
     }
 

@@ -29,4 +29,8 @@ class Lead extends Model
     {
         return $this->hasMany(Indicacao::class);
     }
+    public function telemarketing()
+    {
+        return $this->hasOne(Telemarketing::class, 'id_lead');
+    }
 }

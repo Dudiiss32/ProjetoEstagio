@@ -21,8 +21,9 @@ class TelemarketingController extends Controller
     public function create(){
         // CARREGAR A VIEW
         $users = User::all();
+        $leads = Lead::all();
 
-        return view('telemarketing.create', compact('users'));
+        return view('telemarketing.create', compact(['users', 'leads']));
     }
 
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
@@ -37,7 +38,8 @@ class TelemarketingController extends Controller
             'telefone' => $request->telefone,
             'agendamento' => $request->agendamento,
             'hora' => $request->hora,
-            'id_user' => $request->id_user
+            'id_user' => $request->id_user,
+            'id_lead' => $request->id_lead,
         ]);
         Lead::create([
             'cliente' => $request->cliente,
@@ -75,6 +77,7 @@ class TelemarketingController extends Controller
         }
         
         $telemarketing->id_user = $request->id_user;
+        $telemarketing->id_lead = $request->id_lead;
         $telemarketing->cliente = $request->cliente;
         $telemarketing->telefone = $request->telefone;
         $telemarketing->agendamento = $request->agendamento;

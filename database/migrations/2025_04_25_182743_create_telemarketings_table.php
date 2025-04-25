@@ -21,9 +21,11 @@ return new class extends Migration
             $table->date('agendamento');
             $table->time('hora');
             $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_lead')->nullable();
             $table->softDeletes();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_lead')->references('id')->on('leads')->onDelete('cascade')->onUpdate('cascade');
             
             $table->timestamps();
         });
@@ -37,5 +39,9 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('telemarketings');
+        Schema::table('telemarketings', function (Blueprint $table) {
+            $table->dropForeign(['id_lead']);
+            $table->dropColumn('id_lead');
+        });
     }
 };

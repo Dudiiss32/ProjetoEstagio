@@ -10,6 +10,7 @@ use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class LeadController extends Controller
 {
@@ -50,9 +51,8 @@ class LeadController extends Controller
 
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request){
-        // CARREGAR A VIEW
         $telefone = preg_replace('/\D/', '', $request->input('telefone'));
-
+    
         $lead = Lead::create([
             'id_user' => $request->id_user,
             'cliente' => $request->cliente,
@@ -62,9 +62,8 @@ class LeadController extends Controller
             'id_midia' => $request->id_midia,
             'id_curso' => $request->id_curso,
         ]);
-
-        $indicacoes = $request->input('indicacoes', []);
-        foreach ($indicacoes as $indicacao) {
+    
+        foreach ($request->input('indicacoes', []) as $indicacao) {
             if (!empty($indicacao['nome'])) {
                 $lead->indicacoes()->create([
                     'nome' => $indicacao['nome'],
@@ -72,7 +71,18 @@ class LeadController extends Controller
                 ]);
             }
         }
-
+    
+        // Verifica se é Telemarketing
+        $midia = Midia::find($request->id_midia);
+        if ($midia && Str::lower($midia->nome) === 'telemarketing') {
+            Telemarketing::create([
+                'id_lead' => $lead->id,
+                'cliente' => $lead->cliente,
+                'telefone' => $lead->telefone,
+                'matricula' => $lead->matricula,
+            ]);
+        }
+    
         return redirect()->route('lead.index');
     }
 
@@ -85,57 +95,64 @@ class LeadController extends Controller
     public function edit($id){
         $lead = Lead::findOrFail($id);
 
-        if(!$lead){
-            return redirect('lead.index')->with('error', 'Lead não encontrado');
-        }
         $users = User::all();
         $midias = Midia::all();
         $cursos = Curso::all();
         $indicacoes = $lead->indicacoes;
 
+        $telemarketing = null;
+        if ($lead->midia && $lead->midia->nome === 'Telemarketing') {
+            $telemarketing = Telemarketing::where('cliente', $lead->cliente)->where('telefone', $lead->telefone)->first();
+        }
             
-        return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes']));;
+        return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes', 'telemarketing']));;
     }
     // EDITAR NO BANCO DE DADOS A CONTA
     public function update(Request $request, $id){
         $lead = Lead::findOrFail($id);
-        $tele = Lead::whereHas('midia', function($query) {
-            $query->where('nome', 'Telemarketing');
-        })->findOrFail($id);
-        if ($tele) {
-            return redirect()->route('telemarketing.edit', ['telemarketing' => $tele->id])->with('id', $tele->id);
-        }
-
+        $telefone = preg_replace('/\D/', '', $request->input('telefone'));
+    
         $lead->update([
             'id_user' => $request->id_user,
             'cliente' => $request->cliente,
-            'telefone' => $request->telefone,
+            'telefone' => $telefone,
             'matricula' => $request->matricula,
             'observacao' => $request->observacao,
             'id_midia' => $request->id_midia,
             'id_curso' => $request->id_curso,
         ]);
-        
-
-        if ($request->has('indicacoes')) {
-            foreach ($request->indicacoes as $indicacao) {
-                // Se tem ID, atualiza
-                if (!empty($indicacao['id'])) {
-                    \App\Models\Indicacao::where('id', $indicacao['id'])->update([
-                        'nome' => $indicacao['nome'],
-                        'telefone' => $indicacao['telefone'],
-                    ]);
-                } 
-                // Se não tem ID, cria nova
-                else if (!empty($indicacao['nome']) || !empty($indicacao['telefone'])) {
-                    $lead->indicacoes()->create([
-                        'nome' => $indicacao['nome'],
-                        'telefone' => $indicacao['telefone'],
-                    ]);
-                }
+    
+        foreach ($request->indicacoes as $indicacao) {
+            if (!empty($indicacao['id'])) {
+                Indicacao::where('id', $indicacao['id'])->update([
+                    'nome' => $indicacao['nome'],
+                    'telefone' => $indicacao['telefone'],
+                ]);
+            } else if (!empty($indicacao['nome']) || !empty($indicacao['telefone'])) {
+                $lead->indicacoes()->create([
+                    'nome' => $indicacao['nome'],
+                    'telefone' => $indicacao['telefone'],
+                ]);
             }
         }
-
+    
+        // Atualiza ou cria em Telemarketing se a mídia for telemarketing
+        $midia = Midia::find($request->id_midia);
+        $tele = Telemarketing::where('id_lead', $lead->id)->first();
+        if ($tele) {
+            $tele->update(
+                ['id_lead' => $lead->id],
+                [
+                    'cliente' => $lead->cliente,
+                    'telefone' => $lead->telefone,
+                    'id_user' => $lead->id_user
+                ]
+            );
+        } else {
+            // Se deixou de ser telemarketing, apaga da tabela
+            Telemarketing::where('id_lead', $lead->id)->delete();
+        }
+    
         return redirect()->route('lead.index')->with('success', 'Lead atualizado com sucesso!');
     }
 

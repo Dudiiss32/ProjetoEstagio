@@ -69,7 +69,7 @@
         <tbody>
             <tr>
                 <td>{{$item['total_telemarketings']}}</td>
-                <td></td>
+                <td>{{$matriculasTele}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
