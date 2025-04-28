@@ -37,7 +37,7 @@
                 <th>Funcionário</th>
                 <th>Leads</th>
                 <th>Matrícula</th>
-                <th>Eficiência</th>
+                <th>Eficiência (%)</th>
             </tr>
         </thead>
         <tbody>
@@ -61,21 +61,33 @@
                 <th>Matrículas</th>
                 <th>Visitas</th>
                 <th>Agendados</th>
-                <th>Eficiência de matrículas</th>
-                <th>Eficiência de visitas</th>
-                <th>Eficiência de agendados</th>
+                <th>Eficiência Matrículas</th>
+                <th>Eficiência Visitas</th>
+                <th>Eficiência Agendados</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>{{$item['total_telemarketings']}}</td>
-                <td>{{$matriculasTele}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            @foreach ($dados as $item)
+                @php
+                    $telemarketing = $item['total_telemarketings'] ?? 0;
+                    $matriculasTele = $item['total_matriculas_tele'] ?? 0;
+                    $visitas = $item['total_visitas'] ?? 0;
+                    $agendados = $item['total_agendados'] ?? 0;
+                    
+                    $eficienciaMatriculas = $telemarketing > 0 ? round(($matriculasTele / $telemarketing) * 100, 2) : 0;
+                    $eficienciaVisitas = $telemarketing > 0 ? round(($visitas / $telemarketing) * 100, 2) : 0;
+                    $eficienciaAgendados = $telemarketing > 0 ? round(($agendados / $telemarketing) * 100, 2) : 0;
+                @endphp
+                <tr>
+                    <td>{{ $telemarketing }}</td>
+                    <td>{{ $matriculasTele }}</td>
+                    <td>{{ $visitas }}</td>
+                    <td>{{ $agendados }}</td>
+                    <td>{{ $eficienciaMatriculas }}%</td>
+                    <td>{{ $eficienciaVisitas }}%</td>
+                    <td>{{ $eficienciaAgendados }}%</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 

@@ -9,7 +9,6 @@ use App\Models\Midia;
 use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class LeadController extends Controller
@@ -20,20 +19,12 @@ class LeadController extends Controller
         $telemarketings = Lead::whereHas('midia', function($query) {
             $query->where('nome', 'Telemarketing');
         })->with(['user', 'midia', 'curso', 'indicacoes'])->get();
-        // ->where(function($query) {
-        //     $query->whereNull('id_curso')
-        //         ->orWhere('observacao', '')
-        //         ->orWhere('matricula', false);
-        // })
-        
-
 
         $leads = Lead::whereDoesntHave('midia', function($query) {
-            $query->where('nome', 'Telemarketing'); // Ignora Telemarketing
+            $query->where('nome', 'Telemarketing'); 
         })
-        ->whereNotNull('id_curso') // Tem curso
-        ->where('observacao', '!=', '') // Tem observação
-        ->where('matricula', true) // Tem matrícula
+        ->whereNotNull('id_curso') 
+        ->where('observacao', '!=', '') 
         ->with(['user', 'midia', 'curso', 'indicacoes'])
         ->get();
         
@@ -72,14 +63,13 @@ class LeadController extends Controller
             }
         }
     
-        // Verifica se é Telemarketing
         $midia = Midia::find($request->id_midia);
-        if ($midia && Str::lower($midia->nome) === 'telemarketing') {
+        if ($midia && Str::lower($midia->nome) === 'Telemarketing') {
             Telemarketing::create([
                 'id_lead' => $lead->id,
                 'cliente' => $lead->cliente,
                 'telefone' => $lead->telefone,
-                'matricula' => $lead->matricula,
+                'id_user' => $lead->id_user,
             ]);
         }
     
@@ -136,21 +126,24 @@ class LeadController extends Controller
             }
         }
     
-        // Atualiza ou cria em Telemarketing se a mídia for telemarketing
         $midia = Midia::find($request->id_midia);
-        $tele = Telemarketing::where('id_lead', $lead->id)->first();
-        if ($tele) {
-            $tele->update(
-                ['id_lead' => $lead->id],
-                [
-                    'cliente' => $lead->cliente,
-                    'telefone' => $lead->telefone,
-                    'id_user' => $lead->id_user
-                ]
-            );
-        } else {
-            // Se deixou de ser telemarketing, apaga da tabela
-            Telemarketing::where('id_lead', $lead->id)->delete();
+        if ($midia && Str::lower($midia->nome) === 'Telemarketing') {
+            $tele = Telemarketing::where('id_lead', $lead->id)->first();
+            if ($tele) {
+                $tele->update([
+                    'id_lead' => $request->id,
+                    'cliente' => $request->cliente,
+                    'telefone' => $request->telefone,
+                    'id_user' => $request->id_user,
+                ]);
+            } else {
+                Telemarketing::create([
+                    'id_lead' => $request->id,
+                    'cliente' => $request->cliente,
+                    'telefone' => $request->telefone,
+                    'id_user' => $request->id_user,
+                ]);
+            }
         }
     
         return redirect()->route('lead.index')->with('success', 'Lead atualizado com sucesso!');
@@ -159,16 +152,18 @@ class LeadController extends Controller
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){
         $lead = Lead::find($id);
-        $tele = Telemarketing::find($id);
-        if($lead){
+        if ($lead) {
+            if ($lead->midia && Str::lower($lead->midia->nome) === 'telemarketing') {
+                $tele = Telemarketing::where('id_lead', $lead->id)->first();
+                if ($tele) {
+                    $tele->delete();
+                }
+            }
             $lead->delete();
-            return redirect()->route('lead.index')->with('success', 'Lead deletado com sucesso!');
-        }
-        if($tele){
-            $tele->delete();
             return redirect()->route('lead.index')->with('success', 'Lead deletado com sucesso!');
         }
 
         return redirect()->route('lead.index')->with('error', 'Lead não encontrado!');
     }
+
 }

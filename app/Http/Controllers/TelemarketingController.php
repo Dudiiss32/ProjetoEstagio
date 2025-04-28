@@ -27,29 +27,31 @@ class TelemarketingController extends Controller
     }
 
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
-    public function store(Request $request){
-        // CARREGAR A VIEW
-        $midiaTele = Midia::where('nome', 'Telemarketing')->first();
-        if(!$midiaTele){
-            return back()->withErrors(['id_midia' => "A mídia telemarketing não foi encontrada"]);
-        }
-        Telemarketing::create([
-            'cliente' => $request->cliente,
-            'telefone' => $request->telefone,
+    public function store(Request $request)
+    {
+        $tele = Telemarketing::create([
+            'cliente'     => $request->cliente,
+            'telefone'    => $request->telefone,
             'agendamento' => $request->agendamento,
-            'hora' => $request->hora,
-            'id_user' => $request->id_user,
-            'id_lead' => $request->id_lead,
+            'hora'        => $request->hora,
+            'id_user'     => $request->id_user,
+            'id_lead'     => $request->id_lead,
         ]);
-        Lead::create([
-            'cliente' => $request->cliente,
-            'telefone' => $request->telefone,
-            'id_user' => $request->id_user,
-            'matricula' => $request->matricula ?? false,
-            'observacao' => $request->observacao ?? '',
-            'id_curso' => $request->id_curso ?? null,
-            'id_midia' => $request->id_midia ?? $midiaTele->id,
-        ]);
+
+        $midiaTele = Midia::where('nome','Telemarketing')->first();
+        Lead::updateOrCreate(
+            ['id' => $tele->id_lead] , 
+            [
+                'id_user'  => $tele->id_user,
+                'cliente'  => $tele->cliente,
+                'telefone' => $tele->telefone,
+                'matricula'=> $request->matricula ?? false,
+                'observacao'=> $request->observacao ?? '',
+                'id_curso' => $request->id_curso ?? null,
+                'id_midia' => $midiaTele->id,
+            ]
+        );
+
         return redirect()->route('telemarketing.index');
     }
 
@@ -69,32 +71,42 @@ class TelemarketingController extends Controller
         return view('telemarketing.create', compact(['telemarketing', 'users']));
     }
     // EDITAR NO BANCO DE DADOS A CONTA
-    public function update(Request $request, $id){
-        // CARREGAR A VIEW
-        $telemarketing = Telemarketing::find($id);
-        if(!$telemarketing){
-            return redirect('telemarketing.index')->with('error', 'Cadastro não encontrado');
-        }
-        
-        $telemarketing->id_user = $request->id_user;
-        $telemarketing->id_lead = $request->id_lead;
-        $telemarketing->cliente = $request->cliente;
-        $telemarketing->telefone = $request->telefone;
-        $telemarketing->agendamento = $request->agendamento;
-        $telemarketing->hora = $request->hora;
+    public function update(Request $request, $id)
+    {
+        $tele = Telemarketing::findOrFail($id);
+        $tele->update([
+            'cliente'     => $request->cliente,
+            'telefone'    => $request->telefone,
+            'agendamento' => $request->agendamento,
+            'hora'        => $request->hora,
+            'id_user'     => $request->id_user,
+            'id_lead'     => $request->id_lead,
+        ]);
 
-        $telemarketing->save();
+        $lead = Lead::find($tele->id_lead);
+        if ($lead) {
+            $lead->update([
+                'id_user'  => $tele->id_user,
+                'cliente'  => $tele->cliente,
+                'telefone' => $tele->telefone,
+                'id_midia' => Midia::where('nome','Telemarketing')->value('id'),
+            ]);
+        }
 
         return redirect()->route('telemarketing.index');
     }
-    // EXCLUIR DO BANCO DE DADOS A CONTA
-    public function delete($id){
-        $telemarketing = Telemarketing::find($id);
-        if($telemarketing){
-            $telemarketing->delete();
-            return redirect()->route('telemarketing.index')->with('success', 'Funcionário deletado com sucesso!');
-        }
 
-        return redirect()->route('telemarketing.index')->with('error', 'Funcionário não encontrado!');
+    public function delete($id)
+    {
+        $tele = Telemarketing::find($id);
+        if (!$tele) {
+            return redirect()->route('telemarketing.index')
+                             ->with('error','Registro não encontrado');
+        }
+        Lead::where('id',$tele->id_lead)->delete();
+        $tele->delete();
+
+        return redirect()->route('telemarketing.index')
+                         ->with('success','Telemarketing e Lead deletados');
     }
 }
