@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('data');
             $table->string('cliente');
             $table->string('telefone');
-            $table->date('agendamento');
-            $table->time('hora');
+            $table->date('agendamento')->nullable();
+            $table->time('hora')->nullable();
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_lead')->nullable();
             $table->softDeletes();

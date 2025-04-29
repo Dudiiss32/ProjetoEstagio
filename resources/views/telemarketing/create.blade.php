@@ -35,12 +35,12 @@
 
             <div class="col-md-6">
                 <label for="agendamento" class="form-label">Agendamento:</label>
-                <input type="date" name="agendamento" id="agendamento" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->agendamento : ''}}"> 
+                <input type="date" name="agendamento" id="agendamento" class="form-control" value="{{isset($telemarketing) ? $telemarketing->agendamento : ''}}"> 
             </div>
 
             <div class="col-md-6">
                 <label for="hora" class="form-label">Hora:</label>
-                <input type="time" name="hora" id="hora" class="form-control" required value="{{isset($telemarketing) ? $telemarketing->hora : ''}}">
+                <input type="time" name="hora" id="hora" class="form-control" value="{{isset($telemarketing) ? $telemarketing->hora : ''}}">
             </div>
 
             <div class="col-12">

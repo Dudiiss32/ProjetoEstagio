@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcionario;
 use App\Models\Lead;
 use App\Models\Telemarketing;
 use App\Models\User;
@@ -48,7 +49,8 @@ class AnaliseController extends Controller
         // Consulta de Matrículas originadas de Telemarketing
         $matriculasTele = Lead::selectRaw('MONTH(leads.data) as mes, leads.id_user, COUNT(*) as total_matriculas_tele')
             ->where('leads.matricula', true)
-            ->join('telemarketings', 'leads.id', '=', 'telemarketings.id_lead')
+            ->join('midias', 'midias.id', '=', 'leads.id_midia')
+            ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesSelecionado, fn($q) => $q->whereMonth('leads.data', $mesSelecionado))
             ->groupByRaw('MONTH(leads.data), leads.id_user')
@@ -56,8 +58,8 @@ class AnaliseController extends Controller
             
         // Consulta de Visitas
         $visitas = Lead::selectRaw('MONTH(leads.data) as mes, leads.id_user, COUNT(*) as total_visitas')
-            ->join('midias', 'leads.id_midia', '=', 'midias.id')
-            ->where('midias.nome', 'Telemarketing') 
+            ->join('midias', 'midias.id', '=', 'leads.id_midia')
+            ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesSelecionado, fn($q) => $q->whereMonth('leads.data', $mesSelecionado))
             ->groupByRaw('MONTH(leads.data), leads.id_user')->get();
@@ -70,6 +72,21 @@ class AnaliseController extends Controller
             ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
             ->groupByRaw('MONTH(data), id_user')
             ->get();
+        
+        $metaTele = Funcionario::selectRaw('MONTH(data) as mes, id_user, COUNT as total_metasTele')
+            ->whereNotNull('metaTele')
+            ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
+            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            ->groupByRaw('MONTH(data), id_user')
+            ->get();
+
+        $metaIndicacoes = Funcionario::selectRaw('MONTH(data) as mes, id_user, COUNT as total_metasTele')
+            ->whereNotNull('metaTele')
+            ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
+            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            ->groupByRaw('MONTH(data), id_user')
+            ->get();
+        
 
         $dados = [];
 

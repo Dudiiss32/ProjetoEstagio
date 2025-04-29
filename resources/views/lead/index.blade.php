@@ -28,7 +28,6 @@
             </tr>
         </thead>
         <tbody>
-        
             @foreach ($leads as $lead)
                 <tr>
                     <td>{{$lead->data->format('d/m/Y')}}</td>
@@ -61,27 +60,6 @@
                     </td>
                 </tr>    
                 
-            @endforeach
-            @foreach ($telemarketings as $tele)
-                <tr>
-                    <td>{{$tele->data->format('d/m/Y')}}</td>
-                    <td>{{$tele->user->name ?? 'Usuário não encontrado'}}</td>
-                    <td>Telemarketing</td>
-                    <td>{{$tele->cliente}}</td>
-                    <td>{{$tele->telefone}}</td>
-                    <td></td>
-                    <td>{{$tele->matricula ? 'Sim' : 'Não'}}</td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <form action="{{route('lead.delete', $tele->id)}}" method="POST" style="display: inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
-                        </form>
-                        <a href="{{ route('lead.edit', $tele->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
-                    </td>
-                </tr>
             @endforeach
         </tbody>
     </table>

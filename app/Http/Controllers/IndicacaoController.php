@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Indicacao;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 
 class IndicacaoController extends Controller
@@ -10,7 +11,7 @@ class IndicacaoController extends Controller
         // LISTAR
         public function index(){
          // CARREGAR A VIEW
-         $indicacoes = Indicacao::all(); //carrega a relação com o user "JOIN"
+         $indicacoes = Indicacao::with('user')->get(); 
          return view('indicacao.index', compact('indicacoes'));
      }
      

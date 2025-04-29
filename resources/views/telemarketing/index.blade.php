@@ -30,7 +30,7 @@
                     <td>{{$tele->user->name ?? 'Usuário não encontrado'}}</td>
                     <td>{{$tele->cliente}}</td>
                     <td>{{$tele->telefone}}</td>
-                    <td>{{$tele->agendamento->format('d/m/Y')}}</td>
+                    <td>{{$tele->agendamento ? $tele->agendamento->format('d/m/Y') : ''}}</td>
                     <td>{{$tele->hora}}</td>
                     <td>
                         <form action="{{route('telemarketing.delete', $tele->id)}}" method="POST" style="display: inline">

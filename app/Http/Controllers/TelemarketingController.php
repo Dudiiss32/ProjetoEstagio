@@ -38,19 +38,6 @@ class TelemarketingController extends Controller
             'id_lead'     => $request->id_lead,
         ]);
 
-        $midiaTele = Midia::where('nome','Telemarketing')->first();
-        Lead::updateOrCreate(
-            ['id' => $tele->id_lead] , 
-            [
-                'id_user'  => $tele->id_user,
-                'cliente'  => $tele->cliente,
-                'telefone' => $tele->telefone,
-                'matricula'=> $request->matricula ?? false,
-                'observacao'=> $request->observacao ?? '',
-                'id_curso' => $request->id_curso ?? null,
-                'id_midia' => $midiaTele->id,
-            ]
-        );
 
         return redirect()->route('telemarketing.index');
     }
@@ -83,16 +70,6 @@ class TelemarketingController extends Controller
             'id_lead'     => $request->id_lead,
         ]);
 
-        $lead = Lead::find($tele->id_lead);
-        if ($lead) {
-            $lead->update([
-                'id_user'  => $tele->id_user,
-                'cliente'  => $tele->cliente,
-                'telefone' => $tele->telefone,
-                'id_midia' => Midia::where('nome','Telemarketing')->value('id'),
-            ]);
-        }
-
         return redirect()->route('telemarketing.index');
     }
 
@@ -103,10 +80,8 @@ class TelemarketingController extends Controller
             return redirect()->route('telemarketing.index')
                              ->with('error','Registro não encontrado');
         }
-        Lead::where('id',$tele->id_lead)->delete();
         $tele->delete();
 
-        return redirect()->route('telemarketing.index')
-                         ->with('success','Telemarketing e Lead deletados');
+        return redirect()->route('telemarketing.index')->with('success','Telemarketing e Lead deletados');
     }
 }

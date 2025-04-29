@@ -6,29 +6,16 @@ use App\Models\Curso;
 use App\Models\Indicacao;
 use App\Models\Lead;
 use App\Models\Midia;
-use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class LeadController extends Controller
 {
      // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        $telemarketings = Lead::whereHas('midia', function($query) {
-            $query->where('nome', 'Telemarketing');
-        })->with(['user', 'midia', 'curso', 'indicacoes'])->get();
-
-        $leads = Lead::whereDoesntHave('midia', function($query) {
-            $query->where('nome', 'Telemarketing'); 
-        })
-        ->whereNotNull('id_curso') 
-        ->where('observacao', '!=', '') 
-        ->with(['user', 'midia', 'curso', 'indicacoes'])
-        ->get();
-        
-        return view('lead.index', compact(['leads', 'telemarketings']));
+        $leads = Lead::all();
+        return view('lead.index', compact('leads'));
     }
 
     // DETALHES
@@ -63,16 +50,6 @@ class LeadController extends Controller
             }
         }
     
-        $midia = Midia::find($request->id_midia);
-        if ($midia && Str::lower($midia->nome) === 'Telemarketing') {
-            Telemarketing::create([
-                'id_lead' => $lead->id,
-                'cliente' => $lead->cliente,
-                'telefone' => $lead->telefone,
-                'id_user' => $lead->id_user,
-            ]);
-        }
-    
         return redirect()->route('lead.index');
     }
 
@@ -90,12 +67,8 @@ class LeadController extends Controller
         $cursos = Curso::all();
         $indicacoes = $lead->indicacoes;
 
-        $telemarketing = null;
-        if ($lead->midia && $lead->midia->nome === 'Telemarketing') {
-            $telemarketing = Telemarketing::where('cliente', $lead->cliente)->where('telefone', $lead->telefone)->first();
-        }
             
-        return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes', 'telemarketing']));;
+        return view('lead.create', compact(['lead', 'users', 'midias', 'cursos', 'indicacoes']));;
     }
     // EDITAR NO BANCO DE DADOS A CONTA
     public function update(Request $request, $id){
@@ -125,26 +98,7 @@ class LeadController extends Controller
                 ]);
             }
         }
-    
-        $midia = Midia::find($request->id_midia);
-        if ($midia && Str::lower($midia->nome) === 'Telemarketing') {
-            $tele = Telemarketing::where('id_lead', $lead->id)->first();
-            if ($tele) {
-                $tele->update([
-                    'id_lead' => $request->id,
-                    'cliente' => $request->cliente,
-                    'telefone' => $request->telefone,
-                    'id_user' => $request->id_user,
-                ]);
-            } else {
-                Telemarketing::create([
-                    'id_lead' => $request->id,
-                    'cliente' => $request->cliente,
-                    'telefone' => $request->telefone,
-                    'id_user' => $request->id_user,
-                ]);
-            }
-        }
+
     
         return redirect()->route('lead.index')->with('success', 'Lead atualizado com sucesso!');
     }
@@ -153,12 +107,6 @@ class LeadController extends Controller
     public function delete($id){
         $lead = Lead::find($id);
         if ($lead) {
-            if ($lead->midia && Str::lower($lead->midia->nome) === 'telemarketing') {
-                $tele = Telemarketing::where('id_lead', $lead->id)->first();
-                if ($tele) {
-                    $tele->delete();
-                }
-            }
             $lead->delete();
             return redirect()->route('lead.index')->with('success', 'Lead deletado com sucesso!');
         }
