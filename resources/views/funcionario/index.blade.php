@@ -4,11 +4,11 @@
 
 
 @section('link-cadastro')
-    <a href="{{route('funcionario.create')}}" class="cadastro">Novo funcionário</a>
+    <a href="{{route('funcionario.create')}}" class="cadastro">Nova meta</a>
 @endsection
 @section('content')
     <h1>Metas</h1>
-    
+    <h2>Mês atual: </h2><p></p>
     <table class="table table-striped">
         <thead>
             <tr>
