@@ -7,14 +7,21 @@
     <a href="{{route('funcionario.create')}}" class="cadastro">Nova meta</a>
 @endsection
 @section('content')
-    <h1>Metas</h1>
-    <h2>Mês atual: </h2><p></p>
+    <div class="metaMes">
+        <h1>Metas</h1>
+        <h3>Mês atual: <b>{{ \Carbon\Carbon::now()->translatedFormat('F') }}</b></h3>        
+    </div>
+    
+    @if ($funcionarios->isEmpty())
+        <p class="alert alert-info">As metas deste mês ainda não foram preenchidas.</p>
+    @else
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Meta de telemarketing</th>
                 <th>Meta de matrícula</th>
+                <th>Meta de indicações</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -24,6 +31,7 @@
                     <td>{{$funcionario->user->name ?? 'Usuário não encontrado'}}</td>
                     <td>{{$funcionario->metaTele}}</td>
                     <td>{{$funcionario->metaMatricula}}</td>
+                    <td>{{$funcionario->metaIndicacoes}}</td>
                     <td>
                         <form action="{{route('funcionario.delete', $funcionario->id)}}" method="POST" style="display: inline">
                             @csrf
@@ -36,5 +44,6 @@
             
         </tbody>
     </table>
+    @endif
 @endsection
     

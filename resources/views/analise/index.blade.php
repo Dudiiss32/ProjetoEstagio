@@ -41,6 +41,7 @@
             </tr>
         </thead>
         <tbody>
+            @dd($dados)
             @foreach ($dados as $item)
                 <tr>
                     <td>{{$mesesDisponiveis[str_pad($item['mes'], 2, '0', STR_PAD_LEFT)] }}</td>
@@ -104,7 +105,7 @@
         </thead>
         <tbody>
             <tr>
-                <td></td>
+                <td>{{$item['total_metaTele']}}</td>
                 <td></td>
                 <td></td>
                 <td></td>

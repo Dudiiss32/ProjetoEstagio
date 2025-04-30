@@ -38,11 +38,11 @@
                 <label for="metaMatricula" class="form-label">Meta de Matrícula:</label>
                 <input type="number" name="metaMatricula" class="form-control" value="{{isset($funcionario) ? $funcionario->metaMatricula : ''}}" id="metaMatricula" required>
             </div>
+            <div class="col-md-6">
+                <label for="metaIndicacoes" class="form-label">Meta de Indicações:</label>
+                <input type="number" name="metaIndicacoes" class="form-control" value="{{isset($funcionario) ? $funcionario->metaIndicacoes : ''}}" id="metaIndicacoes" required>
+            </div>
 
-            {{-- <div class="col-md-6">
-                <label for="comissao" class="form-label">Comissão (%):</label>
-                <input type="number" name="comissao" class="form-control" value="{{isset($funcionario) ? $funcionario->comissao : ''}}" id="comissao" placeholder="Digite o valor da porcentagem. Ex: 50" required>
-            </div> --}}
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">{{isset($funcionario) ? 'Atualizar' : 'Cadastar'}}</button>

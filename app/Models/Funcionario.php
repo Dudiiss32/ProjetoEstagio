@@ -13,7 +13,7 @@ class Funcionario extends Model
     //Indicar o nome da tabela
     // protected $table = 'funcionario';
 
-    protected $fillable = ['data', 'id_user', 'metaTele', 'metaMatricula'];
+    protected $fillable = ['data', 'id_user', 'metaTele', 'metaMatricula', 'metaIndicacoes'];
     protected $dates = ['deleted_at'];
 
     public function user()

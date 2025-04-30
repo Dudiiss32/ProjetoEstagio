@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Funcionario;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FuncionarioController extends Controller
@@ -11,7 +12,9 @@ class FuncionarioController extends Controller
     // LISTAR
     public function index(){
         // CARREGAR A VIEW
-        $funcionarios = Funcionario::with('user')->get(); //carrega a relação com o user "JOIN"
+        $mesAtual = Carbon::now()->month;
+        $funcionarios = Funcionario::whereMonth('data', $mesAtual)->with('user')->get();
+
         return view('funcionario.index', compact('funcionarios'));
     }
 
@@ -30,11 +33,14 @@ class FuncionarioController extends Controller
             'id_user' => 'required|exists:users,id', // Garante que o usuário exista
             'metaTele' => 'required|string',
             'metaMatricula' => 'required|string',
+            'metaIndicacoes' => 'required|string',
         ]);
         Funcionario::create([
+            'data' => Carbon::now(),
             'id_user' => $request->id_user,
             'metaTele' => $request->metaTele,
             'metaMatricula' => $request->metaMatricula,
+            'metaIndicacoes' => $request->metaIndicacoes,
         ]);
         return redirect()->route('funcionario.index')->with('success', 'Funcionário cadastrado com sucesso!');
 
@@ -65,6 +71,7 @@ class FuncionarioController extends Controller
             $funcionario->id_user = $request->id_user;
             $funcionario->metaTele = $request->metaTele;
             $funcionario->metaMatricula = $request->metaMatricula;
+            $funcionario->metaIndicacoes = $request->metaIndicacoes;
 
 
             $funcionario->save();

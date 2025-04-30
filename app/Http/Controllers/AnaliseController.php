@@ -73,18 +73,18 @@ class AnaliseController extends Controller
             ->groupByRaw('MONTH(data), id_user')
             ->get();
         
-        $metaTele = Funcionario::selectRaw('MONTH(data) as mes, id_user, COUNT as total_metasTele')
+        $metaTeles = Funcionario::selectRaw('MONTH(data) as mes, id_user, metaTele')
             ->whereNotNull('metaTele')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
             ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            ->groupByRaw('MONTH(data), id_user')
+            // ->groupByRaw('MONTH(data), id_user')
             ->get();
 
-        $metaIndicacoes = Funcionario::selectRaw('MONTH(data) as mes, id_user, COUNT as total_metasTele')
-            ->whereNotNull('metaTele')
+        $metaIndicacoes = Funcionario::selectRaw('MONTH(data) as mes, id_user, metaIndicacoes')
+            ->whereNotNull('metaIndicacoes')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
             ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            ->groupByRaw('MONTH(data), id_user')
+            // ->groupByRaw('MONTH(data), id_user')
             ->get();
         
 
@@ -142,6 +142,18 @@ class AnaliseController extends Controller
             $chave = "{$visita->id_user}-{$visita->mes}";
             $dados[$chave]['total_visitas'] = $visita->total_visitas ?? 0;
             $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($visita->user->name ?? 'Não informado');
+        }
+
+        foreach ($metaTeles as $metaTele) {
+            $chave = "{$metaTele->id_user}-{$metaTele->mes}";
+            $dados[$chave]['total_metaTeles'] = $metaTele->total_metaTeles ?? 0;
+            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($metaTele->user->name ?? 'Não informado');
+        }
+
+        foreach ($metaIndicacoes as $metaIndicacao) {
+            $chave = "{$metaIndicacao->id_user}-{$metaIndicacao->mes}";
+            $dados[$chave]['total_metaIndicacoes'] = $metaIndicacao->total_metaIndicacaos ?? 0;
+            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($metaIndicacao->user->name ?? 'Não informado');
         }
 
 
