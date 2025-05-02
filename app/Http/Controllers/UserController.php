@@ -48,7 +48,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'isAdmin' => $request->isAdmin
         ]);
-        return redirect()->route('user.index')->with('success', 'Funcionário cadastrado com sucesso!');
+        return redirect()->route('user.index')->with('success', 'Usuário cadastrado com sucesso!');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA
@@ -94,16 +94,16 @@ class UserController extends Controller
         }
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success', 'Usuário atualizado com sucesso');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){
         $user = User::find($id);
         if($user){
             $user->delete();
-            return redirect()->route('user.index')->with('success', 'Funcionário deletado com sucesso!');
+            return redirect()->route('user.index')->with('success', 'Usuário deletado com sucesso!');
         }
 
-        return redirect()->route('user.index')->with('error', 'Funcionário não encontrado!');
+        return redirect()->route('user.index')->with('error', 'Usuário não encontrado!');
     }
 }

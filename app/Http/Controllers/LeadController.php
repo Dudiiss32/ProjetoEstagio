@@ -50,7 +50,7 @@ class LeadController extends Controller
             }
         }
     
-        return redirect()->route('lead.index');
+        return redirect()->route('lead.index')->with('success', 'Lead adicionado com sucesso');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA

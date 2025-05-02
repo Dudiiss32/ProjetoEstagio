@@ -52,7 +52,7 @@ class IndicacaoController extends Controller
 
             $indicacao->save();
 
-            return redirect()->route('indicacao.index');
+            return redirect()->route('indicacao.index')->with('success', 'Indicação atualizada com sucesso');
      }
      // EXCLUIR DO BANCO DE DADOS A CONTA
      public function delete($id){

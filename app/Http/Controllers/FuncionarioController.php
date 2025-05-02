@@ -44,7 +44,7 @@ class FuncionarioController extends Controller
             'tempoTele' => $request->tempoTele,
             'tempoLead' => $request->tempoLead,
         ]);
-        return redirect()->route('funcionario.index')->with('success', 'Funcionário cadastrado com sucesso!');
+        return redirect()->route('funcionario.index')->with('success', 'Meta cadastrada com sucesso!');
 
     }
 
@@ -59,7 +59,7 @@ class FuncionarioController extends Controller
         $users = User::all();
 
             if(!$funcionario){
-                return redirect('funcionario.index')->with('error', 'Funcionário não encontrado');
+                return redirect('funcionario.index')->with('error', 'Meta não encontrada');
             }
             return view('funcionario.create', compact(['funcionario', 'users']));
     }
@@ -67,7 +67,7 @@ class FuncionarioController extends Controller
     public function update(Request $request, $id){
         $funcionario = funcionario::find($id);
             if(!$funcionario){
-                return redirect('funcionario.index')->with('error', 'Mídia não encontrada');
+                return redirect('funcionario.index')->with('error', 'Meta não encontrada');
             }   
 
             $funcionario->id_user = $request->id_user;
@@ -80,16 +80,16 @@ class FuncionarioController extends Controller
 
             $funcionario->save();
 
-            return redirect()->route('funcionario.index');
+            return redirect()->route('funcionario.index')->with('success', 'Meta atualizada com sucesso!');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){
         $funcionario = Funcionario::find($id);
             if($funcionario){
                 $funcionario->delete();
-                return redirect()->route('funcionario.index')->with('success', 'Funcionário deletado com sucesso!');
+                return redirect()->route('funcionario.index')->with('success', 'Meta deletada com sucesso!');
             }
 
-            return redirect()->route('funcionario.index')->with('error', 'Funcionário não encontrado!');
+            return redirect()->route('funcionario.index')->with('error', 'Meta não encontrada!');
     }
 }

@@ -30,7 +30,7 @@ class CursoController extends Controller
             'horas' => $request->horas,
             'valor' => $valor,
         ]);
-        return redirect()->route('curso.index');
+        return redirect()->route('curso.index')->with('success', 'Curso adicionado com sucesso');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA
@@ -60,7 +60,7 @@ class CursoController extends Controller
 
             $curso->save();
 
-            return redirect()->route('curso.index');
+            return redirect()->route('curso.index')->with('success', 'Curso atualizado com sucesso');
     }
     // EXCLUIR DO BANCO DE DADOS A CONTA
     public function delete($id){

@@ -39,7 +39,7 @@ class TelemarketingController extends Controller
         ]);
 
 
-        return redirect()->route('telemarketing.index');
+        return redirect()->route('telemarketing.index')->with('success', 'Telemarketing adicionado com sucesso');
     }
 
     // CADASTRAR NO BANCO DE DADOS NOVA CONTA
@@ -70,7 +70,7 @@ class TelemarketingController extends Controller
             'id_lead'     => $request->id_lead,
         ]);
 
-        return redirect()->route('telemarketing.index');
+        return redirect()->route('telemarketing.index')->with('success', 'Telemarketing atualizado com sucesso');
     }
 
     public function delete($id)
@@ -82,6 +82,6 @@ class TelemarketingController extends Controller
         }
         $tele->delete();
 
-        return redirect()->route('telemarketing.index')->with('success','Telemarketing e Lead deletados');
+        return redirect()->route('telemarketing.index')->with('success','Telemarketing deletado com sucesso');
     }
 }
