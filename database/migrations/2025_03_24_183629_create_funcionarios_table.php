@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('metaTele');
             $table->float('metaMatricula');
             $table->float('metaIndicacoes');
+            $table->integer('tempoTele');
+            $table->integer('tempoLead');
             $table->timestamps();
             $table->softDeletes();
 

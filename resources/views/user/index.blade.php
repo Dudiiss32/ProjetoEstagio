@@ -7,6 +7,17 @@
     <a href="{{route('user.create')}}" class="cadastro">Novo usuário</a>
 @endsection
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <h2>Lista de usuários</h2>
     <table class="table table-striped">
         <thead>

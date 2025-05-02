@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('indicacaos', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('data');
             $table->unsignedBigInteger('lead_id');
             $table->string('nome')->nullable();
             $table->string('telefone')->nullable();

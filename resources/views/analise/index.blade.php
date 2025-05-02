@@ -3,15 +3,25 @@
 @section('title', 'Análise')
 
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 <h1>Análise de funcionários</h1>
 
 <form action="{{ route('analise.index') }}" method="GET" class="mb-4">
     <div class="form-group">
         <label for="funcionario">Selecionar Funcionário:</label>
         <select name="funcionario" id="funcionario" class="form-control" onchange="this.form.submit()">
-            <option value="-1" {{ request('funcionario') == '-1' ? 'selected' : '' }}>Todos</option>
             @foreach ($users as $user)
-                <option value="{{ $user->id }}" {{ request('funcionario') == $user->id ? 'selected' : '' }}>
+                <option value="{{ $user->id }}" {{ request('funcionario') == $user->id || (request('funcionario') == null && $loop->first) ? 'selected' : '' }}>
                     {{ $user->name }}
                 </option>
             @endforeach
@@ -20,7 +30,7 @@
         <label for="mes" class="form-label">Mês:</label>
         <select name="mesSelecionado" id="mes" class="form-select" onchange="this.form.submit()">
             @foreach ($mesesDisponiveis as $numero => $nome)
-                <option value="{{ $numero }}" {{ request('mesSelecionado') == $numero ? 'selected' : '' }}>
+                <option value="{{ $numero }}" {{ request('mesSelecionado') == $numero || (request('mesSelecionado') == null && $numero == date('n')) ? 'selected' : '' }}>
                     {{ $nome }}
                 </option>
             @endforeach
@@ -41,7 +51,6 @@
             </tr>
         </thead>
         <tbody>
-            @dd($dados)
             @foreach ($dados as $item)
                 <tr>
                     <td>{{$mesesDisponiveis[str_pad($item['mes'], 2, '0', STR_PAD_LEFT)] }}</td>
@@ -105,10 +114,14 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{$item['total_metaTele']}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                @php
+                    $falta = max($item['metaTele'] - $item['total_telemarketings'], 0);
+                    $sobra =  max($item['total_telemarketings'] - $item['metaTele'], 0);
+                @endphp
+                <td>{{$item['metaTele']}}</td>
+                <td>{{$item['total_telemarketings']}}</td>
+                <td>{{$falta}}</td>
+                <td>{{$sobra}}</td>
             </tr>
         </tbody>
     </table>
@@ -136,13 +149,13 @@
         <thead>
             <tr>
                 <th>Meta de Indicações</th>
-                <th>N° de Indicação</th>
+                <th>N° de Indicações</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td></td>
-                <td></td>
+                <td>{{$item['metaIndicacoes']}}</td>
+                <td>{{$item['total_indicacoes']}}</td>
             </tr>
         </tbody>
     </table>

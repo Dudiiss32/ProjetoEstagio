@@ -43,6 +43,16 @@
                 <input type="number" name="metaIndicacoes" class="form-control" value="{{isset($funcionario) ? $funcionario->metaIndicacoes : ''}}" id="metaIndicacoes" required>
             </div>
 
+            <div class="col-md-6">
+                <label for="tempoTele" class="form-label">Tempo de telemarketing (em minutos):</label>
+                <input type="number" name="tempoTele" class="form-control" value="{{isset($funcionario) ? $funcionario->tempoTele : ''}}" id="tempoTele" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="tempoLead" class="form-label">Tempo de leads (em minutos):</label>
+                <input type="number" name="tempoLead" class="form-control" value="{{isset($funcionario) ? $funcionario->tempoLead : ''}}" id="tempoLead" required>
+            </div>
+
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">{{isset($funcionario) ? 'Atualizar' : 'Cadastar'}}</button>

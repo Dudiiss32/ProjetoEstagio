@@ -41,6 +41,8 @@ class FuncionarioController extends Controller
             'metaTele' => $request->metaTele,
             'metaMatricula' => $request->metaMatricula,
             'metaIndicacoes' => $request->metaIndicacoes,
+            'tempoTele' => $request->tempoTele,
+            'tempoLead' => $request->tempoLead,
         ]);
         return redirect()->route('funcionario.index')->with('success', 'Funcionário cadastrado com sucesso!');
 
@@ -72,6 +74,8 @@ class FuncionarioController extends Controller
             $funcionario->metaTele = $request->metaTele;
             $funcionario->metaMatricula = $request->metaMatricula;
             $funcionario->metaIndicacoes = $request->metaIndicacoes;
+            $funcionario->tempoTele = $request->tempoTele;
+            $funcionario->tempoLead = $request->tempoLead;
 
 
             $funcionario->save();

@@ -10,6 +10,7 @@ class Indicacao extends Model
     use HasFactory;
     
     protected $fillable = [
+        'data',
         'nome',
         'telefone',
         'lead_id', 

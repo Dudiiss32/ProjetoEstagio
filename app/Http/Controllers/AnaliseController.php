@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Funcionario;
+use App\Models\Indicacao;
 use App\Models\Lead;
 use App\Models\Telemarketing;
 use App\Models\User;
@@ -64,6 +65,11 @@ class AnaliseController extends Controller
             ->when($mesSelecionado, fn($q) => $q->whereMonth('leads.data', $mesSelecionado))
             ->groupByRaw('MONTH(leads.data), leads.id_user')->get();
 
+        $indicacoes = Indicacao::selectRaw('MONTH(indicacaos.data) as mes, leads.id_user, COUNT(*) as total_indicacoes')
+            ->join('leads', 'leads.id', '=', 'indicacaos.lead_id')
+            ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
+            ->when($mesSelecionado, fn($q) => $q->whereMonth('indicacaos.data', $mesSelecionado))
+            ->groupByRaw('MONTH(indicacaos.data), leads.id_user')->get();
         
         // Consulta de Agendados
         $agendados = Telemarketing::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_agendados')
@@ -88,35 +94,49 @@ class AnaliseController extends Controller
             ->get();
         
 
+        // ...
+
         $dados = [];
 
-        // Preenche com os dados de leads
+        function inicializarChave(&$dados, $id_user, $mes, $nome = 'Não informado') {
+            $chave = "{$id_user}-{$mes}";
+
+            if (!isset($dados[$chave])) {
+                $dados[$chave] = [
+                    'id_user' => $id_user,
+                    'mes' => $mes,
+                    'nome' => $nome,
+                    'total_leads' => 0,
+                    'total_matriculas' => 0,
+                    'total_telemarketings' => 0,
+                    'total_matriculas_tele' => 0,
+                    'total_agendados' => 0,
+                    'total_visitas' => 0,
+                    'metaTele' => 0,
+                    'metaIndicacoes' => 0,
+                    'total_indicacoes' => 0,
+                    'eficiencia' => 0,
+                ];
+            }
+
+            return $chave;
+        }
+
+        // Leads
         foreach ($leads as $lead) {
-            $chave = "{$lead->id_user}-{$lead->mes}";
-            $dados[$chave] = [
-                'id_user' => $lead->id_user,
-                'mes' => $lead->mes,
-                'nome' => $lead->user->name ?? 'Não informado',
-                'total_leads' => $lead->total_leads,
-                'total_matriculas' => 0,
-                'total_telemarketings' => 0,
-                'total_matriculas_tele' => 0,
-                'total_agendados' => 0,
-                'total_visitas' => 0,
-                'eficiencia' => 0,
-            ];
+            $chave = inicializarChave($dados, $lead->id_user, $lead->mes, $lead->user->name ?? 'Não informado');
+            $dados[$chave]['total_leads'] = $lead->total_leads ?? 0;
         }
 
-        // Adiciona dados de telemarketing
+        // Telemarketing
         foreach ($telemarketings as $tele) {
-            $chave = "{$tele->id_user}-{$tele->mes}";
+            $chave = inicializarChave($dados, $tele->id_user, $tele->mes, $tele->user->name ?? 'Não informado');
             $dados[$chave]['total_telemarketings'] = $tele->total_telemarketings ?? 0;
-            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($tele->user->name ?? 'Não informado');
         }
 
-        // Adiciona dados de matrículas
+        // Matrículas
         foreach ($matriculas as $mat) {
-            $chave = "{$mat->id_user}-{$mat->mes}";
+            $chave = inicializarChave($dados, $mat->id_user, $mat->mes);
             $dados[$chave]['total_matriculas'] = $mat->total_matriculas ?? 0;
 
             if (!empty($dados[$chave]['total_leads'])) {
@@ -124,37 +144,41 @@ class AnaliseController extends Controller
             }
         }
 
-        // Adiciona matrículas via telemarketing
+        // Matrículas via Telemarketing
         foreach ($matriculasTele as $matTele) {
-            $chave = "{$matTele->id_user}-{$matTele->mes}";
+            $chave = inicializarChave($dados, $matTele->id_user, $matTele->mes);
             $dados[$chave]['total_matriculas_tele'] = $matTele->total_matriculas_tele ?? 0;
         }
 
-        // Adiciona dados de agendados
+        // Agendados
         foreach ($agendados as $agendado) {
-            $chave = "{$agendado->id_user}-{$agendado->mes}";
+            $chave = inicializarChave($dados, $agendado->id_user, $agendado->mes);
             $dados[$chave]['total_agendados'] = $agendado->total_agendados ?? 0;
-            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($agendado->user->name ?? 'Não informado');
         }
 
-        // Adiciona dados de visitas
+        // Visitas
         foreach ($visitas as $visita) {
-            $chave = "{$visita->id_user}-{$visita->mes}";
+            $chave = inicializarChave($dados, $visita->id_user, $visita->mes);
             $dados[$chave]['total_visitas'] = $visita->total_visitas ?? 0;
-            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($visita->user->name ?? 'Não informado');
         }
 
+        // Meta Telemarketing
         foreach ($metaTeles as $metaTele) {
-            $chave = "{$metaTele->id_user}-{$metaTele->mes}";
-            $dados[$chave]['total_metaTeles'] = $metaTele->total_metaTeles ?? 0;
-            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($metaTele->user->name ?? 'Não informado');
+            $chave = inicializarChave($dados, $metaTele->id_user, $metaTele->mes);
+            $dados[$chave]['metaTele'] = $metaTele->metaTele ?? 0;
         }
 
+        // Meta Indicações
         foreach ($metaIndicacoes as $metaIndicacao) {
-            $chave = "{$metaIndicacao->id_user}-{$metaIndicacao->mes}";
-            $dados[$chave]['total_metaIndicacoes'] = $metaIndicacao->total_metaIndicacaos ?? 0;
-            $dados[$chave]['nome'] = $dados[$chave]['nome'] ?? ($metaIndicacao->user->name ?? 'Não informado');
+            $chave = inicializarChave($dados, $metaIndicacao->id_user, $metaIndicacao->mes);
+            $dados[$chave]['metaIndicacoes'] = $metaIndicacao->metaIndicacoes ?? 0;
         }
+
+        foreach ($indicacoes as $indicacao) {
+            $chave = inicializarChave($dados, $indicacao->id_user, $indicacao->mes);
+            $dados[$chave]['total_indicacoes'] = $indicacao->total_indicacoes ?? 0;
+        }
+
 
 
         return view('analise.index', [
@@ -162,7 +186,6 @@ class AnaliseController extends Controller
             'users' => $users,
             'mesesDisponiveis' => $mesesDisponiveis,
             'mesSelecionado' => $mesSelecionado,
-            'funcionarioSelecionado' => $funcionario,
         ]);
     }
 
