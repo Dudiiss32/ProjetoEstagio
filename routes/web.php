@@ -66,3 +66,4 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
 // Análise
 Route::resource('analise', AnaliseController::class)->middleware('auth');
+Route::get('/grafico', [AnaliseController::class, 'grafico'])->name('analise.grafico')->middleware('auth');

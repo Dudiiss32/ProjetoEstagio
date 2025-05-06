@@ -92,7 +92,20 @@ class AnaliseController extends Controller
             ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
             // ->groupByRaw('MONTH(data), id_user')
             ->get();
-        
+
+        $tempoTele = Funcionario::selectRaw('MONTH(data) as mes, id_user, tempoTele')
+            ->whereNotNull('tempoTele')
+            ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
+            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            // ->groupByRaw('MONTH(data), id_user')
+            ->get();
+
+        $tempoLead = Funcionario::selectRaw('MONTH(data) as mes, id_user, tempoLead')
+            ->whereNotNull('tempoLead')
+            ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
+            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            // ->groupByRaw('MONTH(data), id_user')
+            ->get();
 
         // ...
 
@@ -116,6 +129,8 @@ class AnaliseController extends Controller
                     'metaIndicacoes' => 0,
                     'total_indicacoes' => 0,
                     'eficiencia' => 0,
+                    'tempoTele' => 0,
+                    'tempoLead' => 0,
                 ];
             }
 
@@ -179,6 +194,16 @@ class AnaliseController extends Controller
             $dados[$chave]['total_indicacoes'] = $indicacao->total_indicacoes ?? 0;
         }
 
+        foreach ($tempoTele as $tpTele) {
+            $chave = inicializarChave($dados, $tpTele->id_user, $tpTele->mes);
+            $dados[$chave]['tempoTele'] = $tpTele->tempoTele ?? 0;
+        }
+
+        foreach ($tempoLead as $tpLead) {
+            $chave = inicializarChave($dados, $tpLead->id_user, $tpLead->mes);
+            $dados[$chave]['tempoLead'] = $tpLead->tempoLead ?? 0;
+        }
+
 
 
         return view('analise.index', [
@@ -194,6 +219,10 @@ class AnaliseController extends Controller
         return view('analise.create', ['users' => User::all()]);
     }
 
+    public function grafico(){
+        
+        return view('analise.grafico');
+    }
     public function store(Request $request)
     {
     }

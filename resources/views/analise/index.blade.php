@@ -15,7 +15,7 @@
         </div>
     @endif
 <h1>Análise de funcionários</h1>
-
+<a href="{{route('analise.grafico')}}">Ver gráficos</a>
 <form action="{{ route('analise.index') }}" method="GET" class="mb-4">
     <div class="form-group">
         <label for="funcionario">Selecionar Funcionário:</label>
@@ -137,8 +137,17 @@
         </thead>
         <tbody>
             <tr>
-                <td></td>
-                <td></td>
+                @php
+                    $totalTele = $item['tempoTele'];
+                    $horasTele = floor($totalTele / 60);
+                    $minutosTele = $totalTele % 60;
+
+                    $totalLead = $item['tempoLead'];
+                    $horasLead = floor($totalLead / 60);
+                    $minutosLead = $totalLead % 60;
+                @endphp
+                <td>{{$horasTele > 0 ? $horasTele . 'h' : '00:'}}{{$minutosTele}}min</td>
+                <td>{{$horasLead > 0 ? $horasLead . 'h' : '00:'}}{{$minutosLead}}min</td>
             </tr>
         </tbody>
     </table>
