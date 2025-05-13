@@ -5,25 +5,117 @@
 @section('content')
 
 <!-- Dropdown Structure -->
-  
+  <div class="row container ">
+      <section class="graficos col s12 m6" >            
+        <div class="grafico card z-depth-4">
+            <h5 class="center"> Aquisição de usuários</h5>
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </div>           
+      </section> 
+      
+      <section class="graficos col s12 m6">            
+          <div class="grafico card z-depth-4">
+              <h5 class="center"> Produtos </h5>
+          <canvas id="myChart2" width="400" height="200"></canvas> 
+      </div>            
+      </section>
 
+      <section class="graficos col s12 m6">            
+        <div class="grafico card z-depth-4">
+            <h5 class="center"> Produtos </h5>
+        <canvas id="myChart3" width="400" height="200"></canvas> 
+        </div>            
+      </section> 
 
-      <div class="row container ">
-          <section class="graficos col s12 m6" >            
-            <div class="grafico card z-depth-4">
-                <h5 class="center"> Aquisição de usuários</h5>
-                <canvas id="myChart" width="400" height="200"></canvas>
-            </div>           
-          </section> 
-          
-          <section class="graficos col s12 m6">            
-              <div class="grafico card z-depth-4">
-                  <h5 class="center"> Produtos </h5>
-              <canvas id="myChart2" width="400" height="200"></canvas> 
-          </div>            
-        </section>             
-      </div>
+      <section class="graficos col s12 m6">            
+        <div class="grafico card z-depth-4">
+            <h5 class="center"> Produtos </h5>
+            <canvas id="myChart4" width="400" height="200"></canvas> 
+        </div>            
+      </section>    
+  </div>
 
-    </div>
+</div>
 
 @endsection
+
+@push('graficos')
+<script>
+/* Gráfico 01 */
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [@php echo $meses @endphp],
+        datasets: [{
+            label: @php echo $leadsLabel @endphp,
+            data: [@php echo $dadosLeads @endphp],
+           
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',                     
+                'rgba(255, 159, 64, 1)'
+            ],
+           borderWidth: 1, 
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+/* Gráfico 02 */
+var ctx = document.getElementById('myChart2');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [@php echo $meses @endphp],
+        datasets: [{
+            label: @php echo $matriculasLabel @endphp,
+            data: [@php echo $dadosMatriculas @endphp],
+           
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',                     
+                'rgba(255, 159, 64, 1)'
+            ],
+           borderWidth: 1, 
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+/* Gráfico 03 */
+var ctx = document.getElementById('myChart3');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Matrículas', 'Agendados', 'Visitas'],
+        datasets: [{
+            label: ,
+            data: [@php echo $dadosMatriculasTele; echo $dadosAgendados; echo $dadosVisitas @endphp],
+            backgroundColor: [
+                'rgba(255, 99, 132)',
+                'rgba(54, 162, 235)',                         
+                'rgba(255, 159, 64)'
+            ]
+        }]
+    }
+});
+</script>
+@endpush

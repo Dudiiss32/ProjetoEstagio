@@ -11,10 +11,8 @@ use Illuminate\Http\Request;
 
 class AnaliseController extends Controller
 {
-    public function index(Request $request)
+    public function carregarDados($funcionario, $mesSelecionado)
     {
-        $funcionario = $request->input('funcionario');
-        $mesSelecionado = $request->input('mesSelecionado');
 
         $users = User::all();
         $mesesDisponiveis = [
@@ -206,12 +204,21 @@ class AnaliseController extends Controller
 
 
 
-        return view('analise.index', [
+        return [
             'dados' => $dados,
             'users' => $users,
             'mesesDisponiveis' => $mesesDisponiveis,
             'mesSelecionado' => $mesSelecionado,
-        ]);
+        ];
+    }
+    public function index(Request $request)
+    {
+        $funcionario = $request->input('funcionario');
+        $mesSelecionado = $request->input('mesSelecionado');
+
+        $dados = $this->carregarDados($funcionario, $mesSelecionado);
+
+        return view('analise.index', $dados);
     }
 
     public function create()
@@ -219,11 +226,64 @@ class AnaliseController extends Controller
         return view('analise.create', ['users' => User::all()]);
     }
 
-    public function grafico(){
-        
-        return view('analise.grafico');
-    }
-    public function store(Request $request)
+    public function grafico(Request $request)
     {
+        $funcionario = $request->input('funcionario');
+        $mesSelecionado = $request->input('mesSelecionado');
+
+        $resultado = $this->carregarDados($funcionario, $mesSelecionado);
+        $dados = $resultado['dados'];
+
+        $mesesNomes = [
+            '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
+            '05' => 'Maio', '06' => 'Junho', '07' => 'Julho', '08' => 'Agosto',
+            '09' => 'Setembro', '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro',
+        ];
+
+        foreach ($dados as $dado) {
+            $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); // ex: 3 -> 03
+            $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
+            $total_leads[] = $dado['total_leads'];
+            $total_matriculas[] = $dado['total_matriculas'];
+            $total_telemarketings[] = $dado['total_telemarketings'];
+            $total_matriculas_tele[] = $dado['total_matriculas_tele'];
+            $total_agendados[] = $dado['total_agendados'];
+            $total_visitas[] = $dado['total_visitas'];
+            $metaTele[] = $dado['metaTele'];
+            $metaIndicacoes[] = $dado['metaIndicacoes'];
+            $tempoTele[] = $dado['tempoTele'];
+            $tempoLead[] = $dado['tempoLead'];
+        }
+        // Labels
+        $leadsLabel = "'Comparativo de total de leads por mês'";
+        $matriculasLabel = "'Comparativo de total de matrículas por mês'";
+
+
+
+        // Implodes
+        $totalMesesDisponiveis = implode("','", $mes);
+        $total_leads = implode(',', $total_leads);
+        $total_matriculas = implode(',', $total_matriculas);
+        $total_telemarketings = implode(',', $total_telemarketings);
+        $totalMesesDisponiveis = implode("','", $mes);
+        $total_matriculas_tele = implode(',', $total_matriculas_tele);
+        $total_agendados = implode(',', $total_agendados);
+        $total_visitas = implode(',', $total_visitas);
+        
+
+        return view('analise.grafico', [
+            'meses' => json_encode($totalMesesDisponiveis),
+            'leadsLabel' => json_encode($leadsLabel),
+            'matriculasLabel' => json_encode($matriculasLabel),
+        
+            'dadosLeads' => json_encode($total_leads),
+            'dadosMatriculas' => json_encode($total_matriculas),
+            'dadosTeles' => json_encode($total_telemarketings),
+            'dadosMatriculasTele' => json_encode($total_matriculas_tele),
+            'dadosAgendados' => json_encode($total_agendados),
+            'dadosVisitas' => json_encode($total_visitas),
+        ]);
     }
+
+    
 }
