@@ -76,11 +76,10 @@ var ctx = document.getElementById('myChart2');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: [@php echo $meses @endphp],
+        labels: {{!! json_encode($meses) !!}},
         datasets: [{
-            label: @php echo $matriculasLabel @endphp,
-            data: [@php echo $dadosMatriculas @endphp],
-           
+            label: {{!! json_encode($matriculasLabel) !!}},
+            data: {{!! json_encode($dadosMatriculas) !!}}
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
@@ -107,8 +106,8 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ['Matrículas', 'Agendados', 'Visitas'],
         datasets: [{
-            label: ,
-            data: [@php echo $dadosMatriculasTele; echo $dadosAgendados; echo $dadosVisitas @endphp],
+            label: 'Distribuição',
+            data: {{!! json_encode($dadosMatriculasTele) !!}} ,
             backgroundColor: [
                 'rgba(255, 99, 132)',
                 'rgba(54, 162, 235)',                         
