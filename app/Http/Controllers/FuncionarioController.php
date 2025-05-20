@@ -35,6 +35,15 @@ class FuncionarioController extends Controller
             'metaMatricula' => 'required|string',
             'metaIndicacoes' => 'required|string',
         ]);
+
+        $funcionarios = Funcionario::all();
+        foreach($funcionarios as $func){
+            if(isset($func->id_user) && $func->id_user == $request->id_user){
+                return redirect()->route('funcionario.index')->with('error', 'Meta já cadastrada nesse usuário no mês atual!');
+                die;
+            }
+        }
+        
         Funcionario::create([
             'data' => Carbon::now(),
             'id_user' => $request->id_user,

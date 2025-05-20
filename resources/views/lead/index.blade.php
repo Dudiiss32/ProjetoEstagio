@@ -23,6 +23,79 @@
         </div>
     @endif
     <h1>Lista de leads</h1>
+    
+    <form action="{{route('lead.index')}}" method="GET">
+        <div class="container mt-4">
+            <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
+            <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome...">
+
+            <div class="list-group mt-1" id="sugestoes" style="display: none;"></div>
+
+            <!-- Select oculto que pode ser usado para enviar o valor no form -->
+            <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;">
+                <!-- opções preenchidas via JS ao selecionar -->
+            </select>
+            <button type="submit">Filtrar</button>
+        </div>
+    </form>
+    
+@php
+    $usuariosUnicos = collect($leads)
+        ->filter(fn($lead) => $lead->user) // ignora leads sem user
+        ->map(fn($lead) => ['id' => $lead->user->id, 'nome' => $lead->user->name])
+        ->unique('nome') // remove duplicados pelo nome
+        ->values();
+@endphp
+
+<script>
+  const usuarios = [
+    @foreach($usuariosUnicos as $user)
+      { id: {{ $user['id'] }}, nome: "{{ addslashes($user['nome']) }}" },
+    @endforeach
+  ];
+
+  const input = document.getElementById('usuarioInput');
+  const sugestoes = document.getElementById('sugestoes');
+  const select = document.getElementById('usuarioSelect');
+
+  input.addEventListener('input', function () {
+    const termo = this.value.toLowerCase();
+    sugestoes.innerHTML = '';
+    select.innerHTML = '';
+    sugestoes.style.display = 'none';
+    select.style.display = 'none';
+
+    if (termo.length === 0) return;
+
+    const filtrados = usuarios.filter(user =>
+      user.nome.toLowerCase().includes(termo)
+    );
+
+    if (filtrados.length) {
+      sugestoes.style.display = 'block';
+      filtrados.forEach(user => {
+        const item = document.createElement('button');
+        item.className = 'list-group-item list-group-item-action';
+        item.type = 'button';
+        item.textContent = user.nome;
+        item.addEventListener('click', function () {
+          input.value = user.nome;
+          sugestoes.style.display = 'none';
+
+          const option = document.createElement('option');
+          option.value = user.id;
+          option.textContent = user.nome;
+          select.innerHTML = '';
+          select.appendChild(option);
+          select.style.display = 'none'; // ou 'block' se quiser mostrar
+        });
+        sugestoes.appendChild(item);
+      });
+    }
+  });
+</script>
+
+
     <table class="table table-striped">
         <thead>
             <tr>

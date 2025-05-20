@@ -12,10 +12,18 @@ use Illuminate\Http\Request;
 class LeadController extends Controller
 {
      // LISTAR
-    public function index(){
+    public function index(Request $request){
         // CARREGAR A VIEW
-        $leads = Lead::all();
-        return view('lead.index', compact('leads'));
+        $query = Lead::with('user');
+
+    // Aplica o filtro se houver ID de usuário
+        if ($request->usuario_id) {
+            $query->where('id_user', $request->usuario_id);
+        }
+
+    $leads = $query->get();
+
+    return view('lead.index', compact('leads'));
     }
 
     // DETALHES

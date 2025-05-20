@@ -27,12 +27,12 @@
         </div>            
       </section> 
 
-      <section class="graficos col s12 m6">            
+      {{-- <section class="graficos col s12 m6">            
         <div class="grafico card z-depth-4">
             <h5 class="center"> Produtos </h5>
             <canvas id="myChart4" width="400" height="200"></canvas> 
         </div>            
-      </section>    
+      </section>     --}}
   </div>
 
 </div>
@@ -42,14 +42,15 @@
 @push('graficos')
 <script>
 /* Gráfico 01 */
+
 var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: [@php echo $meses @endphp],
+        labels: {{json_encode($meses)}},
         datasets: [{
-            label: @php echo $leadsLabel @endphp,
-            data: [@php echo $dadosLeads @endphp],
+            label: [{{!! json_encode($leadsLabel) !!}}],
+            data: [{{!! json_encode($dadosLeads)!!}}],
            
             borderColor: [
                 'rgba(255, 99, 132, 1)',
