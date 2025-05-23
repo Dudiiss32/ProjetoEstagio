@@ -13,7 +13,7 @@
 
 
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-5 d-flex flex-column gap-5">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

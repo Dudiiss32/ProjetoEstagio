@@ -29,7 +29,13 @@ class TelemarketingController extends Controller
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request)
     {
-        $tele = Telemarketing::create([
+        $request->validate([
+            "telefone"=> "min:10",
+        ], [
+            'telefone.min' => 'O campo telefone deve ter no mínimo 10 números'
+        ]);
+
+        Telemarketing::create([
             'cliente'     => $request->cliente,
             'telefone'    => $request->telefone,
             'agendamento' => $request->agendamento,
@@ -61,6 +67,13 @@ class TelemarketingController extends Controller
     public function update(Request $request, $id)
     {
         $tele = Telemarketing::findOrFail($id);
+
+        $request->validate([
+            "telefone"=> "min:10",
+        ], [
+            'telefone.min' => 'O campo telefone deve ter no mínimo 10 números'
+        ]);
+        
         $tele->update([
             'cliente'     => $request->cliente,
             'telefone'    => $request->telefone,

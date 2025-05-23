@@ -6,8 +6,15 @@
 @endsection
 @section('content')
 
-    <div class="container mt-5">
+    <div class="container mt-5 d-flex flex-column gap-5">
+    
         <h1>Gerenciar Teles</h1>
+        @error('telefone')
+        <div class="alert alert-danger">
+            {{$message}}
+        </div>
+        @enderror
+        
         <form action="{{ isset($telemarketing) ? route('telemarketing.update', $telemarketing->id) : route('telemarketing.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
             @csrf
             @if (isset($telemarketing))

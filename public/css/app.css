@@ -77,8 +77,12 @@ body.sidebar-hidden .content {
     font-weight: bold;
     border-radius: 5px;
     transition: ease-in .3s;
+    border: 0;
 }
 .cadastro:hover{
     transition: ease-in .3s;
     background-color: rgba(42, 54, 82, 0.651);
+}
+.form-label, .form-control{
+    z-index: 1;
 }

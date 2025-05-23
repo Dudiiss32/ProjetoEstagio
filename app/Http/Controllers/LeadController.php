@@ -38,7 +38,13 @@ class LeadController extends Controller
     // CARREGAR O FORMULÁRIO CADASTRAR NOVA CONTA
     public function store(Request $request){
         $telefone = preg_replace('/\D/', '', $request->input('telefone'));
-    
+        
+        $request->validate([
+            "telefone"=> "min:10",
+        ], [
+            'telefone.min' => 'O campo telefone deve ter no mínimo 10 números'
+        ]);
+
         $lead = Lead::create([
             'id_user' => $request->id_user,
             'cliente' => $request->cliente,
@@ -83,6 +89,12 @@ class LeadController extends Controller
         $lead = Lead::findOrFail($id);
         $telefone = preg_replace('/\D/', '', $request->input('telefone'));
     
+        $request->validate([
+            "telefone"=> "min:10",
+        ], [
+            'telefone.min' => 'O campo telefone deve ter no mínimo 10 números'
+        ]);
+
         $lead->update([
             'id_user' => $request->id_user,
             'cliente' => $request->cliente,

@@ -3,14 +3,16 @@
 @section('title', 'Lista de leads')
 
 @section('dynamic_link_route', route('lead.create'))
-@section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
-@section('show-back-button')
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-        <i class="fa-solid fa-arrow-left"></i> Voltar
-    </a>
-@endsection
+@section('dynamic_link_name', 'Cadastrar novo')
 
 @section('content')
+    {{-- Botão Voltar (opcional, se não usar botão no layout) --}}
+    @section('show-back-button')
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    @endsection
+
     @if(session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
@@ -22,81 +24,95 @@
             {{ session('success') }}
         </div>
     @endif
+
     <h1>Lista de leads</h1>
     
-    <form action="{{route('lead.index')}}" method="GET">
-        <div class="container mt-4">
-            <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
-            <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome...">
+    <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="d-flex flex-column">
+        <div class="container mt-4 d-flex flex-row gap-5 align-items-center justify-content-end flex-wrap gap-2">
+            <div>
+                <button id="mostrarTds" type="button" class="cadastro">Mostrar todos</button>
+            </div>
 
-            <div class="list-group mt-1" id="sugestoes" style="display: none;"></div>
+            <div class="position-relative">
+                <div class="d-flex flex-row gap-5">
+                    <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
+                    <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome...">
+                </div>
+                <div class="list-group mt-1 position-absolute top-100 start-0 w-100" id="sugestoes" style="display: none;"></div>
+                <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;"></select>
+            </div>
 
-            <!-- Select oculto que pode ser usado para enviar o valor no form -->
-            <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;">
-                <!-- opções preenchidas via JS ao selecionar -->
-            </select>
-            <button type="submit">Filtrar</button>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
     </form>
-    
-@php
-    $usuariosUnicos = collect($leads)
-        ->filter(fn($lead) => $lead->user) // ignora leads sem user
-        ->map(fn($lead) => ['id' => $lead->user->id, 'nome' => $lead->user->name])
-        ->unique('nome') // remove duplicados pelo nome
-        ->values();
-@endphp
 
-<script>
-  const usuarios = [
-    @foreach($usuariosUnicos as $user)
-      { id: {{ $user['id'] }}, nome: "{{ addslashes($user['nome']) }}" },
-    @endforeach
-  ];
+    @php
+        $usuariosUnicos = collect($leads)
+            ->filter(fn($lead) => $lead->user)
+            ->map(fn($lead) => ['id' => $lead->user->id, 'nome' => $lead->user->name])
+            ->unique('nome')
+            ->values();
+    @endphp
 
-  const input = document.getElementById('usuarioInput');
-  const sugestoes = document.getElementById('sugestoes');
-  const select = document.getElementById('usuarioSelect');
+    <script>
+        const usuarios = [
+            @foreach($usuariosUnicos as $user)
+                { id: {{ $user['id'] }}, nome: "{{ addslashes($user['nome']) }}" },
+            @endforeach
+        ];
 
-  input.addEventListener('input', function () {
-    const termo = this.value.toLowerCase();
-    sugestoes.innerHTML = '';
-    select.innerHTML = '';
-    sugestoes.style.display = 'none';
-    select.style.display = 'none';
+        const input = document.getElementById('usuarioInput');
+        const sugestoes = document.getElementById('sugestoes');
+        const select = document.getElementById('usuarioSelect');
 
-    if (termo.length === 0) return;
+        input.addEventListener('input', function () {
+            const termo = this.value.toLowerCase();
+            sugestoes.innerHTML = '';
+            select.innerHTML = '';
+            sugestoes.style.display = 'none';
+            select.style.display = 'none';
 
-    const filtrados = usuarios.filter(user =>
-      user.nome.toLowerCase().includes(termo)
-    );
+            if (termo.length === 0) return;
 
-    if (filtrados.length) {
-      sugestoes.style.display = 'block';
-      filtrados.forEach(user => {
-        const item = document.createElement('button');
-        item.className = 'list-group-item list-group-item-action';
-        item.type = 'button';
-        item.textContent = user.nome;
-        item.addEventListener('click', function () {
-          input.value = user.nome;
-          sugestoes.style.display = 'none';
+            const filtrados = usuarios.filter(user =>
+                user.nome.toLowerCase().includes(termo)
+            );
 
-          const option = document.createElement('option');
-          option.value = user.id;
-          option.textContent = user.nome;
-          select.innerHTML = '';
-          select.appendChild(option);
-          select.style.display = 'none'; // ou 'block' se quiser mostrar
+            if (filtrados.length) {
+                sugestoes.style.display = 'block';
+                filtrados.forEach(user => {
+                    const item = document.createElement('button');
+                    item.className = 'list-group-item list-group-item-action';
+                    item.type = 'button';
+                    item.textContent = user.nome;
+                    item.addEventListener('click', function () {
+                        input.value = user.nome;
+                        sugestoes.style.display = 'none';
+
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = user.nome;
+                        select.innerHTML = '';
+                        select.appendChild(option);
+                        select.style.display = 'none';
+                    });
+                    sugestoes.appendChild(item);
+                });
+            }
         });
-        sugestoes.appendChild(item);
-      });
-    }
-  });
-</script>
 
+        document.getElementById('mostrarTds').addEventListener('click', function (e) {
+            e.preventDefault();
+            input.value = '';
+            sugestoes.innerHTML = '';
+            sugestoes.style.display = 'none';
+            select.innerHTML = '';
+            select.style.display = 'none';
+            document.getElementById('formFiltro').submit();
+        });
+    </script>
 
-    <table class="table table-striped">
+    <table class="table table-striped mt-4">
         <thead>
             <tr>
                 <th>Data</th>
@@ -114,36 +130,36 @@
         <tbody>
             @foreach ($leads as $lead)
                 <tr>
-                    <td>{{$lead->data->format('d/m/Y')}}</td>
-                    <td>{{$lead->user->name ?? 'Usuário não encontrado'}}</td>
-                    <td>{{$lead->midia->nome}}</td>
-                    <td>{{$lead->cliente}}</td>
+                    <td>{{ $lead->data->format('d/m/Y') }}</td>
+                    <td>{{ $lead->user->name ?? 'Usuário não encontrado' }}</td>
+                    <td>{{ $lead->midia->nome }}</td>
+                    <td>{{ $lead->cliente }}</td>
                     @php
                         $telefone = preg_replace('/\D/', '', $lead->telefone);
-
                         if (strlen($telefone) === 11) {
-                            // (51) 91234-5678
                             $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 5).'-'.substr($telefone, 7);
                         } elseif (strlen($telefone) === 10) {
-                            // (51) 1234-5678
                             $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 4).'-'.substr($telefone, 6);
                         }
                     @endphp
-                    <td>{{$telefone}}</td>
-                    <td>{{$lead->curso->nome ?? ''}}</td>
-                    <td>{{$lead->matricula ? 'Sim' : 'Não'}}</td>
-                    <td>{{$lead->observacao}}</td>
-                    <td>{{$lead->indicacoes->count()}}</td>
+                    <td>{{ $telefone }}</td>
+                    <td>{{ $lead->curso->nome ?? '' }}</td>
+                    <td>{{ $lead->matricula ? 'Sim' : 'Não' }}</td>
+                    <td>{{ $lead->observacao }}</td>
+                    <td>{{ $lead->indicacoes->count() }}</td>
                     <td>
-                        <form action="{{route('lead.delete', $lead->id)}}" method="POST" style="display: inline">
+                        <form action="{{ route('lead.delete', $lead->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button> 
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </form>
-                        <a href="{{ route('lead.edit', $lead->id) }}" class="btn btn-warning"><i class="fa-solid fa-pencil"></i></a>
+                        <a href="{{ route('lead.edit', $lead->id) }}" class="btn btn-warning">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
                     </td>
-                </tr>    
-                
+                </tr>
             @endforeach
         </tbody>
     </table>

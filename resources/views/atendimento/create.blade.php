@@ -10,7 +10,7 @@
     </a>
 @endsection
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-5 d-flex flex-column gap-5">
         <h1 class="card-title mb-4">Gerenciar Atendimentos</h1>
         {{-- Formulário --}}
         <form action="{{ isset($atendimento) ? route('atendimento.update', $atendimento->id) : route('atendimento.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">

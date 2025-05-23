@@ -23,10 +23,11 @@
                 <li class="nav-item"><a class="nav-link" href="{{route('curso.index')}}">Cursos</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('user.index')}}">Usuários</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('midia.index')}}">Mídias</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('analise.index')}}">Análise</a></li>
             @endcan
            
             <li class="nav-item"><a class="nav-link" href="{{route('indicacao.index')}}">Indicações</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{route('analise.index')}}">Análise</a></li>
+            
         </ul>
     </div>
 

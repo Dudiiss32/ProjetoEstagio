@@ -6,9 +6,15 @@
     <a href="{{route('lead.index')}}" class="cadastro">Visualizar leads</a>
 @endsection
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-5 d-flex flex-column gap-4">
         <h1 class="card-title mb-4">Gerenciar Leads</h1>
         {{-- Formulário --}}
+        @error('telefone')
+        <div class="alert alert-danger">
+            {{$message}}
+        </div>
+        @enderror
+
         <form action="{{ isset($lead) ? route('lead.update', $lead->id) : route('lead.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">
             @csrf
             @if (isset($lead))
@@ -25,12 +31,12 @@
 
             <div class="col-md-6">
                 <label for="cliente" class="form-label">Cliente:</label>
-                <input type="text" name="cliente" class="form-control" value="{{isset($lead) ? $lead->cliente : ''}}" id="cliente" required>
+                <input type="text" name="cliente" class="form-control" value="{{old('cliente', isset($lead) ? $lead->cliente : '')}}" id="cliente" required>
             </div>
 
             <div class="col-md-6">
                 <label for="telefone" class="form-label">Telefone:</label>
-                <input type="text" name="telefone" class="form-control telefone" value="{{isset($lead) ? $lead->telefone : ''}}" id="telefone" required>
+                <input type="text" name="telefone" class="form-control telefone" value="{{ old('telefone', isset($lead) ? $lead->telefone : '')}}" id="telefone" required>
             </div>
 
             <div class="col-md-6">
@@ -43,7 +49,7 @@
 
             <div class="col-md-6">
                 <label for="observacao" class="form-label">Observação:</label>
-                <input type="text" name="observacao" class="form-control" value="{{isset($lead) ? $lead->observacao : ''}}" id="observacao">
+                <input type="text" name="observacao" class="form-control" value="{{old('observacao', isset($lead) ? $lead->observacao : '') }}" id="observacao">
             </div>
 
             <div class="col-md-6">
