@@ -241,7 +241,7 @@ class AnaliseController extends Controller
         ];
 
         foreach ($dados as $dado) {
-            $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); // ex: 3 -> 03
+            $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); 
             $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
             $total_leads[] = $dado['total_leads'];
             $total_matriculas[] = $dado['total_matriculas'];
