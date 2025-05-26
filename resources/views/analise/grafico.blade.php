@@ -47,10 +47,10 @@ var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {{json_encode($meses)}},
+        labels: {{$meses}},
         datasets: [{
-            label: [{{!! json_encode($leadsLabel) !!}}],
-            data: [{{!! json_encode($dadosLeads)!!}}],
+            label: [{{!! $leadsLabel !!}}],
+            data: [{{!! $dadosLeads!!}}]
            
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -77,10 +77,10 @@ var ctx = document.getElementById('myChart2');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {{!! json_encode($meses) !!}},
+        labels: {{!! $meses !!}},
         datasets: [{
-            label: {{!! json_encode($matriculasLabel) !!}},
-            data: {{!! json_encode($dadosMatriculas) !!}}
+            label: {{!! $matriculasLabel!!}},
+            data: {{!! $dadosMatriculas !!}}
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
@@ -108,7 +108,7 @@ var myChart = new Chart(ctx, {
         labels: ['Matrículas', 'Agendados', 'Visitas'],
         datasets: [{
             label: 'Distribuição',
-            data: {{!! json_encode($dadosMatriculasTele) !!}} ,
+            data: {{!!$dadosMatriculasTele !!}} ,
             backgroundColor: [
                 'rgba(255, 99, 132)',
                 'rgba(54, 162, 235)',                         

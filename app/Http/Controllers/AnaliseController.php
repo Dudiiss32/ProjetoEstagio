@@ -258,17 +258,7 @@ class AnaliseController extends Controller
         $leadsLabel = "'Comparativo de total de leads por mês'";
         $matriculasLabel = "'Comparativo de total de matrículas por mês'";
 
-
-
-        // Implodes
-        $totalMesesDisponiveis = implode("','", $mes);
-        $total_leads = implode(',', $total_leads);
-        $total_matriculas = implode(',', $total_matriculas);
-        $total_telemarketings = implode(',', $total_telemarketings);
-        $totalMesesDisponiveis = implode("','", $mes);
-        $total_matriculas_tele = implode(',', $total_matriculas_tele);
-        $total_agendados = implode(',', $total_agendados);
-        $total_visitas = implode(',', $total_visitas);
+        $totalMesesDisponiveis = $mes;
         
 
         return view('analise.grafico', [
