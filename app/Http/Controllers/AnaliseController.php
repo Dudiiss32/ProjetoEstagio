@@ -11,10 +11,15 @@ use Illuminate\Http\Request;
 
 class AnaliseController extends Controller
 {
-    public function carregarDados($funcionario, $mesSelecionado)
+    public function carregarDados($funcionario, $mesSelecionado = null, $mesInicio = null, $mesFim = null)
     {
 
         $users = User::all();
+
+        $funcionarioSelecionado = $funcionario ?? $users->first()->id;
+
+        $funcionario = $funcionarioSelecionado;
+
         $mesesDisponiveis = [
             '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
             '05' => 'Maio', '06' => 'Junho', '07' => 'Julho', '08' => 'Agosto',
@@ -228,11 +233,15 @@ class AnaliseController extends Controller
 
     public function grafico(Request $request)
     {
+
         $funcionario = $request->input('funcionario');
         $mesSelecionado = $request->input('mesSelecionado');
+        $mesInicio = $request->input('mesInicio');
+        $mesFim = $request->input('mesFim');
 
         $resultado = $this->carregarDados($funcionario, $mesSelecionado);
         $dados = $resultado['dados'];
+
 
         $mesesNomes = [
             '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
@@ -243,35 +252,43 @@ class AnaliseController extends Controller
         foreach ($dados as $dado) {
             $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); 
             $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
-            $total_leads[] = $dado['total_leads'];
-            $total_matriculas[] = $dado['total_matriculas'];
-            $total_telemarketings[] = $dado['total_telemarketings'];
-            $total_matriculas_tele[] = $dado['total_matriculas_tele'];
-            $total_agendados[] = $dado['total_agendados'];
-            $total_visitas[] = $dado['total_visitas'];
-            $metaTele[] = $dado['metaTele'];
-            $metaIndicacoes[] = $dado['metaIndicacoes'];
-            $tempoTele[] = $dado['tempoTele'];
-            $tempoLead[] = $dado['tempoLead'];
+            $total_leads = $dado['total_leads'];
+            $total_matriculas = $dado['total_matriculas'];
+            $total_telemarketings = $dado['total_telemarketings'];
+            $total_matriculas_tele = $dado['total_matriculas_tele'];
+            $total_agendados = $dado['total_agendados'];
+            $total_visitas = $dado['total_visitas'];
+            $metaTele = $dado['metaTele'];
+            $metaIndicacoes = $dado['metaIndicacoes'];
+            $tempoTele = $dado['tempoTele'];
+            $tempoLead = $dado['tempoLead'];
         }
         // Labels
         $leadsLabel = "'Comparativo de total de leads por mês'";
+
         $matriculasLabel = "'Comparativo de total de matrículas por mês'";
 
         $totalMesesDisponiveis = $mes;
         
+        $total_matriculas_agendados_visitas = [
+            $total_matriculas,
+            $total_agendados,
+            $total_visitas
+        ];
+
 
         return view('analise.grafico', [
             'meses' => json_encode($totalMesesDisponiveis),
             'leadsLabel' => json_encode($leadsLabel),
             'matriculasLabel' => json_encode($matriculasLabel),
         
-            'dadosLeads' => json_encode($total_leads),
-            'dadosMatriculas' => json_encode($total_matriculas),
-            'dadosTeles' => json_encode($total_telemarketings),
-            'dadosMatriculasTele' => json_encode($total_matriculas_tele),
-            'dadosAgendados' => json_encode($total_agendados),
-            'dadosVisitas' => json_encode($total_visitas),
+            'total_leads' => json_encode($total_leads),
+            'total_matriculas' => json_encode($total_matriculas),
+            'total_telemarketings' => json_encode($total_telemarketings),
+            'total_matriculas_tele' => json_encode($total_matriculas_tele),
+            'total_agendados' => json_encode($total_agendados),
+            'total_visitas' => json_encode($total_visitas),
+            'total_mav' => json_encode($total_matriculas_agendados_visitas),
         ]);
     }
 

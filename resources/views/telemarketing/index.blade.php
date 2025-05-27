@@ -42,7 +42,7 @@
                     <td>{{$tele->cliente}}</td>
                     <td>{{$tele->telefone}}</td>
                     <td>{{$tele->agendamento ? $tele->agendamento->format('d/m/Y') : ''}}</td>
-                    <td>{{$tele->hora}}</td>
+                    <td>{{$tele->hora ? \Carbon\Carbon::createFromFormat('H:i:s', $tele->hora)->format('H:i') : ''}}</td>
                     <td>
                         <form action="{{route('telemarketing.delete', $tele->id)}}" method="POST" style="display: inline">
                             @csrf

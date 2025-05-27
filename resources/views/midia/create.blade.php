@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gerenciar Mídias')
+@section('title', 'Inserir Mídias')
 
 @section('dynamic_link_route', route('midia.index'))
 @section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
@@ -11,7 +11,7 @@
 @endsection
 @section('content')
     <div class="container mt-5 d-flex flex-column gap-5">
-        <h1 class="card-title mb-4">Gerenciar Mídias</h1>
+        <h1 class="card-title mb-4">Inserir Mídias</h1>
 
         {{-- Formulário --}}
         <form action="{{ isset($midia) ? route('midia.update', $midia->id) : route('midia.store') }}" method="POST" class="row g-3 border p-4 rounded shadow-sm">

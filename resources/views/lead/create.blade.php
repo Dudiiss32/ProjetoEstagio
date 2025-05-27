@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Gerenciar Leads')
+@section('title', 'Cadastrar leads')
 
 @section('link-cadastro')
     <a href="{{route('lead.index')}}" class="cadastro">Visualizar leads</a>
 @endsection
 @section('content')
     <div class="container mt-5 d-flex flex-column gap-4">
-        <h1 class="card-title mb-4">Gerenciar Leads</h1>
+        <h1 class="card-title mb-4">Cadastrar leads</h1>
         {{-- Formulário --}}
         @error('telefone')
         <div class="alert alert-danger">

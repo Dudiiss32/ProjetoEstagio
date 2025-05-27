@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de usuários')
+@section('title', 'Lista de mídias')
 @section('link-cadastro')
     <a href="{{route('midia.create')}}" class="cadastro">Nova mídia</a>
 @endsection

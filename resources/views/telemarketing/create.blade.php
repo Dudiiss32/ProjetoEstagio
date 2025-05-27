@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gerenciar Teles')
+@section('title', 'Cadastrar teles')
 @section('link-cadastro')
     <a href="{{route('telemarketing.index')}}" class="cadastro">Visualizar Teles</a>
 @endsection
@@ -8,7 +8,7 @@
 
     <div class="container mt-5 d-flex flex-column gap-5">
     
-        <h1>Gerenciar Teles</h1>
+        <h1>Cadastrar teles</h1>
         @error('telefone')
         <div class="alert alert-danger">
             {{$message}}

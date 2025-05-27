@@ -32,7 +32,7 @@
     </div>
 
     {{-- Cabeçalho --}}
-    <header class="bg-dark text-white p-3">
+    <header class="bg-dark text-white p-3 d-flex flex-row">
         <i class="fa-solid fa-bars menu" id="menu"></i>
         <div class="container-fluid div-menu">
             <h1 class="h4 m-0">Painel Administrativo</h1>

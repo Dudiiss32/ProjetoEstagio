@@ -19,6 +19,10 @@
 <form action="{{ route('analise.index') }}" method="GET" class="mb-4">
     <div class="form-group">
         <label for="funcionario">Selecionar Funcionário:</label>
+        @php
+            $funcionarioSelecionado = request('funcionario') ?? $users->first()->id;
+        @endphp
+
         <select name="funcionario" id="funcionario" class="form-control" onchange="this.form.submit()">
             @foreach ($users as $user)
                 <option value="{{ $user->id }}" {{ request('funcionario') == $user->id || (request('funcionario') == null && $loop->first) ? 'selected' : '' }}>
@@ -168,7 +172,11 @@
             </tr>
         </tbody>
     </table>
-    <a href="{{route('analise.grafico', ['dados' => $dados, 'mesesDisponiveis' => $mesesDisponiveis, 'mesSelecionado' => request('mesSelecionado')])}}">Ver gráficos</a>
+    @php
+        $funcionarioSelecionado = request('funcionario') ?? $users->first()->id;
+    @endphp
+    <a class="btn btn-primary" href="{{route('analise.grafico', ['dados' => $dados, 'mesesDisponiveis' => $mesesDisponiveis, 'mesSelecionado' => request('mesSelecionado'), 
+    'funcionario' => $funcionarioSelecionado ])}}">Ver gráficos</a>
 @else
     <h4>Ainda não há dados desse funcionário</h4>
 @endif

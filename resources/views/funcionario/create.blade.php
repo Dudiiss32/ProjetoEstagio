@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gerenciar Metas')
+@section('title', 'Cadastrar metas')
 
 @section('dynamic_link_route', route('funcionario.index'))
 @section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
@@ -11,7 +11,7 @@
 @endsection
 @section('content')
     <div class="container mt-5 d-flex flex-column gap-5">
-        <h1 class="card-title mb-4">Gerenciar Metas</h1>
+        <h1 class="card-title mb-4">Cadastrar metas</h1>
 
 
         {{-- Formulário --}}
