@@ -42,6 +42,14 @@
                 <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;"></select>
             </div>
 
+            <div>
+                <select name="" id="">
+                    @foreach ($midias as $midia)
+                        <option value="{{$midia->id}}">{{$midia->nome}}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
     </form>

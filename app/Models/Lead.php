@@ -33,4 +33,12 @@ class Lead extends Model
     {
         return $this->hasOne(Telemarketing::class, 'id_lead');
     }
+
+    public function scopeDeUsuarios($query, $userId){
+        return $query->where('id_user', $userId);
+    }
+
+    public function scopeDeMidias($query, $midiaId){
+        return $query->where('id_midia', $midiaId);
+    }
 }

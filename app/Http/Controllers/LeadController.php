@@ -23,7 +23,9 @@ class LeadController extends Controller
 
     $leads = $query->get();
 
-    return view('lead.index', compact('leads'));
+    $midias = Midia::all();
+
+    return view('lead.index', compact(['leads', 'midias']));
     }
 
     // DETALHES
