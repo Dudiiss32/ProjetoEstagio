@@ -73,6 +73,20 @@
             <canvas id="myChart4" width="400" height="200"></canvas>
         </div>           
       </section> 
+
+      <section class="graficos col s12 m6" >            
+        <div class="grafico card z-depth-4">
+            <h5 class="center"> Telemarketings</h5>
+            <canvas id="myChart5" width="400" height="200"></canvas>
+        </div>           
+      </section> 
+
+      <section class="graficos col s12 m6" >            
+        <div class="grafico card z-depth-4">
+            <h5 class="center"> Telemarketings</h5>
+            <canvas id="myChart6" width="400" height="200"></canvas>
+        </div>           
+      </section> 
   </div>
 
 </div>

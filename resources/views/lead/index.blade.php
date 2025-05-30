@@ -36,7 +36,7 @@
             <div class="position-relative">
                 <div class="d-flex flex-row gap-5">
                     <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
-                    <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome...">
+                    <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome..." autocomplete="off">
                 </div>
                 <div class="list-group mt-1 position-absolute top-100 start-0 w-100" id="sugestoes" style="display: none;"></div>
                 <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;"></select>

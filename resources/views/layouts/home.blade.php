@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Meu Projeto')</title>
+    <title>@yield('title', 'Akila')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}"> 
@@ -11,7 +11,7 @@
 <body>
     {{-- Menu lateral --}}
     <div class="sidebar d-flex flex-column p-3 text-white" id="sidebar">
-        <h4 class="text-center text-white mb-4">Meu Projeto</h4>
+        <h4 class="text-center text-white mb-4">Akila</h4>
         <ul class="nav nav-pills flex-column">
             @can('ver-users')
                 <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}">Metas</a></li>
@@ -53,7 +53,7 @@
 
     {{-- Rodapé --}}
     <footer class="bg-dark text-white text-center p-3">
-        <p>© 2025 - Meu Projeto Laravel</p>
+        <p>© 2025 - Akila</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

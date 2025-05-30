@@ -289,6 +289,7 @@ class AnaliseController extends Controller
             'total_agendados' => json_encode($total_agendados),
             'total_visitas' => json_encode($total_visitas),
             'total_mav' => json_encode($total_matriculas_agendados_visitas),
+            'meta_tele'
         ]);
     }
 
