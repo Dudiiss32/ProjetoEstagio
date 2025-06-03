@@ -8,6 +8,7 @@ use App\Models\Lead;
 use App\Models\Telemarketing;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnaliseController extends Controller
 {
@@ -233,6 +234,13 @@ class AnaliseController extends Controller
 
     public function grafico(Request $request)
     {
+
+        if($request->filled('mesInicio')){
+            
+        }
+        if($request->filled('mesFim')){
+            
+        }
 
         $funcionario = $request->input('funcionario');
         $mesSelecionado = $request->input('mesSelecionado');
