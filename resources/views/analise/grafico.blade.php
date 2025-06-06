@@ -101,7 +101,7 @@ var ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {!! $meses !!},
+        labels: {!! $mes!!},
         datasets: [{
             label: [{!! $leadsLabel !!}],
             data: [{!! $total_leads!!}],
@@ -131,7 +131,7 @@ var ctx = document.getElementById('myChart2');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {!! $meses !!},
+        labels: {!! $mes !!},
         datasets: [{
             label: {!! $matriculasLabel!!},
             data: {!! $total_matriculas !!},
@@ -176,7 +176,7 @@ var ctx = document.getElementById('myChart4');
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: {!! $meses !!},
+        labels: {!! $mes !!},
         datasets: [{
             label: 'Comparativo de telemarketings por mês',
             data: {!! $total_telemarketings !!},

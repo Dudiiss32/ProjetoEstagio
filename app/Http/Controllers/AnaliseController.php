@@ -30,7 +30,9 @@ class AnaliseController extends Controller
         // Consulta de Leads
         $leads = Lead::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_leads')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->with('user')
             ->groupByRaw('MONTH(data), id_user')
             ->get();
@@ -39,14 +41,18 @@ class AnaliseController extends Controller
         $matriculas = Lead::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_matriculas')
             ->where('matricula', true)
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->groupByRaw('MONTH(data), id_user')
             ->get();
 
         // Consulta de Telemarketings
         $telemarketings = Telemarketing::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_telemarketings')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+           ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->with('user')
             ->groupByRaw('MONTH(data), id_user')
             ->get();
@@ -57,7 +63,9 @@ class AnaliseController extends Controller
             ->join('midias', 'midias.id', '=', 'leads.id_midia')
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('leads.data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->groupByRaw('MONTH(leads.data), leads.id_user')
             ->get();
             
@@ -66,49 +74,59 @@ class AnaliseController extends Controller
             ->join('midias', 'midias.id', '=', 'leads.id_midia')
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('leads.data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->groupByRaw('MONTH(leads.data), leads.id_user')->get();
 
         $indicacoes = Indicacao::selectRaw('MONTH(indicacaos.data) as mes, leads.id_user, COUNT(*) as total_indicacoes')
             ->join('leads', 'leads.id', '=', 'indicacaos.lead_id')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('indicacaos.data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->groupByRaw('MONTH(indicacaos.data), leads.id_user')->get();
         
         // Consulta de Agendados
         $agendados = Telemarketing::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_agendados')
             ->whereNotNull('agendamento')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->groupByRaw('MONTH(data), id_user')
             ->get();
         
         $metaTeles = Funcionario::selectRaw('MONTH(data) as mes, id_user, metaTele')
             ->whereNotNull('metaTele')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            // ->groupByRaw('MONTH(data), id_user')
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->get();
 
         $metaIndicacoes = Funcionario::selectRaw('MONTH(data) as mes, id_user, metaIndicacoes')
             ->whereNotNull('metaIndicacoes')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            // ->groupByRaw('MONTH(data), id_user')
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->get();
 
         $tempoTele = Funcionario::selectRaw('MONTH(data) as mes, id_user, tempoTele')
             ->whereNotNull('tempoTele')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            // ->groupByRaw('MONTH(data), id_user')
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->get();
 
         $tempoLead = Funcionario::selectRaw('MONTH(data) as mes, id_user, tempoLead')
             ->whereNotNull('tempoLead')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('id_user', $funcionario))
-            ->when($mesSelecionado, fn($q) => $q->whereMonth('data', $mesSelecionado))
-            // ->groupByRaw('MONTH(data), id_user')
+            ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
+                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+            })
             ->get();
 
         // ...
@@ -247,29 +265,47 @@ class AnaliseController extends Controller
         $mesInicio = $request->input('mesInicio');
         $mesFim = $request->input('mesFim');
 
-        $resultado = $this->carregarDados($funcionario, $mesSelecionado);
+        
+        $resultado = $this->carregarDados($funcionario, $mesSelecionado, $mesInicio, $mesFim);
         $dados = $resultado['dados'];
 
+        if ($mesInicio && $mesFim) {
+            $dados = array_filter($dados, function ($item) use ($mesInicio, $mesFim) {
+                $mes = str_pad($item['mes'], 2, '0', STR_PAD_LEFT);
+                return $mes >= $mesInicio && $mes <= $mesFim;
+            });
+        }
 
         $mesesNomes = [
             '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
             '05' => 'Maio', '06' => 'Junho', '07' => 'Julho', '08' => 'Agosto',
             '09' => 'Setembro', '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro',
         ];
+        $mes = [];
+        $total_leads = [];
+        $total_matriculas = [];
+        $total_telemarketings = [];
+        $total_matriculas_tele = [];
+        $total_agendados = [];
+        $total_visitas = [];
+        $metaTele = [];
+        $metaIndicacoes = [];
+        $tempoTele = [];
+        $tempoLead = [];
 
         foreach ($dados as $dado) {
             $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); 
             $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
-            $total_leads = $dado['total_leads'];
-            $total_matriculas = $dado['total_matriculas'];
-            $total_telemarketings = $dado['total_telemarketings'];
-            $total_matriculas_tele = $dado['total_matriculas_tele'];
-            $total_agendados = $dado['total_agendados'];
-            $total_visitas = $dado['total_visitas'];
-            $metaTele = $dado['metaTele'];
-            $metaIndicacoes = $dado['metaIndicacoes'];
-            $tempoTele = $dado['tempoTele'];
-            $tempoLead = $dado['tempoLead'];
+            $total_leads[] = $dado['total_leads'];
+            $total_matriculas[] = $dado['total_matriculas'];
+            $total_telemarketings[] = $dado['total_telemarketings'];
+            $total_matriculas_tele[] = $dado['total_matriculas_tele'];
+            $total_agendados[] = $dado['total_agendados'];
+            $total_visitas[] = $dado['total_visitas'];
+            $metaTele[] = $dado['metaTele'];
+            $metaIndicacoes[] = $dado['metaIndicacoes'];
+            $tempoTele[] = $dado['tempoTele'];
+            $tempoLead[] = $dado['tempoLead'];
         }
         // Labels
         $leadsLabel = "'Comparativo de total de leads por mês'";
@@ -286,18 +322,18 @@ class AnaliseController extends Controller
 
 
         return view('analise.grafico', [
-            'meses' => json_encode($totalMesesDisponiveis),
+            'mes' => json_encode($totalMesesDisponiveis),
+            'total_leads' => json_encode($total_leads) ,
+            'total_telemarketings' => json_encode($total_telemarketings),
+            'total_matriculas' => json_encode($total_matriculas),
+            'total_matriculas_tele' => json_encode($total_matriculas_tele),
+            'total_mav' => json_encode($total_matriculas_agendados_visitas),
+            'metaTele' => json_encode($metaTele),
+            'metaIndicacoes' => json_encode($metaIndicacoes),
+            'tempoTele' => json_encode($tempoTele),
+            'tempoLead' => json_encode($tempoLead),
             'leadsLabel' => json_encode($leadsLabel),
             'matriculasLabel' => json_encode($matriculasLabel),
-        
-            'total_leads' => json_encode($total_leads),
-            'total_matriculas' => json_encode($total_matriculas),
-            'total_telemarketings' => json_encode($total_telemarketings),
-            'total_matriculas_tele' => json_encode($total_matriculas_tele),
-            'total_agendados' => json_encode($total_agendados),
-            'total_visitas' => json_encode($total_visitas),
-            'total_mav' => json_encode($total_matriculas_agendados_visitas),
-            'meta_tele'
         ]);
     }
 
