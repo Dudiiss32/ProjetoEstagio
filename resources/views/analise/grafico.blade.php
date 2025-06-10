@@ -19,6 +19,7 @@
 @endphp
 
 <form action="{{route('analise.grafico')}}" method="get" class="row container center-align" >
+    <input type="hidden" name="funcionario" value="{{$funcionario}}">
     <div  class="input-field col s12 m4 center">
         <p>Mês de início</p>
         <select name="mesInicio" class="browser-default" id="">
@@ -32,7 +33,7 @@
 
     <div  class="input-field col s12 m4 center">
         <p>Mês final</p>
-        <select name="mesFinal" class="browser-default" id="">
+        <select name="mesFim" class="browser-default" id="">
             <option value="" disabled selected>Escolha um mês</option>
             @foreach ($mesesNomes as $num => $nome)
                 <option value="{{$num}}">{{$nome}}</option>

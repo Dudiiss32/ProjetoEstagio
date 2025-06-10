@@ -64,7 +64,7 @@ class AnaliseController extends Controller
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
             ->groupByRaw('MONTH(leads.data), leads.id_user')
             ->get();
@@ -75,7 +75,7 @@ class AnaliseController extends Controller
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
             ->groupByRaw('MONTH(leads.data), leads.id_user')->get();
 
@@ -83,9 +83,9 @@ class AnaliseController extends Controller
             ->join('leads', 'leads.id', '=', 'indicacaos.lead_id')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
-            ->groupByRaw('MONTH(indicacaos.data), leads.id_user')->get();
+            ->groupByRaw('mes, leads.id_user')->get();
         
         // Consulta de Agendados
         $agendados = Telemarketing::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_agendados')
@@ -237,10 +237,11 @@ class AnaliseController extends Controller
     }
     public function index(Request $request)
     {
-        $funcionario = $request->input('funcionario');
-        $mesSelecionado = $request->input('mesSelecionado');
+        $funcionario = $request->input('funcionario') ?? 1;
+        $mesSelecionado = $request->input('mesSelecionado') ?? date('m');
 
-        $dados = $this->carregarDados($funcionario, $mesSelecionado);
+        $dados = $this->carregarDados($funcionario, $mesSelecionado,$mesSelecionado,$mesSelecionado );
+        
 
         return view('analise.index', $dados);
     }
@@ -314,6 +315,9 @@ class AnaliseController extends Controller
 
         $totalMesesDisponiveis = $mes;
         
+        if($totalMesesDisponiveis > 1){
+            
+        } 
         $total_matriculas_agendados_visitas = [
             $total_matriculas,
             $total_agendados,
@@ -322,6 +326,7 @@ class AnaliseController extends Controller
 
 
         return view('analise.grafico', [
+            'funcionario' => $funcionario,
             'mes' => json_encode($totalMesesDisponiveis),
             'total_leads' => json_encode($total_leads) ,
             'total_telemarketings' => json_encode($total_telemarketings),
