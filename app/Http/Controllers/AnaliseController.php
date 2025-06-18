@@ -64,7 +64,7 @@ class AnaliseController extends Controller
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
             ->groupByRaw('MONTH(leads.data), leads.id_user')
             ->get();
@@ -75,7 +75,7 @@ class AnaliseController extends Controller
             ->where('midias.nome', 'Telemarketing')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
             ->groupByRaw('MONTH(leads.data), leads.id_user')->get();
 
@@ -83,7 +83,7 @@ class AnaliseController extends Controller
             ->join('leads', 'leads.id', '=', 'indicacaos.lead_id')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(indicacaos.data)'), [$mesInicio, $mesFim]);
             })
             ->groupByRaw('MONTH(indicacaos.data), leads.id_user')->get();
         
@@ -256,14 +256,14 @@ class AnaliseController extends Controller
         if($request->filled('mesInicio')){
             
         }
-        if($request->filled('mesFim')){
+        if($request->filled('mesFinal')){
             
         }
 
         $funcionario = $request->input('funcionario');
         $mesSelecionado = $request->input('mesSelecionado');
         $mesInicio = $request->input('mesInicio');
-        $mesFim = $request->input('mesFim');
+        $mesFim = $request->input('mesFinal');
 
         
         $resultado = $this->carregarDados($funcionario, $mesSelecionado, $mesInicio, $mesFim);
