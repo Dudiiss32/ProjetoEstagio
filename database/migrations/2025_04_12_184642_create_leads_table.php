@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('data');
+            $table->timestamp('data')->useCurrent();
             $table->unsignedBigInteger('id_user');
             $table->string('cliente');
             $table->string('telefone');
