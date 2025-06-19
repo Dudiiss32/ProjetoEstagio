@@ -174,8 +174,9 @@
     </table>
     @php
         $funcionarioSelecionado = request('funcionario') ?? $users->first()->id;
+        $mesSelecionado = request('mesSelecionado')
     @endphp
-    <a class="btn btn-primary" href="{{route('analise.grafico', ['dados' => $dados, 'mesesDisponiveis' => $mesesDisponiveis, 'mesSelecionado' => request('mesSelecionado'), 
+    <a class="btn btn-primary" href="{{route('analise.grafico', ['mesInicio' => $mesSelecionado, 'mesFinal' => $mesSelecionado, 
     'funcionario' => $funcionarioSelecionado ])}}">Ver gráficos</a>
 @else
     <h4>Ainda não há dados desse funcionário</h4>
