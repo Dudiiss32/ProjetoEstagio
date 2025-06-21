@@ -14,12 +14,19 @@ class LeadController extends Controller
      // LISTAR
     public function index(Request $request){
         // CARREGAR A VIEW
-        $query = Lead::with('user');
+       
+    if (!$request->mostrarTds) {
 
-    // Aplica o filtro se houver ID de usuário
-        if ($request->usuario_id) {
-            $query->where('id_user', $request->usuario_id);
+        if ($request->midiaInput) {
+            $query = Lead::deMidias($request->midiaInput);
         }
+
+        if ($request->usuarioInput) {
+            $query = Lead::deUsuarios($request->usuarioInput);
+        }
+    }else{
+        $query = Lead::with('user');
+    }
 
     $leads = $query->get();
 

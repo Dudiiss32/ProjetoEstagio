@@ -30,22 +30,23 @@
     <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="d-flex flex-column">
         <div class="container mt-4 d-flex flex-row gap-5 align-items-center justify-content-end flex-wrap gap-2">
             <div>
-                <button id="mostrarTds" type="button" class="cadastro">Mostrar todos</button>
+                <input id="mostrarTds" type="submit" name="mostrarTds" class="cadastro" value="Mostrar todos">
             </div>
 
             <div class="position-relative">
                 <div class="d-flex flex-row gap-5">
                     <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
-                    <input type="text" id="usuarioInput" class="form-control" placeholder="Digite um nome..." autocomplete="off">
+                    <input type="text" name="usuarioInput" id="usuarioInput" class="form-control" placeholder="Digite um nome..." autocomplete="off">
                 </div>
-                <div class="list-group mt-1 position-absolute top-100 start-0 w-100" id="sugestoes" style="display: none;"></div>
-                <select id="usuarioSelect" name="usuario_id" class="form-select mt-2" style="display: none;"></select>
             </div>
 
             <div>
-                <select name="" id="">
+                <select name="midiaInput" id="">
                     @foreach ($midias as $midia)
-                        <option value="{{$midia->id}}">{{$midia->nome}}</option>
+                        <option value="{{ $midia->id }}" 
+                            {{ (old('midiaInput', request('midiaInput')) == $midia->id) ? 'selected' : '' }}>
+                            {{ $midia->nome }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -54,14 +55,14 @@
         </div>
     </form>
 
-    @php
+    {{-- @php
         $usuariosUnicos = collect($leads)
             ->filter(fn($lead) => $lead->user)
             ->map(fn($lead) => ['id' => $lead->user->id, 'nome' => $lead->user->name])
             ->unique('nome')
             ->values();
-    @endphp
-
+    @endphp --}}
+{{-- 
     <script>
         const usuarios = [
             @foreach($usuariosUnicos as $user)
@@ -118,7 +119,7 @@
             select.style.display = 'none';
             document.getElementById('formFiltro').submit();
         });
-    </script>
+    </script> --}}
 
     <table class="table table-striped mt-4">
         <thead>
