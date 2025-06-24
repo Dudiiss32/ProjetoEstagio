@@ -257,14 +257,14 @@ class AnaliseController extends Controller
         if($request->filled('mesInicio')){
             
         }
-        if($request->filled('mesFim')){
+        if($request->filled('mesFinal')){
             
         }
 
         $funcionario = $request->input('funcionario');
         $mesSelecionado = $request->input('mesSelecionado');
         $mesInicio = $request->input('mesInicio');
-        $mesFim = $request->input('mesFim');
+        $mesFim = $request->input('mesFinal');
 
         
         $resultado = $this->carregarDados($funcionario, $mesSelecionado, $mesInicio, $mesFim);

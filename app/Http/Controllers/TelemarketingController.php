@@ -36,6 +36,7 @@ class TelemarketingController extends Controller
         ]);
 
         Telemarketing::create([
+            
             'cliente'     => $request->cliente,
             'telefone'    => $request->telefone,
             'agendamento' => $request->agendamento,
