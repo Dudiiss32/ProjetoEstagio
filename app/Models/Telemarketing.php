@@ -20,5 +20,10 @@ class Telemarketing extends Model
     {
         return $this->belongsTo(Lead::class);
     }
+     public function scopeDeUsuarios($query, $userInput){
+        return $query->whereHas('user', function ($q) use ($userInput){
+            $q->where('name', 'LIKE', '%'. $userInput . '%' );
+        });
+    }
     
 }

@@ -14,18 +14,20 @@ class LeadController extends Controller
      // LISTAR
     public function index(Request $request){
         // CARREGAR A VIEW
-       
+    $query = Lead::query()->with('user');
+
     if (!$request->mostrarTds) {
 
-        if ($request->midiaInput) {
-            $query = Lead::deMidias($request->midiaInput);
+        if ($request->midiaInput && $request->midiaInput != -1) {
+            $query->deMidias($request->midiaInput);
+        }else{
+            
+            $query->with('user');
         }
 
         if ($request->usuarioInput) {
-            $query = Lead::deUsuarios($request->usuarioInput);
+            $query->deUsuarios($request->usuarioInput);
         }
-    }else{
-        $query = Lead::with('user');
     }
 
     $leads = $query->get();

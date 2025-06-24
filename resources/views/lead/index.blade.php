@@ -27,99 +27,42 @@
 
     <h1>Lista de leads</h1>
     
-    <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="d-flex flex-column">
-        <div class="container mt-4 d-flex flex-row gap-5 align-items-center justify-content-end flex-wrap gap-2">
-            <div>
-                <input id="mostrarTds" type="submit" name="mostrarTds" class="cadastro" value="Mostrar todos">
-            </div>
+   <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="container mt-4">
+    <div class="row g-3 align-items-end">
 
-            <div class="position-relative">
-                <div class="d-flex flex-row gap-5">
-                    <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
-                    <input type="text" name="usuarioInput" id="usuarioInput" class="form-control" placeholder="Digite um nome..." autocomplete="off">
-                </div>
-            </div>
+        {{-- Botão Mostrar Todos --}}
+        <div class="col-auto">
+            <input id="mostrarTds" type="submit" name="mostrarTds" class="btn btn-secondary" value="Mostrar todos">
+        </div>
 
-            <div>
-                <select name="midiaInput" id="">
-                    @foreach ($midias as $midia)
-                        <option value="{{ $midia->id }}" 
-                            {{ (old('midiaInput', request('midiaInput')) == $midia->id) ? 'selected' : '' }}>
-                            {{ $midia->nome }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        {{-- Filtro por Funcionário --}}
+        <div class="col-md-4">
+            <label for="usuarioInput" class="form-label">Pesquisar Funcionário</label>
+            <input type="text" name="usuarioInput" id="usuarioInput" class="form-control"
+                value="{{ old('usuarioInput', request('usuarioInput')) }}" 
+                placeholder="Digite um nome..." autocomplete="off">
+        </div>
 
+        {{-- Filtro por Mídia --}}
+        <div class="col-md-4">
+            <label for="midiaInput" class="form-label">Selecione a mídia</label>
+            <select name="midiaInput" id="midiaInput" class="form-select">
+                <option value="-1">Todas</option>
+                @foreach ($midias as $midia)
+                    <option value="{{ $midia->id }}" 
+                        {{ (old('midiaInput', request('midiaInput')) == $midia->id) ? 'selected' : '' }}>
+                        {{ $midia->nome }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Botão Filtrar --}}
+        <div class="col-auto">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
-    </form>
-
-    {{-- @php
-        $usuariosUnicos = collect($leads)
-            ->filter(fn($lead) => $lead->user)
-            ->map(fn($lead) => ['id' => $lead->user->id, 'nome' => $lead->user->name])
-            ->unique('nome')
-            ->values();
-    @endphp --}}
-{{-- 
-    <script>
-        const usuarios = [
-            @foreach($usuariosUnicos as $user)
-                { id: {{ $user['id'] }}, nome: "{{ addslashes($user['nome']) }}" },
-            @endforeach
-        ];
-
-        const input = document.getElementById('usuarioInput');
-        const sugestoes = document.getElementById('sugestoes');
-        const select = document.getElementById('usuarioSelect');
-
-        input.addEventListener('input', function () {
-            const termo = this.value.toLowerCase();
-            sugestoes.innerHTML = '';
-            select.innerHTML = '';
-            sugestoes.style.display = 'none';
-            select.style.display = 'none';
-
-            if (termo.length === 0) return;
-
-            const filtrados = usuarios.filter(user =>
-                user.nome.toLowerCase().includes(termo)
-            );
-
-            if (filtrados.length) {
-                sugestoes.style.display = 'block';
-                filtrados.forEach(user => {
-                    const item = document.createElement('button');
-                    item.className = 'list-group-item list-group-item-action';
-                    item.type = 'button';
-                    item.textContent = user.nome;
-                    item.addEventListener('click', function () {
-                        input.value = user.nome;
-                        sugestoes.style.display = 'none';
-
-                        const option = document.createElement('option');
-                        option.value = user.id;
-                        option.textContent = user.nome;
-                        select.innerHTML = '';
-                        select.appendChild(option);
-                        select.style.display = 'none';
-                    });
-                    sugestoes.appendChild(item);
-                });
-            }
-        });
-
-        document.getElementById('mostrarTds').addEventListener('click', function (e) {
-            e.preventDefault();
-            input.value = '';
-            sugestoes.innerHTML = '';
-            sugestoes.style.display = 'none';
-            select.innerHTML = '';
-            select.style.display = 'none';
-            document.getElementById('formFiltro').submit();
-        });
-    </script> --}}
+    </div>
+</form>
 
     <table class="table table-striped mt-4">
         <thead>

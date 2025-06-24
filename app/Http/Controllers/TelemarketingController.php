@@ -11,10 +11,19 @@ use Illuminate\Http\Request;
 class TelemarketingController extends Controller
 {
     // LISTAR
-    public function index(){
+    public function index(Request $request){
         // CARREGAR A VIEW
-        $telemarketings = Telemarketing::with('user')->get();
-        return view('telemarketing.index', compact('telemarketings'));
+        $query = Telemarketing::with('user');
+        
+        if (!$request->mostrarTds) {
+            if ($request->usuarioInput) {
+                $query->deUsuarios($request->usuarioInput);
+            }
+        }
+
+    $telemarketings = $query->get();
+
+    return view('telemarketing.index', compact('telemarketings'));
     }
 
     // DETALHES

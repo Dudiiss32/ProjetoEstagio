@@ -22,6 +22,32 @@
         </div>
     @endif
     <h1>Lista de Teles</h1>
+
+    <form id="formFiltro" action="{{ route('telemarketing.index') }}" method="GET" class="container mt-4">
+    <div class="row g-3 align-items-end justify-content-end">
+
+        {{-- Botão Mostrar Todos --}}
+        <div class="col-auto">
+            <input id="mostrarTds" type="submit" name="mostrarTds" class="btn btn-secondary" value="Mostrar todos">
+        </div>
+
+        {{-- Filtro por Funcionário --}}
+        <div class="col-md-4">
+            <label for="usuarioInput" class="form-label">Pesquisar Funcionário</label>
+            <input type="text" name="usuarioInput" id="usuarioInput" class="form-control"
+                value="{{ old('usuarioInput', request('usuarioInput')) }}"
+                placeholder="Digite um nome..." autocomplete="off">
+        </div>
+
+        {{-- Botão Filtrar --}}
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+
+    </div>
+</form>
+
+
     <table class="table table-striped">
         <thead>
             <tr>
