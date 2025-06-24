@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de metass')
+@section('title', 'Lista de metas')
 
 
 @section('link-cadastro')
