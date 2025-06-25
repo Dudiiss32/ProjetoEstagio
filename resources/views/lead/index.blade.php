@@ -29,7 +29,6 @@
     
    <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="container mt-4">
     <div class="row g-3 align-items-end">
-
         {{-- Botão Mostrar Todos --}}
         <div class="col-auto">
             <input id="mostrarTds" type="submit" name="mostrarTds" class="btn btn-secondary" value="Mostrar todos">
@@ -61,57 +60,64 @@
         <div class="col-auto">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
-    </form>
+    </div>
+</form>
 
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Funcionário</th>
-                <th>Mídia</th>
-                <th>Cliente</th>
-                <th>Telefone</th>
-                <th>Curso</th>
-                <th>Matrícula</th>
-                <th>Observação</th>
-                <th>N° de Indicações</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($leads as $lead)
+{{-- TABELA OCUPANDO TODA A TELA --}}
+<div class="container-fluid px-4">
+    <div class="table-responsive w-100">
+        <table class="table table-striped mt-4">
+            <thead>
                 <tr>
-                    <td>{{ $lead->data->format('d/m/Y') }}</td>
-                    <td>{{ $lead->user->name ?? 'Usuário não encontrado' }}</td>
-                    <td>{{ $lead->midia->nome }}</td>
-                    <td>{{ $lead->cliente }}</td>
-                    @php
-                        $telefone = preg_replace('/\D/', '', $lead->telefone);
-                        if (strlen($telefone) === 11) {
-                            $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 5).'-'.substr($telefone, 7);
-                        } elseif (strlen($telefone) === 10) {
-                            $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 4).'-'.substr($telefone, 6);
-                        }
-                    @endphp
-                    <td>{{ $telefone }}</td>
-                    <td>{{ $lead->curso->nome ?? '' }}</td>
-                    <td>{{ $lead->matricula ? 'Sim' : 'Não' }}</td>
-                    <td>{{ $lead->observacao }}</td>
-                    <td>{{ $lead->indicacoes->count() }}</td>
-                    <td>
-                        <form action="{{ route('lead.delete', $lead->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </form>
-                        <a href="{{ route('lead.edit', $lead->id) }}" class="btn btn-warning">
-                            <i class="fa-solid fa-pencil"></i>
-                        </a>
-                    </td>
+                    <th>Data</th>
+                    <th>Funcionário</th>
+                    <th>Mídia</th>
+                    <th>Cliente</th>
+                    <th>Telefone</th>
+                    <th>Curso</th>
+                    <th>Matrícula</th>
+                    <th>Observação</th>
+                    <th>N° de Indicações</th>
+                    <th>Ações</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($leads as $lead)
+                    <tr>
+                        <td>{{ $lead->data->format('d/m/Y') }}</td>
+                        <td>{{ $lead->user->name ?? 'Usuário não encontrado' }}</td>
+                        <td>{{ $lead->midia->nome }}</td>
+                        <td>{{ $lead->cliente }}</td>
+                        @php
+                            $telefone = preg_replace('/\D/', '', $lead->telefone);
+                            if (strlen($telefone) === 11) {
+                                $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 5).'-'.substr($telefone, 7);
+                            } elseif (strlen($telefone) === 10) {
+                                $telefone = '('.substr($telefone, 0, 2).') '.substr($telefone, 2, 4).'-'.substr($telefone, 6);
+                            }
+                        @endphp
+                        <td>{{ $telefone }}</td>
+                        <td>{{ $lead->curso->nome ?? '' }}</td>
+                        <td>{{ $lead->matricula ? 'Sim' : 'Não' }}</td>
+                        <td>{{ $lead->observacao }}</td>
+                        <td>{{ $lead->indicacoes->count() }}</td>
+                        <td>
+                            <form action="{{ route('lead.delete', $lead->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            <a href="{{ route('lead.edit', $lead->id) }}" class="btn btn-warning">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @endsection

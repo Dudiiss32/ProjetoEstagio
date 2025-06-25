@@ -6,6 +6,7 @@
     <title>@yield('title', 'Akila')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}"> 
    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,22 +17,24 @@
 <body>
     {{-- Menu lateral --}}
     <div class="sidebar d-flex flex-column p-3 text-white" id="sidebar">
-        <h4 class="text-center text-white mb-4">Akila</h4>
+        <a href="{{ route('home') }}" class="d-inline-block text-decoration-none text-center mb-4">
+            <h4 class="text-white fw-bold text-uppercase">Akila</h4>
+        </a>
         <ul class="nav nav-pills flex-column">
-            @can('ver-users')
-                <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}">Metas</a></li>
+             @can('ver-users')
+                <li class="nav-item"><a class="nav-link" href="{{route('funcionario.index')}}"><i class="fa-solid fa-bullseye"></i> Metas</a></li>
             @endcan
-            <li class="nav-item"><a class="nav-link" href="{{route('lead.create')}}">Leads</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{route('telemarketing.create')}}">Telemarketing</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('lead.create')}}"><i class="fa-solid fa-person-military-to-person"></i> Leads</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('telemarketing.create')}}"><i class="fa-solid fa-phone"> </i> Telemarketing</a></li>
             
             @can('ver-users')
-                <li class="nav-item"><a class="nav-link" href="{{route('curso.index')}}">Cursos</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('user.index')}}">Usuários</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('midia.index')}}">Mídias</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('analise.index')}}">Análise</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('curso.index')}}"><i class="fa-solid fa-book"></i> Cursos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('user.index')}}"><i class="fa-solid fa-user"></i> Usuários</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('midia.index')}}"><i class="fa-solid fa-mobile-screen-button"> </i> Mídias</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('analise.index')}}"><i class="fa-solid fa-calendar-check"></i> Análise</a></li>
             @endcan
            
-            <li class="nav-item"><a class="nav-link" href="{{route('indicacao.index')}}">Indicações</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{route('indicacao.index')}}"><i class="fa-solid fa-people-arrows"></i> Indicações</a></li>
             
         </ul>
     </div>
