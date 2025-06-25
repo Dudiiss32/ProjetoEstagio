@@ -83,9 +83,9 @@ class AnaliseController extends Controller
             ->join('leads', 'leads.id', '=', 'indicacaos.lead_id')
             ->when($funcionario && $funcionario != -1, fn($q) => $q->where('leads.id_user', $funcionario))
             ->when($mesInicio && $mesFim, function ($query) use ($mesInicio, $mesFim) {
-                return $query->whereBetween(DB::raw('MONTH(indicacaos.data)'), [$mesInicio, $mesFim]);
+                return $query->whereBetween(DB::raw('MONTH(leads.data)'), [$mesInicio, $mesFim]);
             })
-            ->groupByRaw('MONTH(indicacaos.data), leads.id_user')->get();
+            ->groupByRaw('mes, leads.id_user')->get();
         
         // Consulta de Agendados
         $agendados = Telemarketing::selectRaw('MONTH(data) as mes, id_user, COUNT(*) as total_agendados')
@@ -237,10 +237,11 @@ class AnaliseController extends Controller
     }
     public function index(Request $request)
     {
-        $funcionario = $request->input('funcionario');
-        $mesSelecionado = $request->input('mesSelecionado');
+        $funcionario = $request->input('funcionario') ?? 1;
+        $mesSelecionado = $request->input('mesSelecionado') ?? date('m');
 
-        $dados = $this->carregarDados($funcionario, $mesSelecionado);
+        $dados = $this->carregarDados($funcionario, $mesSelecionado,$mesSelecionado,$mesSelecionado );
+        
 
         return view('analise.index', $dados);
     }
@@ -251,91 +252,89 @@ class AnaliseController extends Controller
     }
 
     public function grafico(Request $request)
-    {
+{
+    $funcionario = $request->input('funcionario');
+    $mesSelecionado = $request->input('mesSelecionado');
+    $mesInicio = $request->input('mesInicio');
+    $mesFim = $request->input('mesFim');
 
-        if($request->filled('mesInicio')){
-            
-        }
-        if($request->filled('mesFinal')){
-            
-        }
+    $resultado = $this->carregarDados($funcionario, $mesSelecionado, $mesInicio, $mesFim);
+    $dados = $resultado['dados'];
 
-        $funcionario = $request->input('funcionario');
-        $mesSelecionado = $request->input('mesSelecionado');
-        $mesInicio = $request->input('mesInicio');
-        $mesFim = $request->input('mesFinal');
-
-        
-        $resultado = $this->carregarDados($funcionario, $mesSelecionado, $mesInicio, $mesFim);
-        $dados = $resultado['dados'];
-
-        if ($mesInicio && $mesFim) {
-            $dados = array_filter($dados, function ($item) use ($mesInicio, $mesFim) {
-                $mes = str_pad($item['mes'], 2, '0', STR_PAD_LEFT);
-                return $mes >= $mesInicio && $mes <= $mesFim;
-            });
-        }
-
-        $mesesNomes = [
-            '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
-            '05' => 'Maio', '06' => 'Junho', '07' => 'Julho', '08' => 'Agosto',
-            '09' => 'Setembro', '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro',
-        ];
-        $mes = [];
-        $total_leads = [];
-        $total_matriculas = [];
-        $total_telemarketings = [];
-        $total_matriculas_tele = [];
-        $total_agendados = [];
-        $total_visitas = [];
-        $metaTele = [];
-        $metaIndicacoes = [];
-        $tempoTele = [];
-        $tempoLead = [];
-
-        foreach ($dados as $dado) {
-            $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT); 
-            $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
-            $total_leads[] = $dado['total_leads'];
-            $total_matriculas[] = $dado['total_matriculas'];
-            $total_telemarketings[] = $dado['total_telemarketings'];
-            $total_matriculas_tele[] = $dado['total_matriculas_tele'];
-            $total_agendados[] = $dado['total_agendados'];
-            $total_visitas[] = $dado['total_visitas'];
-            $metaTele[] = $dado['metaTele'];
-            $metaIndicacoes[] = $dado['metaIndicacoes'];
-            $tempoTele[] = $dado['tempoTele'];
-            $tempoLead[] = $dado['tempoLead'];
-        }
-        // Labels
-        $leadsLabel = "'Comparativo de total de leads por mês'";
-
-        $matriculasLabel = "'Comparativo de total de matrículas por mês'";
-
-        $totalMesesDisponiveis = $mes;
-        
-        $total_matriculas_agendados_visitas = [
-            $total_matriculas,
-            $total_agendados,
-            $total_visitas
-        ];
-
-
-        return view('analise.grafico', [
-            'mes' => json_encode($totalMesesDisponiveis),
-            'total_leads' => json_encode($total_leads) ,
-            'total_telemarketings' => json_encode($total_telemarketings),
-            'total_matriculas' => json_encode($total_matriculas),
-            'total_matriculas_tele' => json_encode($total_matriculas_tele),
-            'total_mav' => json_encode($total_matriculas_agendados_visitas),
-            'metaTele' => json_encode($metaTele),
-            'metaIndicacoes' => json_encode($metaIndicacoes),
-            'tempoTele' => json_encode($tempoTele),
-            'tempoLead' => json_encode($tempoLead),
-            'leadsLabel' => json_encode($leadsLabel),
-            'matriculasLabel' => json_encode($matriculasLabel),
-        ]);
+    // Filtro por intervalo de meses, se necessário
+    if ($mesInicio && $mesFim) {
+        $dados = array_filter($dados, function ($item) use ($mesInicio, $mesFim) {
+            $mes = str_pad($item['mes'], 2, '0', STR_PAD_LEFT);
+            return $mes >= $mesInicio && $mes <= $mesFim;
+        });
     }
+
+    $mesesNomes = [
+        '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março', '04' => 'Abril',
+        '05' => 'Maio', '06' => 'Junho', '07' => 'Julho', '08' => 'Agosto',
+        '09' => 'Setembro', '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro',
+    ];
+
+    // Arrays para gráficos
+    $mes = [];
+    $total_leads = [];
+    $total_matriculas = [];
+    $total_telemarketings = [];
+    $total_matriculas_tele = [];
+    $total_agendados = [];
+    $total_visitas = [];
+    $metaTele = [];
+    $metaIndicacoes = [];
+    $total_indicacoes = [];
+    $tempoTele = [];
+    $tempoLead = [];
+    $eficiencia = [];
+
+    foreach ($dados as $dado) {
+        $numeroMes = str_pad($dado['mes'], 2, '0', STR_PAD_LEFT);
+        $mes[] = $mesesNomes[$numeroMes] ?? $numeroMes;
+        $total_leads[] = $dado['total_leads'];
+        $total_matriculas[] = $dado['total_matriculas'];
+        $total_telemarketings[] = $dado['total_telemarketings'];
+        $total_matriculas_tele[] = $dado['total_matriculas_tele'];
+        $total_agendados[] = $dado['total_agendados'];
+        $total_visitas[] = $dado['total_visitas'];
+        $metaTele[] = $dado['metaTele'];
+        $metaIndicacoes[] = $dado['metaIndicacoes'];
+        $total_indicacoes[] = $dado['total_indicacoes'];
+        $tempoTele[] = $dado['tempoTele'];
+        $tempoLead[] = $dado['tempoLead'];
+        $eficiencia[] = $dado['eficiencia'];
+    }
+
+    // Dados para o gráfico de pizza
+    $total_matriculas_agendados_visitas = [
+        array_sum($total_matriculas),
+        array_sum($total_agendados),
+        array_sum($total_visitas)
+    ];
+
+    return view('analise.grafico', [
+        'funcionario' => $funcionario,
+        'mes' => json_encode($mes),
+        'total_leads' => json_encode($total_leads),
+        'total_matriculas' => json_encode($total_matriculas),
+        'total_telemarketings' => json_encode($total_telemarketings),
+        'total_matriculas_tele' => json_encode($total_matriculas_tele),
+        'total_agendados' => json_encode($total_agendados),
+        'total_visitas' => json_encode($total_visitas),
+        'metaTele' => json_encode($metaTele),
+        'metaIndicacoes' => json_encode($metaIndicacoes),
+        'tempoTele' => json_encode($tempoTele),
+        'tempoLead' => json_encode($tempoLead),
+        'total_mav' => json_encode($total_matriculas_agendados_visitas),
+        'leadsLabel' => json_encode('Comparativo de total de leads por mês'),
+        'matriculasLabel' => json_encode('Comparativo de total de matrículas por mês'),
+        'total_indicacoes' => json_encode($total_indicacoes),
+        'eficiencia' => json_encode($eficiencia),
+    ]);
+}
+
 
     
 }

@@ -5,7 +5,7 @@
 @section('dynamic_link_route', route('funcionario.index'))
 @section('dynamic_link_name', 'Voltar') {{-- Nome do botão/link padrão --}}
 @section('show-back-button')
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
+    <a href="{{ route('funcionario.index') }}" class="btn btn-secondary">
         <i class="fa-solid fa-arrow-left"></i> Voltar
     </a>
 @endsection

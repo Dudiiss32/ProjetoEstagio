@@ -27,30 +27,38 @@
 
     <h1>Lista de leads</h1>
     
-    <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="d-flex flex-column">
-        <div class="container mt-4 d-flex flex-row gap-5 align-items-center justify-content-end flex-wrap gap-2">
-            <div>
-                <input id="mostrarTds" type="submit" name="mostrarTds" class="cadastro" value="Mostrar todos">
-            </div>
+   <form id="formFiltro" action="{{ route('lead.index') }}" method="GET" class="container mt-4">
+    <div class="row g-3 align-items-end">
 
-            <div class="position-relative">
-                <div class="d-flex flex-row gap-5">
-                    <label for="usuarioInput" class="form-label">Pesquisar usuário:</label>
-                    <input type="text" name="usuarioInput" id="usuarioInput" class="form-control" placeholder="Digite um nome..." autocomplete="off">
-                </div>
-            </div>
+        {{-- Botão Mostrar Todos --}}
+        <div class="col-auto">
+            <input id="mostrarTds" type="submit" name="mostrarTds" class="btn btn-secondary" value="Mostrar todos">
+        </div>
 
-            <div>
-                <select name="midiaInput" id="">
-                    @foreach ($midias as $midia)
-                        <option value="{{ $midia->id }}" 
-                            {{ (old('midiaInput', request('midiaInput')) == $midia->id) ? 'selected' : '' }}>
-                            {{ $midia->nome }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        {{-- Filtro por Funcionário --}}
+        <div class="col-md-4">
+            <label for="usuarioInput" class="form-label">Pesquisar Funcionário</label>
+            <input type="text" name="usuarioInput" id="usuarioInput" class="form-control"
+                value="{{ old('usuarioInput', request('usuarioInput')) }}" 
+                placeholder="Digite um nome..." autocomplete="off">
+        </div>
 
+        {{-- Filtro por Mídia --}}
+        <div class="col-md-4">
+            <label for="midiaInput" class="form-label">Selecione a mídia</label>
+            <select name="midiaInput" id="midiaInput" class="form-select">
+                <option value="-1">Todas</option>
+                @foreach ($midias as $midia)
+                    <option value="{{ $midia->id }}" 
+                        {{ (old('midiaInput', request('midiaInput')) == $midia->id) ? 'selected' : '' }}>
+                        {{ $midia->nome }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Botão Filtrar --}}
+        <div class="col-auto">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
     </form>
